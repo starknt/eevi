@@ -1,0 +1,62 @@
+{
+  "name": "@eevi/monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@7.5.2",
+  "description": "",
+  "author": "starknt",
+  "license": "MIT",
+  "homepage": "https://github.com/starknt/knt#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/starknt/knt.git"
+  },
+  "bugs": "https://github.com/starknt/knt/issues",
+  "keywords": [],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rimraf packages/*/dist packages/*/build && pnpm -r --parallel build",
+    "stub": "pnpm -r --parallel run stub",
+    "release": "bumpp package.json packages/*/package.json --commit --push --tag",
+    "publish": "npm -C script ts-node publish.ts",
+    "typecheck": "npx tsc --noEmit",
+    "test": "vitest",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.25.2",
+    "@types/node": "^18.0.6",
+    "bumpp": "^8.2.1",
+    "eslint": "^8.20.0",
+    "esno": "^0.16.3",
+    "lint-staged": "^13.0.3",
+    "pnpm": "^7.5.2",
+    "simple-git-hooks": "^2.8.0",
+    "typescript": "^4.7.4",
+    "unbuild": "^0.7.4",
+    "vite": "^3.0.1",
+    "vitest": "^0.18.1"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix"
+    ]
+  }
+}
