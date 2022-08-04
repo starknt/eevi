@@ -3,8 +3,17 @@
 
 ## Usage
 ```ts
-``
+import Eevi from 'eevi/vite'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+    ...
+    plugin: [
+        Eevi({ configFile: 'eevi.config.ts' })
+    ]
+})
+```
 
 ## License
 
-[MIT](./LICENSE) License © 2022 [author](https://github.com/author)
+[MIT](./LICENSE) License © 2022 [starknt](https://github.com/starknt)
