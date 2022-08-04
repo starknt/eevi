@@ -6,27 +6,14 @@
   "description": "",
   "author": "starknt",
   "license": "MIT",
-  "homepage": "https://github.com/starknt/knt#readme",
+  "homepage": "https://github.com/starknt/eevi#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/starknt/knt.git"
+    "url": "git+https://github.com/starknt/eevi.git"
   },
-  "bugs": "https://github.com/starknt/knt/issues",
-  "keywords": [],
+  "bugs": "https://github.com/starknt/eevi/issues",
+  "keywords": ["vite", "plugin", "esbuild", "electron", "build", "fast"],
   "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs"
-    }
-  },
-  "main": "./dist/index.mjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "build": "rimraf packages/*/dist packages/*/build && pnpm -r --parallel build",
     "stub": "pnpm -r --parallel run stub",

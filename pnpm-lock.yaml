@@ -38,11 +38,16 @@ importers:
 
   packages/config:
     specifiers:
+      '@eevi/core': workspace:*
       unconfig: ^0.3.5
     dependencies:
+      '@eevi/core': link:../core
       unconfig: 0.3.5
 
   packages/core:
+    specifiers: {}
+
+  packages/eevi:
     specifiers: {}
 
 packages:

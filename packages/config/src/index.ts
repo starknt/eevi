@@ -1,6 +1,8 @@
 import fs from 'fs'
 import path from 'path'
-import { } from ''
+import { createConfigLoader } from 'unconfig'
+import type { LoadConfigResult } from 'unconfig'
+import type { UserConfig } from '@eevi/core'
 
 export async function loadConfig<U extends UserConfig>(cwd = process.cwd(), configOrPath: string | U = cwd): Promise<LoadConfigResult<U>> {
   let inlineConfig = {} as U
@@ -8,9 +10,10 @@ export async function loadConfig<U extends UserConfig>(cwd = process.cwd(), conf
     inlineConfig = configOrPath
     return {
       config: inlineConfig,
-      sources: []
+      sources: [],
     }
-  } else {
+  }
+  else {
     configOrPath = inlineConfig.configFile || process.cwd()
   }
 
@@ -24,12 +27,13 @@ export async function loadConfig<U extends UserConfig>(cwd = process.cwd(), conf
   const loader = createConfigLoader<U>({
     sources: isFile
       ? [{
-        files: resolved
-      }] : [{
-        files: 'knt.config',
-      }],
+          files: resolved,
+        }]
+      : [{
+          files: 'knt.config',
+        }],
     cwd,
-    defaults: inlineConfig
+    defaults: inlineConfig,
   })
 
   const result = await loader.load()
