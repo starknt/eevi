@@ -1,7 +1,7 @@
 import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
-  entries: ['src/index.ts', 'src/vite.ts'],
+  entries: ['src/index', 'src/vite'],
   declaration: true,
   clean: true,
   rollup: {
