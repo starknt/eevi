@@ -30,17 +30,19 @@ export interface UserConfigExport {
   */
   mode?: 'development' | 'production' | 'debug'
   /**
+   * esbuild inject
+   * @see https://esbuild.github.io/api/#inject
+   */
+  inject?: string[]
+  /**
    * esbuild plugin
+   * @see https://esbuild.github.io/plugins/
    */
   plugin?: Plugin[]
   /**
-   * If preloadEntries.length > 0, it will be invalided, you should set `outDir`
-   */
-  outFile?: string
-  /**
    * bundle file out dir
    */
-  outDir?: string
+  outDir: string
   /**
    * like vite alias path
    * @default `undefined`
@@ -51,7 +53,6 @@ export interface UserConfigExport {
    * @default `tsconfig.json`
    */
   tsconfig?: string
-  rawTsconfig?: string
   /**
    * `NODE_ENV` production `true`, development `false`, debug `false`
    * @default NODE_ENV === 'production'
@@ -68,8 +69,8 @@ export interface UserConfigExport {
    */
   external?: string[]
   /**
-   * `knt` plugin config file path
-   * @default `knt.config.ts`
+   * `eevi` plugin config file path
+   * @default `eevi.config.ts`
    */
   configFile?: string
 }
@@ -100,10 +101,6 @@ export interface UserConfig {
    */
   plugin: Plugin[]
   /**
-   * If preloadEntries.length > 0, it will be invalided, you should set `outDir`
-   */
-  outFile: string
-  /**
    * bundle file out dir
    */
   outDir: string
@@ -111,7 +108,7 @@ export interface UserConfig {
    * like vite alias path
    * @default `undefined`
    */
-  resolve: ResolveOption
+  resolve?: ResolveOption
   /**
    * tsconfig file path
    * @default `tsconfig.json`
