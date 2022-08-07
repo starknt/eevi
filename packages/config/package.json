@@ -33,10 +33,14 @@
     "publish": "pnpm publish",
     "stub": "unbuild --stub"
   },
+  "peerDependencies": {
+    "vite": "~3.0.4"
+  },
   "dependencies": {
+    "@eevi/core": "workspace:*",
     "unconfig": "^0.3.5"
   },
   "devDependencies": {
-    "@eevi/core": "workspace:*"
+    "vite": "^3.0.4"
   }
 }
