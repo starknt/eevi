@@ -25,6 +25,11 @@ export interface UserConfigExport {
    */
   preloadEntries?: string[]
   /**
+  * Plugin run mode
+  * @default extend `vite` mode or process.env.NODE
+  */
+  mode?: 'development' | 'production' | 'debug'
+  /**
    * esbuild plugin
    */
   plugin?: Plugin[]
@@ -86,9 +91,14 @@ export interface UserConfig {
   entry: string
   preloadEntries: string[]
   /**
+  * Plugin run mode
+  * @default extend `vite` mode or process.env.NODE
+  */
+  mode?: 'development' | 'production' | 'debug'
+  /**
    * esbuild plugin
    */
-  plugin?: Plugin[]
+  plugin: Plugin[]
   /**
    * If preloadEntries.length > 0, it will be invalided, you should set `outDir`
    */
