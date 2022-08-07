@@ -1,6 +1,6 @@
 {
   "name": "eevi",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "author": "starknt",
   "license": "MIT",
@@ -11,7 +11,13 @@
     "directory": "packages/eevi"
   },
   "bugs": "https://github.com/starknt/eevi/issues",
-  "keywords": ["esbuild", "vite", "electron", "build", "plugin"],
+  "keywords": [
+    "esbuild",
+    "vite",
+    "electron",
+    "build",
+    "plugin"
+  ],
   "sideEffects": false,
   "exports": {
     ".": {
