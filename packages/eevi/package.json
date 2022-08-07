@@ -34,9 +34,9 @@
   ],
   "scripts": {
     "prepublish": "pnpm run build",
-    "build": "unbuild",
+    "build": "tsup --dts-resolve",
     "publish": "pnpm publish",
-    "stub": "unbuild --stub"
+    "stub": "pnpm run build"
   },
   "peerDependencies": {
     "vite": "~3.0.1"
