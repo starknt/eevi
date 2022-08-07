@@ -11,7 +11,7 @@
     "directory": "packages/eevi"
   },
   "bugs": "https://github.com/starknt/eevi/issues",
-  "keywords": [],
+  "keywords": ["esbuild", "vite", "electron", "build", "plugin"],
   "sideEffects": false,
   "exports": {
     ".": {
@@ -39,7 +39,7 @@
     "stub": "unbuild --stub"
   },
   "peerDependencies": {
-    "vite": "^3.0.1"
+    "vite": "~3.0.1"
   },
   "dependencies": {
     "@eevi/config": "workspace:*",
