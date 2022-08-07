@@ -33,7 +33,6 @@
     "vite.d.ts"
   ],
   "scripts": {
-    "prepublish": "pnpm run build",
     "build": "tsup --dts-resolve",
     "publish": "pnpm publish",
     "stub": "pnpm run build"

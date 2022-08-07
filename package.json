@@ -23,10 +23,10 @@
   "sideEffects": false,
   "scripts": {
     "play": "pnpm -C playground dev",
-    "build": "rimraf packages/*/dist packages/*/build && pnpm -r build ",
+    "build": "rimraf packages/*/dist packages/*/build && pnpm -r build",
     "stub": "pnpm -r --parallel run stub",
     "release": "bumpp package.json packages/eevi/package.json --commit --push --tag",
-    "publish": "cd packages/eevi && pnpm run publish",
+    "publish": "pnpm build && cd packages/eevi && pnpm run publish",
     "typecheck": "npx tsc --noEmit",
     "test": "vitest",
     "lint": "eslint .",
