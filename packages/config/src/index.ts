@@ -1,5 +1,5 @@
 import fs from 'fs'
-import path from 'path'
+import { dirname, resolve } from 'path'
 import { createConfigLoader } from 'unconfig'
 import type { LoadConfigResult } from 'unconfig'
 import type { UserConfig, UserConfigExport } from '@eevi/core'
@@ -8,20 +8,23 @@ export async function loadConfig<U extends UserConfig>(cwd = process.cwd(), conf
   let inlineConfig = {} as U
   if (typeof configOrPath !== 'string') {
     inlineConfig = configOrPath
-    return {
-      config: inlineConfig,
-      sources: [],
+
+    if (inlineConfig.configFile === false) {
+      return {
+        config: inlineConfig,
+        sources: [],
+      }
+    }
+    else {
+      configOrPath = inlineConfig.configFile || process.cwd()
     }
   }
-  else {
-    configOrPath = inlineConfig.configFile || process.cwd()
-  }
 
-  const resolved = path.resolve(configOrPath)
+  const resolved = resolve(configOrPath)
   let isFile = false
   if (fs.existsSync(resolved) && fs.statSync(resolved).isFile()) {
     isFile = true
-    cwd = path.dirname(resolved)
+    cwd = dirname(resolved)
   }
 
   const loader = createConfigLoader<U>({
@@ -30,7 +33,7 @@ export async function loadConfig<U extends UserConfig>(cwd = process.cwd(), conf
           files: resolved,
         }]
       : [{
-          files: 'knt.config',
+          files: 'eevi.config',
         }],
     cwd,
     defaults: inlineConfig,
