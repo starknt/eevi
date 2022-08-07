@@ -12,7 +12,14 @@
     "url": "git+https://github.com/starknt/eevi.git"
   },
   "bugs": "https://github.com/starknt/eevi/issues",
-  "keywords": ["vite", "plugin", "esbuild", "electron", "build", "fast"],
+  "keywords": [
+    "vite",
+    "plugin",
+    "esbuild",
+    "electron",
+    "build",
+    "fast"
+  ],
   "sideEffects": false,
   "scripts": {
     "build": "rimraf packages/*/dist packages/*/build && pnpm -r --parallel build",
@@ -28,6 +35,7 @@
     "@antfu/eslint-config": "^0.25.2",
     "@types/node": "^18.0.6",
     "bumpp": "^8.2.1",
+    "electron": "^20.0.1",
     "eslint": "^8.20.0",
     "esno": "^0.16.3",
     "lint-staged": "^13.0.3",
