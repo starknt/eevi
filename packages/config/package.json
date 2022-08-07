@@ -33,7 +33,9 @@
     "stub": "unbuild --stub"
   },
   "dependencies": {
-    "@eevi/core": "workspace:*",
     "unconfig": "^0.3.5"
+  },
+  "devDependencies": {
+    "@eevi/core": "workspace:*"
   }
 }
