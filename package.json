@@ -22,6 +22,7 @@
   ],
   "sideEffects": false,
   "scripts": {
+    "play": "pnpm -C playground dev",
     "build": "rimraf packages/*/dist packages/*/build && pnpm -r --parallel build",
     "stub": "pnpm -r --parallel run stub",
     "release": "bumpp package.json packages/*/package.json --commit --push --tag",
@@ -35,7 +36,6 @@
     "@antfu/eslint-config": "^0.25.2",
     "@types/node": "^18.0.6",
     "bumpp": "^8.2.1",
-    "electron": "^20.0.1",
     "eslint": "^8.20.0",
     "esno": "^0.16.3",
     "lint-staged": "^13.0.3",
