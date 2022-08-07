@@ -69,28 +69,39 @@ export interface UserConfigExport {
    */
   external?: string[]
   /**
+   * esbuild define
+   * @see https://esbuild.github.io/api/#define
+   */
+  define?: Record<string, string>
+  /**
+   * debounce ms
+   * @default 2000ms
+   */
+  debounceMs?: number
+  /**
    * `eevi` plugin config file path
    * @default `eevi.config.ts`
    */
   configFile?: string
 }
+
 /** @internal */
 export interface UserConfig {
   /**
    * Project root path
    * @default `/`
    */
-  base: string
+  base?: string
   /**
    * Main process project root path
    * @default `app/electron/main.ts`
    */
-  root: string
+  root?: string
   /**
    * Main Process Entry
    */
   entry: string
-  preloadEntries: string[]
+  preloadEntries?: string[]
   /**
   * Plugin run mode
   * @default extend `vite` mode or process.env.NODE
@@ -99,7 +110,12 @@ export interface UserConfig {
   /**
    * esbuild plugin
    */
-  plugin: Plugin[]
+  plugin?: Plugin[]
+  /**
+   * esbuild inject
+   * @see https://esbuild.github.io/api/#inject
+   */
+  inject?: string[]
   /**
    * bundle file out dir
    */
@@ -113,25 +129,45 @@ export interface UserConfig {
    * tsconfig file path
    * @default `tsconfig.json`
    */
-  tsconfig: string
-  rawTsconfig: string
+  tsconfig?: string
   /**
    * `NODE_ENV` production `true`, development `false`, debug `false`
    * @default NODE_ENV === 'production'
    */
-  minify: boolean
+  minify?: boolean
+  /**
+   * debounce ms
+   * @default 2000ms
+   */
+  debounceMs?: number
   /**
    * `NODE_ENV` production `true`, development `false`, debug `false`
    * @default @default NODE_ENV === 'production'
    */
-  sourcemap: boolean
+  sourcemap?: boolean
   /**
    * external module name, default include `electron` and node `builtinModules`
    * @default ["electron", ...builtinModules]
    */
-  external: string[]
+  external?: string[]
+  define?: Record<string, string>
   configFile: string | false
 }
 
-export type ResolvedConfig = Required<UserConfig>
-
+export interface ResolvedConfig {
+  base: string
+  root: string
+  sourcemap: boolean
+  entry: string
+  preloadEntries: string[]
+  inject: string[]
+  define: Record<string, string>
+  outdir: string
+  plugins: Plugin[]
+  minify: boolean
+  external: string[]
+  tsconfig: string
+  debounceMs: number
+  resolve?: ResolveOption
+  mode: 'development' | 'production' | 'debug'
+}
