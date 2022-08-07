@@ -1,36 +1,50 @@
 import fs from 'fs'
 import { isAbsolute, join, resolve } from 'path'
 import type { AddressInfo } from 'net'
-import type { UserConfig, UserConfigExport } from '@eevi/core'
+import type { ResolvedConfig, UserConfig, UserConfigExport } from '@eevi/core'
+import { handler, when } from '@eevi/core'
 import type { Plugin } from 'vite'
 import { loadConfig, resolveConfig } from '@eevi/config'
 
 export function EeviCorePlugin(userConfig?: UserConfigExport): Plugin {
-  let internalConfig = {
+  const internalConfig = {
     ...(userConfig || {}),
     configFile: userConfig ? userConfig.configFile ? isAbsolute(userConfig.configFile) ? userConfig.configFile : resolve(userConfig.base ?? process.cwd(), userConfig.configFile) : true : resolve(process.cwd(), 'eevi.config.ts'),
-  } as Required<UserConfig>
+  } as UserConfig
+  let resolvedConfig: ResolvedConfig
+  let resolved = false
 
   return {
     name: 'vite-plugin-eevi',
-    async config(config, env) {
+    async config(_, env) {
       process.env.NODE_ENV = env.mode
+    },
+    async configResolved(config) {
       process.env.MODE = 'spa'
       if (Object.keys(config?.build?.rollupOptions?.input ?? {}).length > 1)
         process.env.MODE = 'mpa'
 
       const loadedConfigResult = await loadConfig(resolve(internalConfig.base ?? config.base!), internalConfig)
-      internalConfig = resolveConfig(loadedConfigResult.config)
+      resolvedConfig = resolveConfig(loadedConfigResult.config, config)
+      resolved = true
     },
     configureServer(server) {
-      server.httpServer!.on('listening', () => {
+      server.httpServer!.on('listening', async () => {
         const address = server.httpServer!.address() as AddressInfo
         process.env.URL = `http://${address.address}:${address.port}`
+
+        await when(resolved, true)
+
+        handler(resolvedConfig)
       })
     },
     async closeBundle() {
       if (process.env.NODE_ENV === 'development')
         return undefined
+
+      await when(resolved, true)
+
+      handler(resolvedConfig)
     },
   }
 }
@@ -83,9 +97,9 @@ export function EeviMpaPlugin(userConfig?: MpaOptions): Plugin {
   return {
     name: 'vite-plugin-eevi-mpa',
     enforce: 'pre',
-    config(config) {
-      const base = config.base!
-      const root = config.root!
+    configResolved(config) {
+      const base = config.base
+      const root = config.root
 
       const projectRoot = resolve(base, root)
       const _userConfig: Required<MpaOptions> = Object.assign(options, userConfig)
@@ -95,6 +109,9 @@ export function EeviMpaPlugin(userConfig?: MpaOptions): Plugin {
       mpa.forEach((page) => {
         rollupInput[page.name] = page.entry
       })
+
+      if (Object.keys(rollupInput).length <= 0)
+        return
 
       config!.build!.rollupOptions!.input = rollupInput
     },
