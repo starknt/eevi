@@ -4,7 +4,6 @@ import { builtinModules } from 'module'
 import { createConfigLoader } from 'unconfig'
 import type { LoadConfigResult } from 'unconfig'
 import type { ResolvedConfig, UserConfig, UserConfigExport } from '@eevi/core'
-import type { ResolvedConfig as ViteUserConfig } from 'vite'
 
 export async function loadConfig<U extends UserConfig>(cwd = process.cwd(), configOrPath: string | U = cwd): Promise<LoadConfigResult<U>> {
   let inlineConfig = {} as U
@@ -47,7 +46,7 @@ export async function loadConfig<U extends UserConfig>(cwd = process.cwd(), conf
   return result
 }
 
-export function resolveConfig(config: UserConfig, viteConfig: ViteUserConfig): ResolvedConfig {
+export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConfig {
   const resolvedConfig = {} as ResolvedConfig
 
   resolvedConfig.base = config.base ?? viteConfig.base
