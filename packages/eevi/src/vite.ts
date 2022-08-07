@@ -1,3 +1,5 @@
+import fs from 'fs'
+import { join, resolve } from 'path'
 import type { Plugin } from 'vite'
 
 export function EeviCorePlugin(): Plugin {
@@ -6,9 +8,69 @@ export function EeviCorePlugin(): Plugin {
   }
 }
 
-export function EeviMpaPlugin(): Plugin {
+export interface MpaOptions {
+  /**
+   * page dir
+   * @default `src/pages`
+   */
+  scan?: string
+
+  /**
+   * entry file name
+   * @default `index.html`
+   */
+  filename?: string
+}
+
+interface Page {
+  name: string
+  entry: string
+}
+
+function getMpaPage(root: string, options: Required<MpaOptions>) {
+  const pages: Page[] = []
+  const pagesDirectory = join(root, options.scan)
+
+  if (fs.existsSync(pagesDirectory)) {
+    const scans = fs.readdirSync(pagesDirectory, { withFileTypes: true })
+      .filter(v => v.isDirectory())
+      .filter(v => fs.existsSync(join(pagesDirectory, v.name, options.filename)))
+
+    scans.map((v) => {
+      pages.push({
+        name: v.name,
+        entry: join(pagesDirectory, v.name, options.filename),
+      })
+    })
+  }
+
+  return pages
+}
+
+export function EeviMpaPlugin(userConfig?: MpaOptions): Plugin {
+  const options: Required<MpaOptions> = {
+    scan: 'src/pages',
+    filename: 'index.html',
+  }
+
   return {
     name: 'vite-plugin-eevi-mpa',
+    enforce: 'pre',
+    config(config) {
+      const base = config.base!
+      const root = config.root!
+
+      const projectRoot = resolve(base, root)
+      const _userConfig: Required<MpaOptions> = Object.assign(options, userConfig)
+
+      const mpa = getMpaPage(projectRoot, _userConfig)
+      const rollupInput: Record<string, string> = {}
+      mpa.forEach((page) => {
+        rollupInput[page.name] = page.entry
+      })
+
+      config!.build!.rollupOptions!.input = rollupInput
+    },
   }
 }
 
