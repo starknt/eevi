@@ -32,5 +32,9 @@
     "publish": "pnpm publish",
     "stub": "unbuild --stub"
   },
-  "devDependencies": {}
+  "dependencies": {
+    "@anatine/esbuild-decorators": "^0.2.19",
+    "esbuild": "^0.14.53",
+    "esbuild-plugin-alias-path": "^1.1.1"
+  }
 }

@@ -1,2 +1,3 @@
-export { AliasOptions, UserConfig } from './types'
+export { ResolveOption, UserConfigExport, UserConfig } from './types'
 
+export { build } from './eevi'

@@ -1,6 +1,11 @@
-export type AliasOptions = Record<string, string> & { cwd?: string }
+import type { Plugin } from 'esbuild'
 
-export interface UserConfig {
+export interface ResolveOption {
+  alias?: Record<string, string>
+  cwd?: string
+}
+
+export interface UserConfigExport {
   /**
    * Project root path
    * @default `/`
@@ -8,15 +13,21 @@ export interface UserConfig {
   base?: string
   /**
    * Main process project root path
-   * @default `src-electron`
+   * @default `app/electron`
    */
   root?: string
   /**
    * Main Process Entry
-   * @default `src-electron/main.ts`
    */
-  entry?: string
+  entry: string
+  /**
+   * Preload files entry
+   */
   preloadEntries?: string[]
+  /**
+   * esbuild plugin
+   */
+  plugin?: Plugin[]
   /**
    * If preloadEntries.length > 0, it will be invalided, you should set `outDir`
    */
@@ -29,7 +40,7 @@ export interface UserConfig {
    * like vite alias path
    * @default `undefined`
    */
-  alias?: AliasOptions
+  resolve?: ResolveOption
   /**
    * tsconfig file path
    * @default `tsconfig.json`
@@ -57,15 +68,63 @@ export interface UserConfig {
    */
   configFile?: string
 }
-
-export function resolveConfig(config: UserConfig): UserConfig {
-  return {
-    ...config,
-    base: config.base ?? '/',
-    entry: config.entry ?? 'src-electron/main.ts',
-  }
+/** @internal */
+export interface UserConfig {
+  /**
+   * Project root path
+   * @default `/`
+   */
+  base: string
+  /**
+   * Main process project root path
+   * @default `app/electron/main.ts`
+   */
+  root: string
+  /**
+   * Main Process Entry
+   */
+  entry: string
+  preloadEntries: string[]
+  /**
+   * esbuild plugin
+   */
+  plugin?: Plugin[]
+  /**
+   * If preloadEntries.length > 0, it will be invalided, you should set `outDir`
+   */
+  outFile: string
+  /**
+   * bundle file out dir
+   */
+  outDir: string
+  /**
+   * like vite alias path
+   * @default `undefined`
+   */
+  resolve: ResolveOption
+  /**
+   * tsconfig file path
+   * @default `tsconfig.json`
+   */
+  tsconfig: string
+  rawTsconfig: string
+  /**
+   * `NODE_ENV` production `true`, development `false`, debug `false`
+   * @default NODE_ENV === 'production'
+   */
+  minify: boolean
+  /**
+   * `NODE_ENV` production `true`, development `false`, debug `false`
+   * @default @default NODE_ENV === 'production'
+   */
+  sourcemap: boolean
+  /**
+   * external module name, default include `electron` and node `builtinModules`
+   * @default ["electron", ...builtinModules]
+   */
+  external: string[]
+  configFile: string | false
 }
 
-export function defineConfig(config: UserConfig): UserConfig {
-  return resolveConfig(config)
-}
+export type ResolvedConfig = Required<UserConfig>
+

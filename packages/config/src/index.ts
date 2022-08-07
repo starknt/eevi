@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { createConfigLoader } from 'unconfig'
 import type { LoadConfigResult } from 'unconfig'
-import type { UserConfig } from '@eevi/core'
+import type { UserConfig, UserConfigExport } from '@eevi/core'
 
 export async function loadConfig<U extends UserConfig>(cwd = process.cwd(), configOrPath: string | U = cwd): Promise<LoadConfigResult<U>> {
   let inlineConfig = {} as U
@@ -40,4 +40,17 @@ export async function loadConfig<U extends UserConfig>(cwd = process.cwd(), conf
   result.config = result.config || inlineConfig
 
   return result
+}
+
+export function resolveConfig<T extends UserConfig>(config: T): T {
+  return {
+    ...config,
+    base: config.base ?? '/',
+    root: config.root ?? 'app/electron',
+    entry: config.entry ?? 'app/electron/main.ts',
+  }
+}
+
+export function defineConfig(config: UserConfigExport): UserConfigExport {
+  return config
 }
