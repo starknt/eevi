@@ -63,7 +63,7 @@ function getMpaPage(root: string, options: Required<MpaOptions>) {
       .filter(v => v.isDirectory())
       .filter(v => fs.existsSync(join(pagesDirectory, v.name, options.filename)))
 
-    scans.map((v) => {
+    scans.forEach((v) => {
       pages.push({
         name: v.name,
         entry: join(pagesDirectory, v.name, options.filename),
