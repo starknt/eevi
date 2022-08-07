@@ -1,10 +1,37 @@
 import fs from 'fs'
-import { join, resolve } from 'path'
+import { isAbsolute, join, resolve } from 'path'
+import type { AddressInfo } from 'net'
+import type { UserConfig, UserConfigExport } from '@eevi/core'
 import type { Plugin } from 'vite'
+import { loadConfig, resolveConfig } from '@eevi/config'
 
-export function EeviCorePlugin(): Plugin {
+export function EeviCorePlugin(userConfig?: UserConfigExport): Plugin {
+  let internalConfig = {
+    ...(userConfig || {}),
+    configFile: userConfig ? userConfig.configFile ? isAbsolute(userConfig.configFile) ? userConfig.configFile : resolve(userConfig.base ?? process.cwd(), userConfig.configFile) : true : resolve(process.cwd(), 'eevi.config.ts'),
+  } as Required<UserConfig>
+
   return {
     name: 'vite-plugin-eevi',
+    async config(config, env) {
+      process.env.NODE_ENV = env.mode
+      process.env.MODE = 'spa'
+      if (Object.keys(config?.build?.rollupOptions?.input ?? {}).length > 1)
+        process.env.MODE = 'mpa'
+
+      const loadedConfigResult = await loadConfig(resolve(internalConfig.base ?? config.base!), internalConfig)
+      internalConfig = resolveConfig(loadedConfigResult.config)
+    },
+    configureServer(server) {
+      server.httpServer!.on('listening', () => {
+        const address = server.httpServer!.address() as AddressInfo
+        process.env.URL = `http://${address.address}:${address.port}`
+      })
+    },
+    async closeBundle() {
+      if (process.env.NODE_ENV === 'development')
+        return undefined
+    },
   }
 }
 
