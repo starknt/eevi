@@ -32,6 +32,9 @@
     "publish": "pnpm publish",
     "stub": "unbuild --stub"
   },
+  "peerDependencies": {
+    "electron": "^20.0.1"
+  },
   "dependencies": {
     "@anatine/esbuild-decorators": "^0.2.19",
     "esbuild": "^0.14.53",
