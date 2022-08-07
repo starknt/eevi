@@ -40,7 +40,6 @@
   ],
   "scripts": {
     "build": "tsup --dts-resolve",
-    "publish": "pnpm publish",
     "stub": "pnpm run build"
   },
   "peerDependencies": {
