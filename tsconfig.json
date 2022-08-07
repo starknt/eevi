@@ -22,8 +22,11 @@
       "@eevi/config": [
         "./packages/config/src/index.ts"
       ],
-      "@eevi/cli": [
-        "./packages/cli/src/index.ts"
+      "eevi": [
+        "./packages/eevi/src/index.ts"
+      ],
+      "eevi/vite": [
+        "./packages/eevi/src/vite.ts"
       ]
     }
   },
