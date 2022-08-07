@@ -1,5 +1,5 @@
 {
-  "name": "@eevi/eevi",
+  "name": "eevi",
   "version": "0.0.0",
   "description": "",
   "author": "starknt",
@@ -18,13 +18,19 @@
       "types": "./dist/index.d.ts",
       "require": "./dist/index.cjs",
       "import": "./dist/index.mjs"
+    },
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "require": "./dist/vite.cjs",
+      "import": "./dist/vite.mjs"
     }
   },
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "vite.d.ts"
   ],
   "scripts": {
     "prepublish": "pnpm run build",

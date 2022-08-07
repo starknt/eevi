@@ -1,6 +1,5 @@
 {
   "name": "playground",
-  "type": "module",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -14,6 +13,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.0",
+    "electron": "^20.0.1",
     "typescript": "^4.6.4",
     "vite": "^3.0.0",
     "vue-tsc": "^0.38.4"
