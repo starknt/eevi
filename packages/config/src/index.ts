@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { dirname, isAbsolute, join, normalize, resolve } from 'path'
+import { dirname, isAbsolute, join, resolve } from 'path'
 import { builtinModules } from 'module'
 import { createConfigLoader } from 'unconfig'
 import type { LoadConfigResult } from 'unconfig'
