@@ -62,9 +62,12 @@ importers:
     specifiers:
       '@eevi/config': workspace:*
       '@eevi/core': workspace:*
+      esbuild: ^0.14.53
     dependencies:
       '@eevi/config': link:../config
       '@eevi/core': link:../core
+    devDependencies:
+      esbuild: 0.14.53
 
   playground:
     specifiers:

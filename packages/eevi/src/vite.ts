@@ -5,6 +5,7 @@ import type { ResolvedConfig, UserConfig, UserConfigExport } from '@eevi/core'
 import { handler, when } from '@eevi/core'
 import type { Plugin } from 'vite'
 import { loadConfig, resolveConfig } from '@eevi/config'
+import { EEVI_IS_MODULE_ID } from './shared'
 
 export function EeviCorePlugin(userConfig?: UserConfigExport): Plugin {
   const internalConfig = {
@@ -123,8 +124,6 @@ export function EeviMpaPlugin(userConfig?: MpaOptions): Plugin {
  * @see https://www.npmjs.com/package/electron-is
  */
 export function EeviIsPlugin(): Plugin {
-  const MODULE_ID = 'is'
-
   function generateModuleCode() {
     return `
     let _IsWindow = false
@@ -199,12 +198,11 @@ export function EeviIsPlugin(): Plugin {
   return {
     name: 'vite-plugin-eevi-is',
     resolveId(source) {
-      if (source === MODULE_ID)
-
-        return MODULE_ID
+      if (source === EEVI_IS_MODULE_ID)
+        return EEVI_IS_MODULE_ID
     },
     load(id) {
-      if (id === MODULE_ID)
+      if (id === EEVI_IS_MODULE_ID)
         return generateModuleCode()
     },
   }
