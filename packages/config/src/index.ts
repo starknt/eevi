@@ -70,8 +70,6 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
   resolvedConfig.define = config.define ?? {}
   resolvedConfig.debounceMs = config.debounceMs ?? 1000 * 2
 
-  console.log(resolvedConfig)
-
   return resolvedConfig
 }
 
