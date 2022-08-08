@@ -34,12 +34,7 @@ async function eeviBuild(config: ResolvedConfig, plugins: Plugin[], external: st
     logLevel: 'info',
   }
 
-  if (config.preloadEntries.length > 0) {
-    await build({
-      ...options,
-      entryPoints: [...config.preloadEntries],
-    })
-  }
+  await buildPreloadEntries(config.preloadEntries, options)
 
   await build({
     ...options,
@@ -70,6 +65,17 @@ function restartApplication(entry: string, error?: Error) {
     .on('exit', exitProcess)
 }
 
+async function buildPreloadEntries(preloadEntries: string[], options: esbuild.BuildOptions) {
+  // build preload entry
+  if (preloadEntries.length > 0) {
+    await build({
+      ...options,
+      entryPoints: preloadEntries,
+      outdir: join(options.outdir!, 'preload'),
+    })
+  }
+}
+
 async function eeviDev(config: ResolvedConfig, plugins: Plugin[], external: string[]) {
   const compiledEntry = join(config.outdir, `${basename(config.entry, extname(config.entry))}.js`)
   const debouncedRestartApplication = debounce(restartApplication, config.debounceMs)
@@ -94,14 +100,7 @@ async function eeviDev(config: ResolvedConfig, plugins: Plugin[], external: stri
     watch: watchOptions,
   }
 
-  // build preload entry
-  if (config.preloadEntries.length > 0) {
-    await build({
-      ...options,
-      entryPoints: config.preloadEntries,
-      outdir: join(config.outdir, 'preload'),
-    })
-  }
+  await buildPreloadEntries(config.preloadEntries, options)
 
   // build main process entry
   await build({
