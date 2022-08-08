@@ -1,7 +1,6 @@
 {
   "name": "@eevi/core",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.0.2",
   "description": "",
   "author": "starknt",
   "license": "MIT",
@@ -28,9 +27,7 @@
     "dist"
   ],
   "scripts": {
-    "prepublish": "pnpm run build",
     "build": "unbuild",
-    "publish": "pnpm publish",
     "stub": "unbuild --stub"
   },
   "peerDependencies": {
