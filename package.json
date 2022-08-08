@@ -26,7 +26,7 @@
     "build": "rimraf packages/*/dist && pnpm -r build",
     "stub": "pnpm -r --parallel run stub",
     "release": "bumpp package.json packages/*/package.json --commit --push --tag",
-    "publish": "pnpm build && pnpm -r publish -F \"./packages/**\"",
+    "publish": "pnpm build && pnpm -r publish -F \"./packages/**\" --access public",
     "typecheck": "npx tsc --noEmit",
     "test": "vitest",
     "lint": "eslint .",
