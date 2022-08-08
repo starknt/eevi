@@ -64,7 +64,7 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
   resolvedConfig.outdir = isAbsolute(config.outDir) ? config.outDir : resolve(resolvedConfig.base, config.outDir)
   resolvedConfig.mode = config.mode ?? process.env.NODE_ENV as any
   resolvedConfig.plugins = config.plugin ?? []
-  resolvedConfig.sourcemap = config.sourcemap ?? process.env.NODE_ENV !== 'production'
+  resolvedConfig.sourcemap = config.sourcemap ?? process.env.DEBUG ? true : process.env.NODE_ENV !== 'production'
   resolvedConfig.resolve = config.resolve
   resolvedConfig.tsconfig = config.tsconfig ? isAbsolute(config.tsconfig) ? config.tsconfig : resolve(resolvedConfig.base, resolvedConfig.root, config.tsconfig) : join(resolvedConfig.base, resolvedConfig.root, 'tsconfig.json')
   resolvedConfig.define = config.define ?? {}

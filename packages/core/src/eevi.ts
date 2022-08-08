@@ -34,9 +34,16 @@ async function eeviBuild(config: ResolvedConfig, plugins: Plugin[], external: st
     logLevel: 'info',
   }
 
+  if (config.preloadEntries.length > 0) {
+    await build({
+      ...options,
+      entryPoints: [...config.preloadEntries],
+    })
+  }
+
   await build({
     ...options,
-    entryPoints: [config.entry, ...config.preloadEntries],
+    entryPoints: [config.entry],
   })
 }
 
