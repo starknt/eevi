@@ -15,9 +15,6 @@ let cp: ChildProcess
 const platform: esbuild.Platform = 'node'
 const bundle = true
 const define = {
-  'process.env.NODE_ENV': process.env.DEBUG ? '\'debug\'' : '\'production\'',
-  'process.env.URL': process.env.MODE === 'mpa' ? '\'./dist/pages\'' : '\'./dist/index.html\'',
-  'process.env.MODE': process.env.MODE === 'mpa' ? '\'mpa\'' : '\'spa\'',
 }
 
 async function eeviBuild(config: ResolvedConfig, plugins: Plugin[], external: string[]) {
