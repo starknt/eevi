@@ -51,11 +51,10 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
 
   resolvedConfig.base = config.base ?? viteConfig.base
   resolvedConfig.root = config.root ?? viteConfig.root
-  resolvedConfig.entry = isAbsolute(config.entry) ? config.entry : join(resolvedConfig.base, config.entry)
-  resolvedConfig.preloadEntries = config.preloadEntries ?? []
-  resolvedConfig.preloadEntries = resolvedConfig.preloadEntries.map((entry) => {
+  resolvedConfig.entry = isAbsolute(config.entry) ? config.entry : resolve(resolvedConfig.base, config.entry)
+  resolvedConfig.preloadEntries = (config.preloadEntries ?? []).map((entry) => {
     if (!isAbsolute(entry))
-      return join(resolvedConfig.root, entry)
+      return resolve(resolvedConfig.base, entry)
 
     return entry
   })
@@ -67,7 +66,7 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
   resolvedConfig.plugins = config.plugin ?? []
   resolvedConfig.sourcemap = config.sourcemap ?? process.env.NODE_ENV !== 'production'
   resolvedConfig.resolve = config.resolve
-  resolvedConfig.tsconfig = config.tsconfig ? isAbsolute(config.tsconfig) ? config.tsconfig : resolve(resolvedConfig.base, resolvedConfig.root, 'tsconfig.json') : join(resolvedConfig.base, resolvedConfig.root, 'tsconfig.json')
+  resolvedConfig.tsconfig = config.tsconfig ? isAbsolute(config.tsconfig) ? config.tsconfig : resolve(resolvedConfig.base, resolvedConfig.root, config.tsconfig) : join(resolvedConfig.base, resolvedConfig.root, 'tsconfig.json')
   resolvedConfig.define = config.define ?? {}
   resolvedConfig.debounceMs = config.debounceMs ?? 1000 * 2
 
