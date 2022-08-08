@@ -1,6 +1,6 @@
 {
   "name": "@eevi/monorepo",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "packageManager": "pnpm@7.5.2",
   "description": "",
@@ -23,10 +23,10 @@
   "sideEffects": false,
   "scripts": {
     "play": "pnpm -C playground dev",
-    "build": "rimraf packages/*/dist packages/*/build && pnpm -r build",
+    "build": "rimraf packages/*/dist && pnpm -r build",
     "stub": "pnpm -r --parallel run stub",
-    "release": "bumpp package.json packages/eevi/package.json --commit --push --tag",
-    "publish": "pnpm build && cd packages/eevi && pnpm publish",
+    "release": "bumpp package.json packages/*/package.json --commit --push --tag",
+    "publish": "pnpm build && pnpm -r publish -F \"./packages/**\"",
     "typecheck": "npx tsc --noEmit",
     "test": "vitest",
     "lint": "eslint .",
