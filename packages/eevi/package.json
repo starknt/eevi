@@ -1,6 +1,6 @@
 {
   "name": "eevi",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "author": "starknt",
   "license": "MIT",
@@ -41,7 +41,9 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
-    "vite.d.ts"
+    "vite.d.ts",
+    "eevi-is.d.ts",
+    "esbuild.d.ts"
   ],
   "scripts": {
     "build": "tsup --dts-resolve",
