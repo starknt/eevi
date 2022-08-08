@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { dirname, isAbsolute, join, resolve } from 'path'
+import { dirname, isAbsolute, join, normalize, resolve } from 'path'
 import { builtinModules } from 'module'
 import { createConfigLoader } from 'unconfig'
 import type { LoadConfigResult } from 'unconfig'
@@ -49,7 +49,7 @@ export async function loadConfig<U extends UserConfig>(cwd = process.cwd(), conf
 export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConfig {
   const resolvedConfig = {} as ResolvedConfig
 
-  resolvedConfig.base = config.base ?? viteConfig.base
+  resolvedConfig.base = config.base ? config.base === '/' ? process.cwd() : config.base : viteConfig.base === '/' ? process.cwd() : viteConfig.base
   resolvedConfig.root = config.root ?? viteConfig.root
   resolvedConfig.entry = isAbsolute(config.entry) ? config.entry : resolve(resolvedConfig.base, config.entry)
   resolvedConfig.preloadEntries = (config.preloadEntries ?? []).map((entry) => {
@@ -69,6 +69,8 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
   resolvedConfig.tsconfig = config.tsconfig ? isAbsolute(config.tsconfig) ? config.tsconfig : resolve(resolvedConfig.base, resolvedConfig.root, config.tsconfig) : join(resolvedConfig.base, resolvedConfig.root, 'tsconfig.json')
   resolvedConfig.define = config.define ?? {}
   resolvedConfig.debounceMs = config.debounceMs ?? 1000 * 2
+
+  console.log(resolvedConfig)
 
   return resolvedConfig
 }
