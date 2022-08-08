@@ -95,6 +95,7 @@ async function eeviDev(config: ResolvedConfig, plugins: Plugin[], external: stri
     await build({
       ...options,
       entryPoints: config.preloadEntries,
+      outdir: join(config.outdir, 'preload'),
     })
   }
 
