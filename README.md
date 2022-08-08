@@ -22,6 +22,7 @@ import { defineConfig } from 'eevi'
 import { join, resolve } from 'path'
 import fs from 'fs'
 import { alias } from './alias'
+import { esbuildIsPlugin } from 'eevi/esbuild'
 
 const appPath = resolve(__dirname, 'release', 'app')
 const packagePath = resolve(appPath, 'package.json')
@@ -36,10 +37,12 @@ export default defineConfig({
   outDir: join(appPath, 'dist'),
   external: Object.keys(dependencies || {}),
   tsconfig: resolve(__dirname, 'app', 'electron', 'tsconfig.json'),
+  plugin: [esbuildIsPlugin()]
 })
 ```
 
-See more for [starter-electron](https://github.com/starknt/starter-electron)
+- A simple example see for `playground`
+- See more for [starter-electron](https://github.com/starknt/starter-electron)
 
 ## License
 
