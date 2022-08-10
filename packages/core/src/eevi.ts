@@ -32,6 +32,7 @@ async function eeviBuild(config: ResolvedConfig, plugins: Plugin[], external: st
     sourcemap: config.sourcemap,
     color: true,
     logLevel: 'info',
+    tsconfig: config.tsconfig ? config.tsconfig : undefined,
   }
 
   await buildPreloadEntries(config.preloadEntries, options)
@@ -98,6 +99,7 @@ async function eeviDev(config: ResolvedConfig, plugins: Plugin[], external: stri
     color: true,
     logLevel: 'info',
     watch: watchOptions,
+    tsconfig: config.tsconfig ? config.tsconfig : undefined,
   }
 
   await buildPreloadEntries(config.preloadEntries, options)
@@ -113,7 +115,7 @@ async function eeviDev(config: ResolvedConfig, plugins: Plugin[], external: stri
 
 export async function handler(config: ResolvedConfig) {
   const plugins: Plugin[] = [
-    esbuildDecorators({ tsconfig: config.tsconfig }),
+    esbuildDecorators({ tsconfig: config.tsconfig ? config.tsconfig : undefined }),
     esbuildPluginAliasPath(config.resolve),
     ...config.plugins,
   ]

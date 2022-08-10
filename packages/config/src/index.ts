@@ -67,6 +67,20 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
   resolvedConfig.sourcemap = config.sourcemap ?? process.env.DEBUG ? true : process.env.NODE_ENV !== 'production'
   resolvedConfig.resolve = config.resolve
   resolvedConfig.tsconfig = config.tsconfig ? isAbsolute(config.tsconfig) ? config.tsconfig : resolve(resolvedConfig.base, resolvedConfig.root, config.tsconfig) : join(resolvedConfig.base, resolvedConfig.root, 'tsconfig.json')
+
+  if (config.tsconfig && isAbsolute(config.tsconfig))
+    resolvedConfig.tsconfig = config.tsconfig
+  else if (config.tsconfig && fs.existsSync(resolve(resolvedConfig.base, resolvedConfig.root, config.tsconfig)))
+    resolvedConfig.tsconfig = resolve(resolvedConfig.base, resolvedConfig.root, config.tsconfig)
+  else if (config.tsconfig)
+    resolvedConfig.tsconfig = resolve(resolvedConfig.base, config.tsconfig)
+  else if (fs.existsSync(resolve(resolvedConfig.base, resolvedConfig.root, 'tsconfig.json')))
+    resolvedConfig.tsconfig = resolve(resolvedConfig.base, resolvedConfig.root, 'tsconfig.json')
+  else if (fs.existsSync(resolve(resolvedConfig.base, 'tsconfig.json')))
+    resolvedConfig.tsconfig = resolve(resolvedConfig.base, 'tsconfig.json')
+  else
+    resolvedConfig.tsconfig = ''
+
   resolvedConfig.define = config.define ?? {}
   resolvedConfig.debounceMs = config.debounceMs ?? 1000 * 2
 
