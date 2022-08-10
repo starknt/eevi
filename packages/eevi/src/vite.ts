@@ -5,7 +5,7 @@ import type { ResolvedConfig, UserConfig, UserConfigExport } from '@eevi/core'
 import { handler, when } from '@eevi/core'
 import type { Plugin } from 'vite'
 import { loadConfig, resolveConfig } from '@eevi/config'
-import { EEVI_IS_MODULE_ID } from './shared'
+import { EEVI_IS_MODULE_ID, EeviIs_Module_Code } from './shared'
 
 export function EeviCorePlugin(userConfig?: UserConfigExport): Plugin {
   const internalConfig = {
@@ -124,77 +124,6 @@ export function EeviMpaPlugin(userConfig?: MpaOptions): Plugin {
  * @see https://www.npmjs.com/package/electron-is
  */
 export function EeviIsPlugin(): Plugin {
-  function generateModuleCode() {
-    return `
-    let _IsWindow = false
-    let _IsMac = false
-    let _IsLinux = false
-    let _IsWeb = false
-    let _IsDev = false
-    let _IsX64 = false
-    let _IsX86 = false
-
-    const isElectronRenderer
-      = typeof window.process?.versions?.electron === 'string'
-      && window.process.type === 'renderer'
-    export const isElectronSandboxed = isElectronRenderer && window.process?.sandboxed
-
-    // In NativeEnvironment
-    if (typeof process === 'object') {
-      _IsWeb = false
-      _IsWindow = process.platform === 'win32'
-      _IsMac = process.platform === 'darwin'
-      _IsLinux = process.platform === 'linux'
-      _IsX64 = process.arch === 'x64'
-      _IsX86 = process.arch === 'ia32'
-
-      _IsDev = '${process.env.NODE_ENV}' === 'development'
-    }
-
-    // In Web Environment
-    if (typeof navigator !== 'undefined' && !isElectronRenderer) {
-      _IsWeb = true
-      _IsWindow = navigator.userAgent.includes('Windows')
-      _IsMac = navigator.userAgent.includes('Macintosh')
-      _IsLinux = navigator.userAgent.includes('Linux')
-      _IsX64 = navigator.userAgent.includes('x64')
-      _IsX86 = navigator.userAgent.includes('x86')
-
-      _IsDev = '${process.env.NODE_ENV}' === 'development'
-    }
-
-    export const windows = () => _IsWindow
-    export const osx = () => _IsMac
-    export const macOS = () => osx()
-    export const linux = () => _IsLinux
-    export const web = () => _IsWeb
-    export const sandbox = () => isElectronSandboxed
-    export const renderer = () => isElectronRenderer && !web()
-    export const main = () => !isElectronRenderer && !web()
-    export const dev = () => _IsDev
-    export const production = () => !_IsDev
-    export const x64 = () => _IsX64
-    export const x86 = () => _IsX86
-
-    const is = {
-      windows: () => windows(),
-      osx: () => osx(),
-      macOS: () => osx(),
-      linux: () => linux(),
-      web: () => web(),
-      sandbox: () => sandbox(),
-      renderer: () => renderer(),
-      main: () => main(),
-      dev: () => dev(),
-      production: () => production(),
-      x64: () => x64(),
-      x86: () => x86()
-    }
-
-    export default is
-  `
-  }
-
   return {
     name: 'vite-plugin-eevi-is',
     resolveId(source) {
@@ -203,7 +132,7 @@ export function EeviIsPlugin(): Plugin {
     },
     load(id) {
       if (id === EEVI_IS_MODULE_ID)
-        return generateModuleCode()
+        return EeviIs_Module_Code
     },
   }
 }
