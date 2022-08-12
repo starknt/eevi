@@ -1,4 +1,4 @@
-import { basename, extname, join } from 'path'
+import { basename, extname, join, resolve } from 'path'
 import type { ChildProcess } from 'child_process'
 import { spawn } from 'child_process'
 import { esbuildDecorators } from '@anatine/esbuild-decorators'
@@ -7,6 +7,7 @@ import { build } from 'esbuild'
 import type esbuild from 'esbuild'
 import { esbuildPluginAliasPath } from 'esbuild-plugin-alias-path'
 import electron from 'electron'
+import asar from 'asar'
 import type { ResolvedConfig } from './types'
 import { debounce } from './utils'
 
@@ -14,10 +15,45 @@ let cp: ChildProcess
 
 const platform: esbuild.Platform = 'node'
 const bundle = true
-const define = {
+const define: Record<string, string> = {
+}
+
+function PatchModulePlugin(asarPath: string): Plugin {
+  return {
+    name: 'eevi-module-patch',
+    setup(build) {
+      build.onResolve({ filter: /^module$/ }, args => ({
+        path: args.path,
+        namespace: 'eevi-module-patch',
+      }))
+
+      build.onLoad({ filter: /.*/, namespace: 'eevi-module-patch' }, _ => ({
+        contents: `
+        import Module from 'node:module'
+
+        const originalResolveLookupPaths = Module._resolveLookupPaths
+        Module._resolveLookupPaths = (moduleName, parent) => {
+          const paths = originalResolveLookupPaths(moduleName, parent)
+
+          paths.push('${asarPath}')
+
+          console.log(paths)
+          return paths
+        }
+
+        export default Module
+      `,
+      }))
+    },
+  }
 }
 
 async function eeviBuild(config: ResolvedConfig, plugins: Plugin[], external: string[]) {
+  if (config.pack) {
+    plugins = [...plugins, PatchModulePlugin(resolve(config.outdir, 'node_modules.asar'))]
+    await pack(config)
+  }
+
   const options: BuildOptions = {
     platform,
     bundle,
@@ -33,6 +69,7 @@ async function eeviBuild(config: ResolvedConfig, plugins: Plugin[], external: st
     color: true,
     logLevel: 'info',
     tsconfig: config.tsconfig ? config.tsconfig : undefined,
+    inject: [...config.inject],
   }
 
   await buildPreloadEntries(config.preloadEntries, options)
@@ -99,6 +136,7 @@ async function eeviDev(config: ResolvedConfig, plugins: Plugin[], external: stri
     color: true,
     logLevel: 'info',
     watch: watchOptions,
+    inject: [...config.inject],
     tsconfig: config.tsconfig ? config.tsconfig : undefined,
   }
 
@@ -125,4 +163,8 @@ export async function handler(config: ResolvedConfig) {
     await eeviBuild(config, plugins, external)
   else
     await eeviDev(config, plugins, external)
+}
+
+async function pack(config: ResolvedConfig) {
+  await asar.createPackage(config.pack!.entry, join(config.outdir, 'node_modules.asar'))
 }
