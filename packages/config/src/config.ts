@@ -5,6 +5,21 @@ import { createConfigLoader } from 'unconfig'
 import type { LoadConfigResult } from 'unconfig'
 import type { ResolvedConfig, UserConfig, UserConfigExport } from '@eevi/core'
 
+function rollupPaths(base: string, root: string, filename: string | undefined, fallbackFilename: string) {
+  if (filename && isAbsolute(filename))
+    return filename
+  else if (filename && fs.existsSync(resolve(base, root, filename)))
+    return resolve(base, root, filename)
+  else if (filename)
+    return resolve(base, filename)
+  else if (fs.existsSync(resolve(base, root, fallbackFilename)))
+    return resolve(base, root, fallbackFilename)
+  else if (fs.existsSync(resolve(base, fallbackFilename)))
+    return resolve(base, fallbackFilename)
+  else
+    return ''
+}
+
 export async function loadConfig<U extends UserConfig>(cwd = process.cwd(), configOrPath: string | U = cwd): Promise<LoadConfigResult<U>> {
   let inlineConfig = {} as U
   if (typeof configOrPath !== 'string') {
@@ -68,22 +83,23 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
   resolvedConfig.resolve = config.resolve
   resolvedConfig.tsconfig = config.tsconfig ? isAbsolute(config.tsconfig) ? config.tsconfig : resolve(resolvedConfig.base, resolvedConfig.root, config.tsconfig) : join(resolvedConfig.base, resolvedConfig.root, 'tsconfig.json')
 
-  if (config.tsconfig && isAbsolute(config.tsconfig))
-    resolvedConfig.tsconfig = config.tsconfig
-  else if (config.tsconfig && fs.existsSync(resolve(resolvedConfig.base, resolvedConfig.root, config.tsconfig)))
-    resolvedConfig.tsconfig = resolve(resolvedConfig.base, resolvedConfig.root, config.tsconfig)
-  else if (config.tsconfig)
-    resolvedConfig.tsconfig = resolve(resolvedConfig.base, config.tsconfig)
-  else if (fs.existsSync(resolve(resolvedConfig.base, resolvedConfig.root, 'tsconfig.json')))
-    resolvedConfig.tsconfig = resolve(resolvedConfig.base, resolvedConfig.root, 'tsconfig.json')
-  else if (fs.existsSync(resolve(resolvedConfig.base, 'tsconfig.json')))
-    resolvedConfig.tsconfig = resolve(resolvedConfig.base, 'tsconfig.json')
-  else
-    resolvedConfig.tsconfig = ''
+  resolvedConfig.tsconfig = rollupPaths(resolvedConfig.base, resolvedConfig.root, config.tsconfig, 'tsconfig.json')
 
   resolvedConfig.define = config.define ?? {}
   resolvedConfig.debounceMs = config.debounceMs ?? 1000 * 2
   resolvedConfig.entryName = config.entryName ?? 'URL'
+  resolvedConfig.pack = undefined
+  if (config.pack === true) {
+    resolvedConfig.pack = {
+      entry: rollupPaths(resolvedConfig.base, resolvedConfig.root, 'node_modules', 'node_modules'),
+    }
+  }
+
+  if (typeof config.pack === 'object') {
+    resolvedConfig.pack = {
+      entry: isAbsolute(config.entry) ? config.entry : rollupPaths(resolvedConfig.base, resolvedConfig.root, config.pack.entry, 'node_modules'),
+    }
+  }
 
   return resolvedConfig
 }
