@@ -23,7 +23,8 @@
   "sideEffects": false,
   "scripts": {
     "play": "pnpm -C playground dev",
-    "build": "rimraf packages/*/dist && pnpm -r build",
+    "build:play": "pnpm -C playground build",
+    "build": "rimraf packages/*/dist && pnpm -r -F \"./packages/**\" build",
     "stub": "pnpm -r --parallel run stub",
     "release": "bumpp package.json packages/*/package.json --commit --push --tag",
     "publish": "pnpm build && pnpm -r publish -F \"./packages/**\" --access public",
