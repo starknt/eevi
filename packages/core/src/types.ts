@@ -79,6 +79,11 @@ export interface UserConfigExport {
    */
   debounceMs?: number
   /**
+   * inject process.env name
+   * @default `URL`
+   */
+  entryName?: string
+  /**
    * `eevi` plugin config file path
    * @default `eevi.config.ts`
    */
@@ -141,6 +146,11 @@ export interface UserConfig {
    */
   debounceMs?: number
   /**
+   * inject process.env name
+   * @default `URL`
+   */
+  entryName?: string
+  /**
    * `NODE_ENV` production `true`, development `false`, debug `false`
    * @default @default NODE_ENV === 'production'
    */
@@ -168,6 +178,7 @@ export interface ResolvedConfig {
   external: string[]
   tsconfig: string
   debounceMs: number
+  entryName: string
   resolve?: ResolveOption
   mode: 'development' | 'production' | 'debug'
 }

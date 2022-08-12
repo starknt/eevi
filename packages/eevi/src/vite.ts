@@ -32,9 +32,9 @@ export function EeviCorePlugin(userConfig?: UserConfigExport): Plugin {
     configureServer(server) {
       server.httpServer!.on('listening', async () => {
         const address = server.httpServer!.address() as AddressInfo
-        process.env.URL = `http://${address.address}:${address.port}`
-
         await when(resolved, true)
+
+        process.env[resolvedConfig.entryName] = `http://${address.address}:${address.port}`
 
         handler(resolvedConfig)
       })
