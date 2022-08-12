@@ -1,8 +1,16 @@
 import type { Plugin } from 'esbuild'
 
-export interface ResolveOption {
+export interface ResolveOptions {
   alias?: Record<string, string>
   cwd?: string
+}
+
+export interface PackOptions {
+  /**
+   * `node_modules` entry
+   * @default ${base}>${root}>node_modules
+   */
+  entry: string
 }
 
 export interface UserConfigExport {
@@ -47,7 +55,7 @@ export interface UserConfigExport {
    * like vite alias path
    * @default `undefined`
    */
-  resolve?: ResolveOption
+  resolve?: ResolveOptions
   /**
    * tsconfig file path
    * @default `tsconfig.json`
@@ -83,6 +91,10 @@ export interface UserConfigExport {
    * @default `URL`
    */
   entryName?: string
+  /**
+   * @default `false`
+  */
+  pack?: boolean | PackOptions
   /**
    * `eevi` plugin config file path
    * @default `eevi.config.ts`
@@ -129,7 +141,7 @@ export interface UserConfig {
    * like vite alias path
    * @default `undefined`
    */
-  resolve?: ResolveOption
+  resolve?: ResolveOptions
   /**
    * tsconfig file path
    * @default `tsconfig.json`
@@ -150,6 +162,10 @@ export interface UserConfig {
    * @default `URL`
    */
   entryName?: string
+  /**
+   * @default `false`
+  */
+  pack?: boolean | PackOptions
   /**
    * `NODE_ENV` production `true`, development `false`, debug `false`
    * @default @default NODE_ENV === 'production'
@@ -179,6 +195,7 @@ export interface ResolvedConfig {
   tsconfig: string
   debounceMs: number
   entryName: string
-  resolve?: ResolveOption
+  pack?: PackOptions
+  resolve?: ResolveOptions
   mode: 'development' | 'production' | 'debug'
 }
