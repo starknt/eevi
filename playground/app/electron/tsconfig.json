@@ -7,22 +7,18 @@
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "jsx": "preserve",
-    "baseUrl": "."
-  },
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
+    "baseUrl": ".",
+    "types": [
+      "node",
+      "eevi/eevi-is"
+    ],
+    "paths": {
+      "@starter/shared": [
+        "../../packages/shared/src/index.ts"
+      ]
     }
-  ],
-  "include": [
-    "app/electron",
-    "app/web",
-    "packages"
-  ],
+  },
   "exclude": [
-    "node_modules",
-    "app/electron/tests",
-    "app/web/tests"
+    "tests"
   ]
 }

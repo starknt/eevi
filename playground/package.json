@@ -1,21 +1,81 @@
 {
-  "name": "playground",
-  "version": "0.0.0",
+  "name": "starter-electron",
+  "type": "module",
+  "version": "1.0.0",
   "private": true,
+  "packageManager": "pnpm@7.6.0",
+  "description": "An electron template based on Vite and Esbuild.",
+  "author": "starknt",
+  "license": "GPL-2.0",
+  "keywords": [
+    "electron",
+    "electron-builder",
+    "template",
+    "vite",
+    "vite-electron",
+    "vitest",
+    "hot",
+    "fast"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "pnpm clean && vite -c ./app/web/vite.config.ts",
+    "build": "pnpm clean && vite -c ./app/web/vite.config.ts build",
+    "package": "pnpm build && electron-builder",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "pnpm build && vitest run --passWithNoTests",
+    "test:unit": "vitest run unit --passWithNoTests",
+    "test:e2e": "pnpm build && vitest run e2e --passWithNoTests",
+    "test:watch": "vitest -u",
+    "test:coverage": "rimraf coverage && vitest run --coverage --passWithNoTests",
+    "postinstall": "npx esno scripts/setup.ts",
+    "typecheck:electron": "npx tsc --noEmit -p app/electron/tsconfig.json",
+    "typecheck:web": "vue-tsc --noEmit -p app/web/tsconfig.json",
+    "typecheck": "concurrently \"pnpm typecheck:electron\" \"pnpm typecheck:web\"",
+    "clean": "esno scripts/clean.ts"
   },
   "dependencies": {
-    "eevi": "workspace:*",
+    "@vueuse/core": "^9.1.0",
     "vue": "^3.2.37"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^3.0.0",
-    "electron": "^20.0.1",
-    "typescript": "^4.6.4",
-    "vite": "^3.0.0",
-    "vue-tsc": "^0.38.4"
+    "@antfu/eslint-config": "^0.25.2",
+    "@types/node": "^18.6.4",
+    "@types/rimraf": "^3.0.2",
+    "@vitejs/plugin-vue": "^3.0.1",
+    "c8": "^7.12.0",
+    "concurrently": "^7.3.0",
+    "eevi": "workspace:*",
+    "electron": "^19.0.11",
+    "electron-builder": "^23.3.3",
+    "electron-rebuild": "^3.2.9",
+    "eslint": "^8.21.0",
+    "esno": "^0.16.3",
+    "happy-dom": "^6.0.4",
+    "lint-staged": "^13.0.3",
+    "playwright": "^1.24.2",
+    "pnpm": "^7.8.0",
+    "rimraf": "^3.0.2",
+    "simple-git-hooks": "^2.8.0",
+    "typescript": "^4.7.4",
+    "unocss": "^0.44.7",
+    "unplugin-auto-import": "^0.10.3",
+    "unplugin-vue-components": "^0.21.2",
+    "vite": "^3.0.4",
+    "vitest": "^0.18.1",
+    "vue-tsc": "^0.39.5"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json}": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{yml, yaml}": [
+      "eslint --fix",
+      "git add"
+    ]
   }
 }

@@ -1,9 +1,29 @@
 {
   "compilerOptions": {
-    "composite": true,
     "module": "ESNext",
+    "target": "ESNext",
+    "composite": true,
+    "esModuleInterop": true,
     "moduleResolution": "Node",
-    "allowSyntheticDefaultImports": true
+    "resolveJsonModule": true,
+    "allowJs": false,
+    "types": [
+      "node"
+    ]
   },
-  "include": ["vite.config.ts"]
+  "include": [
+    ".knt/*.ts",
+    ".knt/build/*.ts",
+    ".knt/injects/*.ts",
+    ".knt/plugins/*.ts",
+    "scripts/*.ts",
+    "vite.config.ts",
+    "app/web/vite.config.ts",
+    "./alias.ts",
+    "scripts"
+  ],
+  "exclude": [
+    "release/app",
+    "node_modules"
+  ]
 }

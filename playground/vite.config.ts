@@ -1,15 +1,18 @@
+/// <reference types="vitest" />
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import { EeviCorePlugin, EeviIsPlugin, EeviMpaPlugin } from 'eevi/vite'
+import { alias } from './alias'
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    vue(),
-    EeviCorePlugin(),
-    EeviMpaPlugin({
-      scan: 'src/pages',
-    }),
-    EeviIsPlugin(),
-  ],
+  resolve: {
+    alias,
+  },
+  test: {
+    environment: 'happy-dom',
+    testTimeout: 5000 * 3,
+    hookTimeout: 10000,
+    globals: true,
+    coverage: {
+      reporter: ['html'],
+    },
+  },
 })
