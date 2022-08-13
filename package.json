@@ -23,15 +23,16 @@
   "sideEffects": false,
   "scripts": {
     "play": "pnpm -C playground dev",
-    "build:play": "pnpm -C playground build",
-    "build": "rimraf packages/*/dist && pnpm -r -F \"./packages/**\" build",
+    "build:play": "rimraf playground/dist && pnpm -C playground build",
+    "build": "pnpm clean && pnpm -r -F \"./packages/**\" build",
     "stub": "pnpm -r --parallel run stub",
     "release": "bumpp package.json packages/*/package.json --commit --push --tag",
     "publish": "pnpm build && pnpm -r publish -F \"./packages/**\" --access public",
     "typecheck": "npx tsc --noEmit",
     "test": "vitest",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "clean": "rimraf playground/dist packages/*/dist"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.25.2",
