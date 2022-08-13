@@ -33,6 +33,6 @@
   "exclude": [
     "**/dist/**",
     "**/node_modules/**",
-    "src/ipc"
+    "playground/app"
   ]
 }

@@ -29,4 +29,5 @@ export default defineConfig({
   tsconfig: 'tsconfig.json',
   define,
   plugin: [esbuildIsPlugin()],
+  pack: true,
 })

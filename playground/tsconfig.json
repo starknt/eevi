@@ -15,11 +15,7 @@
       "path": "./tsconfig.node.json"
     }
   ],
-  "include": [
-    "app/electron",
-    "app/web",
-    "packages"
-  ],
+  "include": [],
   "exclude": [
     "node_modules",
     "app/electron/tests",
