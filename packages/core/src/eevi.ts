@@ -18,7 +18,7 @@ const bundle = true
 const define: Record<string, string> = {
 }
 
-function PatchModulePlugin(asarPath: string): Plugin {
+function PatchModulePlugin(): Plugin {
   return {
     name: 'eevi-module-patch',
     setup(build) {
@@ -30,14 +30,14 @@ function PatchModulePlugin(asarPath: string): Plugin {
       build.onLoad({ filter: /.*/, namespace: 'eevi-module-patch' }, _ => ({
         contents: `
         import Module from 'node:module'
+        import { join } from 'path'
 
         const originalResolveLookupPaths = Module._resolveLookupPaths
         Module._resolveLookupPaths = (moduleName, parent) => {
           const paths = originalResolveLookupPaths(moduleName, parent)
 
-          paths.push('${asarPath}')
+          paths.push(join(paths[0], '..', 'node_modules.asar'))
 
-          console.log(paths)
           return paths
         }
 
@@ -50,7 +50,7 @@ function PatchModulePlugin(asarPath: string): Plugin {
 
 async function eeviBuild(config: ResolvedConfig, plugins: Plugin[], external: string[]) {
   if (config.pack) {
-    plugins = [...plugins, PatchModulePlugin(resolve(config.outdir, 'node_modules.asar'))]
+    plugins = [...plugins, PatchModulePlugin()]
     await pack(config)
   }
 
