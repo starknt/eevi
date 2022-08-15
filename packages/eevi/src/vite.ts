@@ -18,8 +18,7 @@ export function EeviCorePlugin(userConfig?: UserConfigExport): Plugin {
   return {
     name: 'vite-plugin-eevi',
     async config(_, env) {
-      // @ts-expect-error NODE_ENV
-      process.env.NODE_ENV = env.mode
+      process.env.NODE_ENV = env.mode as any
     },
     async configResolved(config) {
       process.env.MODE = 'spa'
