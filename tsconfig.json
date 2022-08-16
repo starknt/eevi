@@ -26,7 +26,10 @@
         "./packages/eevi/src/index.ts"
       ],
       "eevi/vite": [
-        "./packages/eevi/src/vite.ts"
+        "./packages/eevi/src/vite/index.ts"
+      ],
+      "eevi/esbuild": [
+        "./packages/eevi/src/esbuild.ts"
       ]
     }
   },
