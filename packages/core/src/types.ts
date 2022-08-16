@@ -5,14 +5,6 @@ export interface ResolveOptions {
   cwd?: string
 }
 
-export interface PackOptions {
-  /**
-   * `node_modules` entry
-   * @default ${base}>${root}>node_modules
-   */
-  entry: string
-}
-
 export interface UserConfigExport {
   /**
    * Project root path
@@ -92,10 +84,6 @@ export interface UserConfigExport {
    */
   entryName?: string
   /**
-   * @default `false`
-  */
-  pack?: boolean | PackOptions
-  /**
    * `eevi` plugin config file path
    * @default `eevi.config.ts`
    */
@@ -163,10 +151,6 @@ export interface UserConfig {
    */
   entryName?: string
   /**
-   * @default `false`
-  */
-  pack?: boolean | PackOptions
-  /**
    * `NODE_ENV` production `true`, development `false`, debug `false`
    * @default @default NODE_ENV === 'production'
    */
@@ -195,7 +179,6 @@ export interface ResolvedConfig {
   tsconfig: string
   debounceMs: number
   entryName: string
-  pack?: PackOptions
   resolve?: ResolveOptions
   mode: 'development' | 'production' | 'debug'
 }

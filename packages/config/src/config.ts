@@ -88,18 +88,6 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
   resolvedConfig.define = config.define ?? {}
   resolvedConfig.debounceMs = config.debounceMs ?? 1000 * 2
   resolvedConfig.entryName = config.entryName ?? 'URL'
-  resolvedConfig.pack = undefined
-  if (config.pack === true) {
-    resolvedConfig.pack = {
-      entry: rollupPaths(resolvedConfig.base, resolvedConfig.root, 'node_modules', 'node_modules'),
-    }
-  }
-
-  if (typeof config.pack === 'object') {
-    resolvedConfig.pack = {
-      entry: isAbsolute(config.entry) ? config.entry : rollupPaths(resolvedConfig.base, resolvedConfig.root, config.pack.entry, 'node_modules'),
-    }
-  }
 
   return resolvedConfig
 }

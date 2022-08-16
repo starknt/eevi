@@ -1,4 +1,4 @@
-import { basename, extname, join, resolve } from 'path'
+import { basename, extname, join } from 'path'
 import type { ChildProcess } from 'child_process'
 import { spawn } from 'child_process'
 import { esbuildDecorators } from '@anatine/esbuild-decorators'
@@ -7,7 +7,6 @@ import { build } from 'esbuild'
 import type esbuild from 'esbuild'
 import { esbuildPluginAliasPath } from 'esbuild-plugin-alias-path'
 import electron from 'electron'
-import asar from 'asar'
 import type { ResolvedConfig } from './types'
 import { debounce } from './utils'
 
@@ -18,42 +17,7 @@ const bundle = true
 const define: Record<string, string> = {
 }
 
-function PatchModulePlugin(): Plugin {
-  return {
-    name: 'eevi-module-patch',
-    setup(build) {
-      build.onResolve({ filter: /^module$/ }, args => ({
-        path: args.path,
-        namespace: 'eevi-module-patch',
-      }))
-
-      build.onLoad({ filter: /.*/, namespace: 'eevi-module-patch' }, _ => ({
-        contents: `
-        import Module from 'node:module'
-        import { join } from 'path'
-
-        const originalResolveLookupPaths = Module._resolveLookupPaths
-        Module._resolveLookupPaths = (moduleName, parent) => {
-          const paths = originalResolveLookupPaths(moduleName, parent)
-
-          paths.push(join(paths[0], '..', 'node_modules.asar'))
-
-          return paths
-        }
-
-        export default Module
-      `,
-      }))
-    },
-  }
-}
-
 async function eeviBuild(config: ResolvedConfig, plugins: Plugin[], external: string[]) {
-  if (config.pack) {
-    plugins = [...plugins, PatchModulePlugin()]
-    await pack(config)
-  }
-
   const options: BuildOptions = {
     platform,
     bundle,
@@ -163,8 +127,4 @@ export async function handler(config: ResolvedConfig) {
     await eeviBuild(config, plugins, external)
   else
     await eeviDev(config, plugins, external)
-}
-
-async function pack(config: ResolvedConfig) {
-  await asar.createPackage(config.pack!.entry, join(config.outdir, 'node_modules.asar'))
 }
