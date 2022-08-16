@@ -1,0 +1,1 @@
+export { MpaPlugin } from './mpa'

@@ -54,7 +54,8 @@
   },
   "dependencies": {
     "@eevi/config": "workspace:*",
-    "@eevi/core": "workspace:*"
+    "@eevi/core": "workspace:*",
+    "@eevi/vite-mpa": "workspace:*"
   },
   "devDependencies": {
     "esbuild": "^0.14.53"

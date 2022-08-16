@@ -1,0 +1,39 @@
+{
+  "name": "@eevi/vite-mpa",
+  "version": "0.2.1",
+  "description": "",
+  "author": "starknt",
+  "license": "MIT",
+  "homepage": "https://github.com/starknt/eevi#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/starknt/eevi.git",
+    "directory": "packages/mpa"
+  },
+  "bugs": "https://github.com/starknt/eevi/issues",
+  "keywords": [],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "stub": "unbuild --stub"
+  },
+  "peerDependencies": {
+    "vite": "~3.0.4"
+  },
+  "devDependencies": {
+    "vite": "^3.0.4"
+  }
+}
