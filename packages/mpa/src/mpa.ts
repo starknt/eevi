@@ -1,7 +1,7 @@
 import fs from 'fs'
 import { basename, dirname, extname, isAbsolute, join, resolve } from 'path'
 import type { Plugin, ResolvedConfig as ViteResolvedConfig } from 'vite'
-import type { UserConfigExport } from './types'
+import type { ResolvedConfig, UserConfigExport } from './types'
 
 function resolveConfig(userConfig: UserConfigExport, viteUserConfig: ViteResolvedConfig) {
   const config = {} as ResolvedConfig
@@ -57,6 +57,12 @@ export function MpaPlugin(userConfig?: UserConfigExport): Plugin {
       //   return
 
       // config!.build!.rollupOptions!.input = rollupInput
+    },
+    transformIndexHtml: {
+      enforce: 'pre',
+      transform(html, ctx) {
+
+      },
     },
   }
 }
