@@ -29,7 +29,7 @@
     "release": "bumpp package.json packages/*/package.json --commit --push --tag",
     "publish": "pnpm build && pnpm -r publish -F \"./packages/**\" --access public",
     "typecheck": "npx tsc --noEmit",
-    "test": "vitest",
+    "test": "vitest --passWithNoTests",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "clean": "rimraf playground/dist packages/*/dist"
