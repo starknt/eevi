@@ -1,7 +1,9 @@
 # eevi Esbuild Electron vite
+
 [![NPM version](https://img.shields.io/npm/v/eevi?color=a1b858&label=)](https://www.npmjs.com/package/eevi)
 
 ## Usage
+
 ```ts
 import { EeviCorePlugin, EeviMpaPlugin, EeviIsPlugin } from 'eevi/vite'
 import { defineConfig } from 'vite'
