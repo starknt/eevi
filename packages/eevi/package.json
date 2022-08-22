@@ -22,21 +22,21 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.js",
+      "require": "./dist/index.cjs",
       "import": "./dist/index.mjs"
     },
     "./vite": {
       "types": "./dist/vite.d.ts",
-      "require": "./dist/vite.js",
+      "require": "./dist/vite.cjs",
       "import": "./dist/vite.mjs"
     },
     "./esbuild": {
       "types": "./dist/esbuild.d.ts",
-      "require": "./dist/esbuild.js",
+      "require": "./dist/esbuild.cjs",
       "import": "./dist/esbuild.mjs"
     }
   },
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
@@ -46,8 +46,8 @@
     "esbuild.d.ts"
   ],
   "scripts": {
-    "build": "tsup --dts-resolve",
-    "stub": "pnpm run build"
+    "build": "unbuild",
+    "stub": "unbuild --stub"
   },
   "peerDependencies": {
     "vite": "~3.0.1"

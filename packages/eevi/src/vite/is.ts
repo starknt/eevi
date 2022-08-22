@@ -1,5 +1,5 @@
 import type { Plugin } from 'vite'
-import { EEVI_IS_MODULE_ID, EeviIs_Module_Code } from '../../shared'
+import { EEVI_IS_MODULE_ID, EeviIs_Module_Code } from '../shared'
 
 /**
  * Inject eevi-is module, like electron-is module

@@ -33,7 +33,7 @@ export interface PageConfig {
 export interface ResolvedConfig {
   base: string
   root: string
-  template?: string
+  template: string
   scan?: MpaScanOptions
   pages: PageConfig[]
 }
