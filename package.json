@@ -22,7 +22,7 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "play": "pnpm -C playground dev",
+    "dev": "pnpm -C playground dev",
     "build:play": "rimraf playground/dist && pnpm -C playground build",
     "build": "pnpm clean && pnpm -r -F \"./packages/**\" build",
     "stub": "pnpm -r --parallel run stub",
