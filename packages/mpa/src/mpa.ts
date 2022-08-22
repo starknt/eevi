@@ -1,9 +1,9 @@
 import fs from 'fs'
-import { basename, dirname, extname, isAbsolute, join, resolve } from 'path'
+import { basename, dirname, extname, resolve } from 'path'
 import type { PluginOption, ResolvedConfig as ViteResolvedConfig } from 'vite'
+import { normalizePath } from 'vite'
 import type { ResolvedConfig, UserConfigExport } from './types'
 import {} from 'ejs'
-import { normalizePath } from 'vite'
 
 function resolveConfig(userConfig: UserConfigExport, viteUserConfig: ViteResolvedConfig) {
   const config = {} as ResolvedConfig
