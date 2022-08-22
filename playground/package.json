@@ -1,8 +1,8 @@
 {
   "name": "playground",
-  "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
@@ -12,10 +12,12 @@
     "vue": "^3.2.37"
   },
   "devDependencies": {
+    "@eevi/vite-mpa": "workspace:*",
     "@vitejs/plugin-vue": "^3.0.3",
+    "eevi": "workspace:*",
     "typescript": "^4.6.4",
     "vite": "^3.0.7",
-    "vue-tsc": "^0.39.5",
-    "vite-plugin-inspect": "^0.6.0"
+    "vite-plugin-inspect": "^0.6.0",
+    "vue-tsc": "^0.39.5"
   }
 }
