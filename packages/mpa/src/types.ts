@@ -12,13 +12,16 @@ export interface MpaScanOptions {
 }
 
 export interface UserConfigExport {
-  template?: string
-  pages?: UserPageConfig[]
-  scan?: MpaScanOptions
+  template: string
+  pages: UserPageConfig[]
+  /**
+   * @default `pages`
+   */
+  devUrl?: string
 }
 
 export interface UserPageConfig {
-  name?: string
+  name: string
   /**
    * page entry, you should input an *.ts or *.js file
    */
@@ -34,6 +37,6 @@ export interface ResolvedConfig {
   base: string
   root: string
   template: string
-  scan?: MpaScanOptions
   pages: PageConfig[]
+  devUrl?: string
 }
