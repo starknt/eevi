@@ -7,6 +7,8 @@ import { minify as minifier } from 'html-minifier-terser'
 import type { MinifyOptions, ResolvedConfig, UserConfigExport } from './types'
 import { htmlFilter, isProduction } from './utils'
 
+const tempFile: string[] = []
+
 function createMinifyOptions(minify: boolean): MinifyOptions {
   return {
     collapseWhitespace: minify,
@@ -57,11 +59,17 @@ async function createInput(userConfig: ResolvedConfig): Promise<Record<string, s
 
   for (const page of userConfig.pages) {
     const pagesDirectory = join(projectRoot, 'pages')
-    if (!fs.existsSync(pagesDirectory))
+    let isExistPagesDirectory = true
+    let isExistPage = true
+    if (!fs.existsSync(pagesDirectory)) {
       fs.mkdirSync(pagesDirectory)
+      isExistPagesDirectory = false
+    }
     const pageDirectory = join(pagesDirectory, page.name)
-    if (!fs.existsSync(pageDirectory))
+    if (!fs.existsSync(pageDirectory)) {
       fs.mkdirSync(pageDirectory)
+      isExistPage = false
+    }
     const p = join(pageDirectory, 'index.html')
     if (!fs.existsSync(p)) {
       const injectedEntryContent = templateContent.replace(INJECT_ENTRY_MODULE_REGEXP, `
@@ -80,6 +88,14 @@ async function createInput(userConfig: ResolvedConfig): Promise<Record<string, s
       const ejsRenderedContent = render(injectedEntryContent, data)
 
       fs.writeFileSync(p, ejsRenderedContent)
+    }
+
+    if (!isExistPagesDirectory) { tempFile.push(pagesDirectory) }
+    else {
+      if (!isExistPage)
+        tempFile.push(pageDirectory)
+      else
+        tempFile.push(p)
     }
 
     r[page.name] = p
@@ -145,10 +161,11 @@ export function MpaPlugin(userConfig: UserConfigExport): PluginOption[] {
         })
       }
     },
-    closeBundle() {
-      const projectRoot = resolve(resolvedConfig.base, resolvedConfig.root)
-      if (fs.existsSync(join(projectRoot, 'pages')))
-        fs.rmSync(join(projectRoot, 'pages'), { recursive: true, force: true })
+    async closeBundle() {
+      for (const file of tempFile)
+        await fs.rm(file, { recursive: true, force: true })
+
+      tempFile.length = 0
     },
   }
 
