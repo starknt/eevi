@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import Vue from '@vitejs/plugin-vue'
 import Inspect from 'vite-plugin-inspect'
 import Eevi from 'eevi/vite'
 
@@ -7,7 +7,7 @@ import Eevi from 'eevi/vite'
 export default defineConfig({
   base: './',
   plugins: [
-    vue(),
+    Vue(),
     Inspect(),
     Eevi.EeviMpaPlugin({
       template: './index.html',
@@ -15,10 +15,16 @@ export default defineConfig({
         {
           name: 'main',
           entry: './src/main.ts',
+          data: {
+            title: 'Main Page',
+          },
         },
         {
           name: 'other',
           entry: './src/main.ts',
+          data: {
+            title: 'Other Page',
+          },
         },
       ],
     }),

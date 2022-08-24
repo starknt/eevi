@@ -1,3 +1,3 @@
-import { MpaPlugin } from './mpa'
+export { MpaPlugin } from './mpa'
+export * from './types'
 
-export { MpaPlugin }
