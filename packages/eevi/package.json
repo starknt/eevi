@@ -1,6 +1,6 @@
 {
   "name": "eevi",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "",
   "author": "starknt",
   "license": "MIT",
@@ -55,7 +55,7 @@
   "dependencies": {
     "@eevi/config": "workspace:*",
     "@eevi/core": "workspace:*",
-    "@eevi/vite-mpa": "workspace:*"
+    "@eevi/vite-plugin-mpa": "workspace:*"
   },
   "devDependencies": {
     "esbuild": "^0.14.53"

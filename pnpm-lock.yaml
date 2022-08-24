@@ -64,17 +64,18 @@ importers:
     specifiers:
       '@eevi/config': workspace:*
       '@eevi/core': workspace:*
-      '@eevi/vite-mpa': workspace:*
+      '@eevi/vite-plugin-mpa': workspace:*
       esbuild: ^0.14.53
     dependencies:
       '@eevi/config': link:../config
       '@eevi/core': link:../core
-      '@eevi/vite-mpa': link:../mpa
+      '@eevi/vite-plugin-mpa': link:../mpa
     devDependencies:
       esbuild: 0.14.53
 
   packages/mpa:
     specifiers:
+      '@rollup/pluginutils': ^4.2.1
       '@types/ejs': ^3.1.1
       '@types/fs-extra': ^9.0.13
       '@types/html-minifier-terser': ^7.0.0
@@ -83,6 +84,7 @@ importers:
       html-minifier-terser: ^7.0.0
       vite: ^3.0.4
     dependencies:
+      '@rollup/pluginutils': 4.2.1
       ejs: 3.1.8
       fs-extra: 10.1.0
       html-minifier-terser: 7.0.0
@@ -94,7 +96,7 @@ importers:
 
   playground:
     specifiers:
-      '@eevi/vite-mpa': workspace:*
+      '@eevi/vite-plugin-mpa': workspace:*
       '@vitejs/plugin-vue': ^3.0.3
       eevi: workspace:*
       typescript: ^4.6.4
@@ -105,7 +107,7 @@ importers:
     dependencies:
       vue: 3.2.37
     devDependencies:
-      '@eevi/vite-mpa': link:../packages/mpa
+      '@eevi/vite-plugin-mpa': link:../packages/mpa
       '@vitejs/plugin-vue': 3.0.3_vite@3.0.7+vue@3.2.37
       eevi: link:../packages/eevi
       typescript: 4.7.4
@@ -657,7 +659,6 @@ packages:
     dependencies:
       estree-walker: 2.0.2
       picomatch: 2.3.1
-    dev: true
 
   /@sindresorhus/is/0.14.0:
     resolution: {integrity: sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ==}
@@ -3989,7 +3990,6 @@ packages:
   /picomatch/2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
-    dev: true
 
   /pidtree/0.6.0:
     resolution: {integrity: sha512-eG2dWTVw5bzqGRztnHExczNxt5VGsE6OwTeCG3fdUf9KBsZzO3R5OIIIzWR+iZA0NtZ+RDVdaoE2dK1cn6jH4g==}

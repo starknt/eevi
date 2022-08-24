@@ -20,7 +20,7 @@
       "@eevi/config": [
         "./packages/config/src/index.ts"
       ],
-      "@eevi/vite-mpa": [
+      "@eevi/vite-plugin-mpa": [
         "./packages/mpa/src/index.ts"
       ],
       "eevi": [
