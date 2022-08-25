@@ -52,7 +52,7 @@ function resolveConfig(userConfig: UserConfigExport, viteUserConfig: ViteResolve
 
 const INJECT_ENTRY_MODULE_REGEXP = /<\/body>/
 
-async function createInput(userConfig: ResolvedConfig): Promise<Record<string, string>> {
+function createInput(userConfig: ResolvedConfig): Record<string, string> {
   const r: Record<string, string> = {}
   const projectRoot = resolve(userConfig.base, userConfig.root)
   const templateContent = fs.readFileSync(isAbsolute(userConfig.template) ? userConfig.template : join(projectRoot, userConfig.template), 'utf-8')
@@ -117,13 +117,14 @@ export function MpaPlugin(userConfig: UserConfigExport): PluginOption[] {
     config(_, env) {
       mode = env.mode
     },
-    async configResolved(config) {
+    configResolved(config) {
       resolvedConfig = resolveConfig(_userConfig, config)
+      process.env.MODE = 'mpa'
 
       if (isProduction(mode)) {
-        const rollupInput = await createInput(resolvedConfig)
+        const rollupInput = createInput(resolvedConfig)
 
-        if (Object.keys(rollupInput).length < 0)
+        if (Object.keys(rollupInput).length <= 0)
           return
 
         config.build.rollupOptions.input = rollupInput

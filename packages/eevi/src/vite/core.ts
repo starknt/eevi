@@ -19,8 +19,8 @@ export function CorePlugin(userConfig?: UserConfigExport): Plugin {
       process.env.NODE_ENV = env.mode as any
     },
     async configResolved(config) {
-      process.env.MODE = 'spa'
-      if (Object.keys(config?.build?.rollupOptions?.input ?? {}).length > 1)
+      process.env.MODE = process.env.MODE ?? 'spa'
+      if (Object.keys(config.build.rollupOptions.input ?? {}).length > 1)
         process.env.MODE = 'mpa'
 
       const loadedConfigResult = await loadConfig(resolve(internalConfig.base ?? config.base!), internalConfig)
