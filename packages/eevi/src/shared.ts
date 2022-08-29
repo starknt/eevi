@@ -59,7 +59,7 @@ export const EeviIs_Module_Code = `
     export const x86 = () => _IsX86
     export const is = (mode) => mode === '${process.env.NODE_ENV}'
 
-    const is = {
+    const IsModule = {
       is: (mode) => is(mode), 
       windows: () => windows(),
       osx: () => osx(),
@@ -75,5 +75,5 @@ export const EeviIs_Module_Code = `
       x86: () => x86()
     }
 
-    export default is
+    export default IsModule
 `
