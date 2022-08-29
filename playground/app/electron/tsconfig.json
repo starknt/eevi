@@ -3,28 +3,26 @@
     "target": "ESNext",
     "module": "ES2022",
     "moduleResolution": "Node",
+    "lib": [
+      "ES6"
+    ],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "jsx": "preserve",
     "baseUrl": ".",
+    "types": [
+      "node",
+      "eevi/eevi-is",
+      "electron"
+    ],
     "paths": {
       "@starter/shared": [
-        "./packages/shared/src/index.ts"
+        "../../packages/shared/src/index.ts"
       ]
     }
   },
-  "references": [
-    {
-      "path": "./tsconfig.test.json"
-    }
-  ],
-  "include": [
-    "app/web",
-    "packages"
-  ],
   "exclude": [
-    "node_modules"
+    "tests"
   ]
 }
