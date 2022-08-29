@@ -1,7 +1,7 @@
 export const EEVI_IS_MODULE_ID = 'eevi-is'
 
 export const EeviIs_Module_Code = `
-  let _IsWindow = false
+    let _IsWindow = false
     let _IsMac = false
     let _IsLinux = false
     let _IsWeb = false
@@ -57,8 +57,10 @@ export const EeviIs_Module_Code = `
     export const production = () => !_IsDev
     export const x64 = () => _IsX64
     export const x86 = () => _IsX86
+    export const is = (mode) => mode === '${process.env.NODE_ENV}'
 
     const is = {
+      is: (mode) => is(mode), 
       windows: () => windows(),
       osx: () => osx(),
       macOS: () => osx(),

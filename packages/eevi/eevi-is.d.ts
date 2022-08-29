@@ -1,4 +1,5 @@
 declare module 'eevi-is' {
+  export const is: (mode: string) => boolean
   export const windows: () => boolean
   export const osx: () => boolean
   export const macOS: () => boolean
