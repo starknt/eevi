@@ -4,7 +4,7 @@ import { basename, extname, isAbsolute, join } from 'path'
 import readline from 'readline'
 import type { BuildOptions, BuildResult, Platform, Plugin, WatchMode } from 'esbuild'
 import { build } from 'esbuild'
-import consola, { LogLevel } from 'consola'
+import consola from 'consola'
 import pc from 'picocolors'
 import electron from 'electron'
 import type { ResolvedConfig } from './types'
@@ -21,7 +21,7 @@ const keys = [
   ['h', 'print help'],
 ]
 
-consola.level = LogLevel.Verbose
+consola.level = Infinity
 
 function rebuildHandler(error: Error | null, result: BuildResult | null, config: ResolvedConfig) {
   if (error) {
