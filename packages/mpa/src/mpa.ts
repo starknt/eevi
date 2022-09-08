@@ -5,7 +5,7 @@ import { normalizePath } from 'vite'
 import { render } from 'ejs'
 import { minify as minifier } from 'html-minifier-terser'
 import type { MinifyOptions, ResolvedConfig, UserConfigExport } from './types'
-import { htmlFilter, isProduction } from './utils'
+import { htmlFilter, injectEntryModule, isProduction, removeModuleScript } from './utils'
 
 const tempFile: string[] = []
 
@@ -50,12 +50,11 @@ function resolveConfig(userConfig: UserConfigExport, viteUserConfig: ViteResolve
   return config
 }
 
-const INJECT_ENTRY_MODULE_REGEXP = /<\/body>/
-
 function createInput(userConfig: ResolvedConfig): Record<string, string> {
   const r: Record<string, string> = {}
   const projectRoot = resolve(userConfig.base, userConfig.root)
-  const templateContent = fs.readFileSync(isAbsolute(userConfig.template) ? userConfig.template : join(projectRoot, userConfig.template), 'utf-8')
+  let html = fs.readFileSync(isAbsolute(userConfig.template) ? userConfig.template : join(projectRoot, userConfig.template), 'utf-8')
+  html = removeModuleScript(html)
 
   for (const page of userConfig.pages) {
     const pagesDirectory = join(projectRoot, 'pages')
@@ -72,10 +71,7 @@ function createInput(userConfig: ResolvedConfig): Record<string, string> {
     }
     const p = join(pageDirectory, 'index.html')
     if (!fs.existsSync(p)) {
-      const injectedEntryContent = templateContent.replace(INJECT_ENTRY_MODULE_REGEXP, `
-                <script type="module" src="/${normalizePath(page.entry)}"></script>
-              </body>
-      `)
+      const injectedEntryContent = injectEntryModule(html, page.entry)
 
       const data = {
         ...(page.data || {}),
@@ -130,41 +126,39 @@ export function MpaPlugin(userConfig: UserConfigExport): PluginOption[] {
         config.build.rollupOptions.input = rollupInput
       }
     },
-    configureServer(server) {
-      return () => {
-        server.middlewares.use((req, res, next) => {
-          if (resolvedConfig) {
-            for (const page of resolvedConfig.pages) {
-              if (req.originalUrl === `/${resolvedConfig.devUrl}/${page.name}` || req.originalUrl === `/resolvedConfig.devUrl/${page.name}.html`) {
-                const content = fs.readFileSync(resolve(resolvedConfig.base, resolvedConfig.root, resolvedConfig.template), 'utf-8')
-                const injectedEntryContent = content.replace(INJECT_ENTRY_MODULE_REGEXP, `
-                  <script type="module" src="/${normalizePath(page.entry)}"></script>
-                </body>
-              `)
+    transformIndexHtml: {
+      enforce: 'pre',
+      transform(_, ctx) {
+        let html = _
+        if (resolvedConfig) {
+          for (const page of resolvedConfig.pages) {
+            const urlRegexp = new RegExp(`^\/${resolvedConfig.devUrl}\/${page.name}\/?$`, 'ig')
 
-                const data = {
-                  ...(page.data || {}),
-                  import: {
-                    mate: {
-                      env: process.env,
-                    },
+            if (ctx.originalUrl?.match(urlRegexp) || ctx.originalUrl === `/${resolvedConfig.devUrl}/${page.name}.html`) {
+              html = fs.readFileSync(resolve(resolvedConfig.base, resolvedConfig.root, resolvedConfig.template), 'utf-8')
+              html = removeModuleScript(html)
+              html = injectEntryModule(html, page.entry)
+
+              const data = {
+                ...(page.data || {}),
+                import: {
+                  mate: {
+                    env: process.env,
                   },
-                }
-
-                const ejsRenderedContent = render(injectedEntryContent, data)
-
-                res.setHeader('content-type', 'text/html').end(ejsRenderedContent)
+                },
               }
+
+              html = render(html, data)
             }
           }
+        }
 
-          next()
-        })
-      }
+        return html
+      },
     },
     async closeBundle() {
       for (const file of tempFile)
-        await fs.rm(file, { recursive: true, force: true })
+        await fs.remove(file)
 
       tempFile.length = 0
     },
