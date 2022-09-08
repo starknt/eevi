@@ -1,5 +1,5 @@
 {
-  "name": "@electron/boilerplate",
+  "name": "playground",
   "type": "module",
   "version": "0.0.0",
   "private": true,
@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^9.1.0",
+    "vite-plugin-inspect": "^0.6.0",
     "vue": "^3.2.37"
   },
   "devDependencies": {
