@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { dirname, isAbsolute, join, resolve } from 'path'
+import { dirname, isAbsolute, resolve } from 'path'
 import { builtinModules } from 'module'
 import { createConfigLoader } from 'unconfig'
 import type { LoadConfigResult } from 'unconfig'
@@ -81,13 +81,29 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
   resolvedConfig.plugins = config.plugin ?? []
   resolvedConfig.sourcemap = config.sourcemap ?? process.env.DEBUG ? true : process.env.NODE_ENV !== 'production'
   resolvedConfig.resolve = config.resolve
-  resolvedConfig.tsconfig = config.tsconfig ? isAbsolute(config.tsconfig) ? config.tsconfig : resolve(resolvedConfig.base, resolvedConfig.root, config.tsconfig) : join(resolvedConfig.base, resolvedConfig.root, 'tsconfig.json')
+  // resolvedConfig.tsconfig = config.tsconfig ? isAbsolute(config.tsconfig) ? config.tsconfig : resolve(resolvedConfig.base, resolvedConfig.root, config.tsconfig) : join(resolvedConfig.base, resolvedConfig.root, 'tsconfig.json')
 
   resolvedConfig.tsconfig = rollupPaths(resolvedConfig.base, resolvedConfig.root, config.tsconfig, 'tsconfig.json')
 
   resolvedConfig.define = config.define ?? {}
-  resolvedConfig.debounceMs = config.debounceMs ?? 1000 * 2
+  if (typeof config.watch === 'boolean') {
+    resolvedConfig.watch = {
+      autoReload: config.watch,
+      reloadTime: 2 * 1000,
+    }
+  }
+  else if (typeof config.watch === 'object') {
+    resolvedConfig.watch = config.watch
+  }
+  else {
+    resolvedConfig.watch = {
+      autoReload: false,
+      reloadTime: 2 * 1000,
+    }
+  }
+
   resolvedConfig.entryName = config.entryName ?? 'URL'
+  resolvedConfig.preloadOutDir = config.preloadOutDir ?? 'preload'
 
   return resolvedConfig
 }

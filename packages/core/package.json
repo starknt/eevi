@@ -36,8 +36,10 @@
   "dependencies": {
     "@anatine/esbuild-decorators": "^0.2.19",
     "asar": "^3.2.0",
+    "consola": "^2.15.3",
     "esbuild": "^0.14.53",
-    "esbuild-plugin-alias-path": "^1.1.1"
+    "esbuild-plugin-alias-path": "^1.1.1",
+    "picocolors": "^1.0.0"
   },
   "devDependencies": {
     "electron": "^20.0.1"

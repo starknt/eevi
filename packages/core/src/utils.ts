@@ -21,3 +21,9 @@ export function debounce(fn: (...args: any[]) => any, ms = 500) {
     }, ms) as any as number
   }
 }
+
+export function printRow(n: number) {
+  for (let i = 0; i < n; i++)
+    // eslint-disable-next-line no-console
+    console.log()
+}

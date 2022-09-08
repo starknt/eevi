@@ -5,6 +5,17 @@ export interface ResolveOptions {
   cwd?: string
 }
 
+export interface WatchOptions {
+  /**
+   * @default 2000 ms
+   */
+  reloadTime: number
+  /**
+   * @default false
+   */
+  autoReload: boolean
+}
+
 export interface UserConfigExport {
   /**
    * Project root path
@@ -74,11 +85,6 @@ export interface UserConfigExport {
    */
   define?: Record<string, string>
   /**
-   * debounce ms
-   * @default 2000ms
-   */
-  debounceMs?: number
-  /**
    * inject process.env name
    * @default `URL`
    */
@@ -88,6 +94,16 @@ export interface UserConfigExport {
    * @default `eevi.config.ts`
    */
   configFile?: string
+  /**
+   * only `development`
+   * @default true
+   */
+  watch?: boolean | WatchOptions
+  /**
+   * preload script output dir
+   * @default ${outDir}/preload
+   */
+  preloadOutDir?: string
 }
 
 /** @internal */
@@ -141,11 +157,6 @@ export interface UserConfig {
    */
   minify?: boolean
   /**
-   * debounce ms
-   * @default 2000ms
-   */
-  debounceMs?: number
-  /**
    * inject process.env name
    * @default `URL`
    */
@@ -162,6 +173,16 @@ export interface UserConfig {
   external?: string[]
   define?: Record<string, string>
   configFile: string | false
+  /**
+   * only `development`
+   * @default true
+   */
+  watch?: boolean | WatchOptions
+  /**
+   * preload script output dir
+   * @default ${outDir}/preload
+   */
+  preloadOutDir?: string
 }
 
 export interface ResolvedConfig {
@@ -177,8 +198,9 @@ export interface ResolvedConfig {
   minify: boolean
   external: string[]
   tsconfig: string
-  debounceMs: number
   entryName: string
   resolve?: ResolveOptions
   mode: 'development' | 'production' | 'debug'
+  watch: WatchOptions
+  preloadOutDir: string
 }
