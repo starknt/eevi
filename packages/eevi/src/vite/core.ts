@@ -32,7 +32,10 @@ export function CorePlugin(userConfig?: UserConfigExport): Plugin {
         const address = server.httpServer!.address() as AddressInfo
         await when(resolved, true)
 
-        process.env[resolvedConfig.entryName] = `http://${address.address}:${address.port}`
+        const isv6 = typeof address.family === 'number' ? address.family === 6 : address.family === 'IPv6'
+        const host = isv6 ? 'localhost' : 'localhost'
+
+        process.env[resolvedConfig.entryName] = `http://${host}:${address.port}`
 
         handler(resolvedConfig)
       })

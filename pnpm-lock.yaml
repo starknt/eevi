@@ -103,6 +103,7 @@ importers:
   playground:
     specifiers:
       '@antfu/eslint-config': ^0.25.2
+      '@eevi/vite-plugin-mpa': workspace:*
       '@types/node': ^18.7.3
       '@types/node-abi': ^3.0.0
       '@types/rimraf': ^3.0.2
@@ -140,6 +141,7 @@ importers:
       vue: 3.2.37
     devDependencies:
       '@antfu/eslint-config': 0.25.2_sorwav4hsh5vncerguqybud76i
+      '@eevi/vite-plugin-mpa': link:../packages/mpa
       '@types/node': 18.7.3
       '@types/node-abi': 3.0.0
       '@types/rimraf': 3.0.2

@@ -166,6 +166,7 @@ export function MpaPlugin(userConfig: UserConfigExport): PluginOption[] {
 
   const minifyPlugin: PluginOption = {
     name: 'vite-plugin-mpa-minify',
+    apply: 'build',
     enforce: 'post',
     async generateBundle(_, outBundle) {
       const minify = resolvedConfig.minify
