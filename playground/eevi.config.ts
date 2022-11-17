@@ -21,7 +21,7 @@ export default defineConfig({
   root: 'app/electron',
   entry: 'app/electron/main.ts',
   outDir: join(appPath, 'dist'),
-  preloadEntries: ['app/electron/preload/common.ts'],
+  preloadEntries: ['app/electron/preload/*.ts'],
   resolve: {
     alias,
   },

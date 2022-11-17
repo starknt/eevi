@@ -35,7 +35,7 @@
         "target": "AppImage"
       }
     ],
-    "icon": "buildResources/icons/32x32.png"
+    "icon": "buildResources/icons/256x256.png"
   },
   "nsis": {
     "oneClick": false,

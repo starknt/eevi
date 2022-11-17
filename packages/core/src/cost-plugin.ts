@@ -1,6 +1,7 @@
 import type { Plugin } from 'esbuild'
 import consola from 'consola'
 import pc from 'picocolors'
+import { debounce } from './utils'
 
 export const buildCostPlugin: Plugin = {
   name: 'esbuild-plugin-build-cost',
@@ -11,8 +12,8 @@ export const buildCostPlugin: Plugin = {
       time = new Date().getTime()
     })
 
-    build.onEnd(() => {
+    build.onEnd(debounce(() => {
       consola.success(`Main process build cost: ${pc.yellow(`${new Date().getTime() - time}ms`)}`)
-    })
+    }, 20))
   },
 }

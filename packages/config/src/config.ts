@@ -1,7 +1,8 @@
-import fs from 'fs'
-import { dirname, isAbsolute, resolve } from 'path'
-import { builtinModules } from 'module'
+import fs from 'node:fs'
+import { dirname, isAbsolute, resolve } from 'node:path'
+import { builtinModules } from 'node:module'
 import { createConfigLoader } from 'unconfig'
+import fg from 'fast-glob'
 import type { LoadConfigResult } from 'unconfig'
 import type { ResolvedConfig, UserConfig, UserConfigExport } from '@eevi/core'
 
@@ -67,12 +68,14 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
   resolvedConfig.base = config.base ? config.base === '/' ? process.cwd() : config.base : viteConfig.base === '/' ? process.cwd() : viteConfig.base
   resolvedConfig.root = config.root ?? viteConfig.root
   resolvedConfig.entry = isAbsolute(config.entry) ? config.entry : resolve(resolvedConfig.base, config.entry)
-  resolvedConfig.preloadEntries = (config.preloadEntries ?? []).map((entry) => {
-    if (!isAbsolute(entry))
-      return resolve(resolvedConfig.base, entry)
-
-    return entry
-  })
+  resolvedConfig.preloadEntries = (config.preloadEntries ?? [])
+    .map((entry) => {
+      if (!isAbsolute(entry))
+        return resolve(resolvedConfig.base, entry)
+      return entry
+    })
+    .map(entry => fg.sync(entry))
+    .flat(2)
   resolvedConfig.minify = config.minify ?? viteConfig.mode === 'production'
   resolvedConfig.external = ['electron', ...builtinModules, ...(config.external ?? [])]
   resolvedConfig.inject = [...(config.inject ?? [])]
