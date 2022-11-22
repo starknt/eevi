@@ -1,1 +1,2 @@
-export { defineConfig, resolveConfig, loadConfig } from './config'
+export { defineConfig, resolveConfig } from './config'
+export { loadConfig } from './utils'

@@ -21,12 +21,17 @@ export default defineConfig({
   root: 'app/electron',
   entry: 'app/electron/main.ts',
   outDir: join(appPath, 'dist'),
-  preloadEntries: ['app/electron/preload/*.ts'],
+  preloadEntries: [
+    'app/electron/preload/*.ts',
+  ],
   resolve: {
     alias,
   },
   external: [...Object.keys(dependencies || {})],
-  tsconfig: 'tsconfig.json',
   define,
   plugin: [esbuildIsPlugin()],
+  watch: {
+    autoReload: true,
+    reloadTime: 2000,
+  },
 })

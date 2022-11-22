@@ -1,66 +1,9 @@
-import fs from 'node:fs'
-import { dirname, isAbsolute, resolve } from 'node:path'
+import { isAbsolute, resolve } from 'node:path'
 import { builtinModules } from 'node:module'
-import { createConfigLoader } from 'unconfig'
 import fg from 'fast-glob'
-import type { LoadConfigResult } from 'unconfig'
 import type { ResolvedConfig, UserConfig, UserConfigExport } from '@eevi/core'
-
-function rollupPaths(base: string, root: string, filename: string | undefined, fallbackFilename: string) {
-  if (filename && isAbsolute(filename))
-    return filename
-  else if (filename && fs.existsSync(resolve(base, root, filename)))
-    return resolve(base, root, filename)
-  else if (filename)
-    return resolve(base, filename)
-  else if (fs.existsSync(resolve(base, root, fallbackFilename)))
-    return resolve(base, root, fallbackFilename)
-  else if (fs.existsSync(resolve(base, fallbackFilename)))
-    return resolve(base, fallbackFilename)
-  else
-    return ''
-}
-
-export async function loadConfig<U extends UserConfig>(cwd = process.cwd(), configOrPath: string | U = cwd): Promise<LoadConfigResult<U>> {
-  let inlineConfig = {} as U
-  if (typeof configOrPath !== 'string') {
-    inlineConfig = configOrPath
-
-    if (inlineConfig.configFile === false) {
-      return {
-        config: inlineConfig,
-        sources: [],
-      }
-    }
-    else {
-      configOrPath = inlineConfig.configFile || process.cwd()
-    }
-  }
-
-  const resolved = resolve(configOrPath)
-  let isFile = false
-  if (fs.existsSync(resolved) && fs.statSync(resolved).isFile()) {
-    isFile = true
-    cwd = dirname(resolved)
-  }
-
-  const loader = createConfigLoader<U>({
-    sources: isFile
-      ? [{
-          files: resolved,
-        }]
-      : [{
-          files: 'eevi.config',
-        }],
-    cwd,
-    defaults: inlineConfig,
-  })
-
-  const result = await loader.load()
-  result.config = result.config || inlineConfig
-
-  return result
-}
+import { normalizePath } from 'vite'
+import { ensureAbsolutePath, rollupPaths } from './utils'
 
 export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConfig {
   const resolvedConfig = {} as ResolvedConfig
@@ -69,13 +12,15 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
   resolvedConfig.root = config.root ?? viteConfig.root
   resolvedConfig.entry = isAbsolute(config.entry) ? config.entry : resolve(resolvedConfig.base, config.entry)
   resolvedConfig.preloadEntries = (config.preloadEntries ?? [])
-    .map((entry) => {
-      if (!isAbsolute(entry))
-        return resolve(resolvedConfig.base, entry)
+    .map(ensureAbsolutePath.bind(undefined, resolvedConfig.base))
+    .map(normalizePath)
+    .flatMap((entry) => {
+      if (fg.isDynamicPattern(entry))
+        return fg.sync(entry)
+
       return entry
     })
-    .map(entry => fg.sync(entry))
-    .flat(2)
+
   resolvedConfig.minify = config.minify ?? viteConfig.mode === 'production'
   resolvedConfig.external = ['electron', ...builtinModules, ...(config.external ?? [])]
   resolvedConfig.inject = [...(config.inject ?? [])]
@@ -84,8 +29,6 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
   resolvedConfig.plugins = config.plugin ?? []
   resolvedConfig.sourcemap = config.sourcemap ?? process.env.DEBUG ? true : process.env.NODE_ENV !== 'production'
   resolvedConfig.resolve = config.resolve
-  // resolvedConfig.tsconfig = config.tsconfig ? isAbsolute(config.tsconfig) ? config.tsconfig : resolve(resolvedConfig.base, resolvedConfig.root, config.tsconfig) : join(resolvedConfig.base, resolvedConfig.root, 'tsconfig.json')
-
   resolvedConfig.tsconfig = rollupPaths(resolvedConfig.base, resolvedConfig.root, config.tsconfig, 'tsconfig.json')
 
   resolvedConfig.define = config.define ?? {}
