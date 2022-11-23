@@ -1,8 +1,9 @@
+import { join } from 'node:path'
 import { expect, test } from 'vitest'
 import { loadConfig } from '@eevi/config'
 
 test('eevi.config.ts', async () => {
-  expect(await loadConfig()).toMatchInlineSnapshot(`
+  expect(await loadConfig(join(process.cwd(), 'playground'))).toMatchInlineSnapshot(`
     {
       "config": {
         "define": {
@@ -10,7 +11,8 @@ test('eevi.config.ts', async () => {
           "process.env.URL": "'./dist/index.html'",
         },
         "entry": "app/electron/main.ts",
-        "outDir": "1\\\\dist",
+        "external": [],
+        "outDir": "/home/seven/project/eevi/playground/release/app/dist",
         "plugin": [
           {
             "name": "esbuild-plugin-eevi-is",
@@ -18,13 +20,21 @@ test('eevi.config.ts', async () => {
           },
         ],
         "preloadEntries": [
-          "app/electron/preload/common.ts",
+          "app/electron/preload/*.ts",
         ],
+        "resolve": {
+          "alias": {
+            "@starter/shared": "/home/seven/project/eevi/playground/packages/shared/src/index.ts",
+          },
+        },
         "root": "app/electron",
-        "tsconfig": "tsconfig.json",
+        "watch": {
+          "autoReload": true,
+          "reloadTime": 2000,
+        },
       },
       "sources": [
-        "E:\\\\Project\\\\JavaScript\\\\Publish\\\\eevi\\\\eevi.config.ts",
+        "/home/seven/project/eevi/playground/eevi.config.mjs",
       ],
     }
   `)
