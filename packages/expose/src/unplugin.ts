@@ -1,12 +1,36 @@
 import MagicString from 'magic-string'
 import unplugin from 'unplugin'
-import type { PreRenderedChunk } from 'rollup'
 
-const autoExposePlugin = unplugin.createUnplugin((options: any) => {
-  return {
-    name: 'unplugin-eevi-auto-expose',
-    enforce: 'pre',
+export const elexpose = {
+  preload: unplugin.createUnplugin(() => {
+    return {
+      name: 'eevi-elepose-preload-plugin',
+      transform(code, id) {
+        console.log('id:', id)
 
-  }
-})
+        const magicCode = new MagicString(code)
+
+        return {
+          code: magicCode.toString(),
+          map: magicCode.generateMap(),
+        }
+      },
+    }
+  }),
+  renderer: unplugin.createUnplugin(() => {
+    return {
+      name: 'eevi-elepose-renderer-plugin',
+      transform(code, id) {
+        console.log('id:', id)
+
+        const magicCode = new MagicString(code)
+
+        return {
+          code: magicCode.toString(),
+          map: magicCode.generateMap(),
+        }
+      },
+    }
+  }),
+}
 
