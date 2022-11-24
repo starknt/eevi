@@ -77,7 +77,7 @@ export const elexpose = {
                   s += `${key}`
               }
 
-              transformed.appendLeft(i.start, `const { ${s} } = window.__elexpose_api__`)
+              transformed.appendLeft(i.start, `const { ${s} } = window.__elexpose_api__\n`)
             }
           }
 

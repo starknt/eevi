@@ -6,8 +6,10 @@ import { sayHello } from '#preload'
   <div text-xl>
     <Counter />
 
-    <button @click="sayHello">
-      SayHello
-    </button>
+    <div mt-2>
+      <button @click="sayHello">
+        SayHello
+      </button>
+    </div>
   </div>
 </template>
