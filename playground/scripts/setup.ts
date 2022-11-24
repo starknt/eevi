@@ -21,5 +21,4 @@ if (!fs.existsSync(srcElectronModulesPath) && fs.existsSync(appModulesPath))
 if (!fs.existsSync(srcElectronPackagePath) && fs.existsSync(appPackagePath))
   tasks.push(fsPromises.symlink(appPackagePath, srcElectronPackagePath, 'file'))
 
-
 Promise.allSettled(tasks)
