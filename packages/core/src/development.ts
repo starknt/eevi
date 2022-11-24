@@ -8,6 +8,7 @@ import { build } from 'esbuild'
 import consola from 'consola'
 import pc from 'picocolors'
 import electron from 'electron'
+import { elexpose } from '@eevi/elexpose'
 import type { ResolvedConfig } from './types'
 import { debounce, printRow } from './utils'
 
@@ -117,6 +118,7 @@ export async function handleDevelopment(config: ResolvedConfig, plugins: Plugin[
   if (config.preloadEntries.length > 0) {
     await build({
       ...options,
+      plugins: [...config.plugins, elexpose.preload()],
       entryPoints: config.preloadEntries,
       outdir: isAbsolute(config.preloadOutDir) ? config.preloadOutDir : join(options.outdir!, config.preloadOutDir),
     })

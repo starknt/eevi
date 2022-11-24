@@ -1,7 +1,18 @@
-import { contextBridge, ipcRenderer } from 'electron'
+export const a = 1
+export const b = 2
 
-contextBridge.exposeInMainWorld('$test', {
-  sayHello() {
-    ipcRenderer.send('sayHello', 'hello')
-  },
-})
+const c = 3
+const d = 4
+
+export {
+  c,
+  d,
+}
+
+export function e() {
+
+}
+
+export default function f() {
+
+}

@@ -19,6 +19,9 @@
     "paths": {
       "@starter/shared": [
         "../../packages/shared/src/index.ts"
+      ],
+      "#preload": [
+        "../electron/preload/common.ts"
       ]
     }
   },

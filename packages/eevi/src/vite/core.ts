@@ -3,6 +3,7 @@ import { isAbsolute, resolve } from 'path'
 import { loadConfig, resolveConfig } from '@eevi/config'
 import type { ResolvedConfig, UserConfig, UserConfigExport } from '@eevi/core'
 import { handler, when } from '@eevi/core'
+import { elexpose } from '@eevi/elexpose'
 import type { Plugin } from 'vite'
 import { EEVI_IS_MODULE_ID, EeviIs_Module_Code } from '../../../share'
 
@@ -15,6 +16,7 @@ export function CorePlugin(userConfig?: UserConfigExport): Plugin[] {
   let resolved = false
 
   return [
+    elexpose.renderer() as Plugin,
     {
       name: 'vite-plugin-eevi',
       enforce: 'pre',

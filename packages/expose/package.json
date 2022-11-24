@@ -35,10 +35,10 @@
   },
   "dependencies": {
     "magic-string": "^0.26.7",
-    "mlly": "^1.0.0",
-    "unplugin": "^1.0.0"
+    "mlly": "^1.0.0"
   },
   "devDependencies": {
+    "esbuild": "^0.15.15",
     "rollup": "^3.4.0",
     "vite": "^3.0.4"
   }

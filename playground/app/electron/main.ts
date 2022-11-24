@@ -1,6 +1,6 @@
 import { join, resolve } from 'path'
 import fs from 'fs'
-import { BrowserWindow, app, protocol } from 'electron'
+import { BrowserWindow, app, ipcMain, protocol } from 'electron'
 import { add } from '@starter/shared'
 import { production, web } from 'eevi-is'
 
@@ -38,6 +38,7 @@ async function afterReady() {
   const win = new BrowserWindow({
     webPreferences: {
       preload: resolve(__dirname, './preload/common.js'),
+      sandbox: false,
     },
     show: false,
   })
@@ -60,6 +61,11 @@ async function afterReady() {
   console.log(process.env.MODE, resolvePage('main'))
 
   win.loadURL(resolvePage('main'))
+
+  ipcMain.on('say:hello', (e, data: string) => {
+    // eslint-disable-next-line no-console
+    console.log(`render id: ${e.sender.id}, message: ${data}`)
+  })
 }
 
 bootstrap()
