@@ -1,0 +1,45 @@
+{
+  "name": "@eevi/expose",
+  "version": "0.3.4",
+  "description": "",
+  "author": "starknt",
+  "license": "MIT",
+  "homepage": "https://github.com/starknt/eevi#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/starknt/eevi.git",
+    "directory": "packages/expose"
+  },
+  "bugs": "https://github.com/starknt/eevi/issues",
+  "keywords": [],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "stub": "unbuild --stub"
+  },
+  "peerDependencies": {
+    "vite": ">=3.0.0"
+  },
+  "dependencies": {
+    "magic-string": "^0.26.7",
+    "mlly": "^1.0.0",
+    "unplugin": "^1.0.0"
+  },
+  "devDependencies": {
+    "rollup": "^3.4.0",
+    "vite": "^3.0.4"
+  }
+}
