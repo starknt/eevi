@@ -5,6 +5,8 @@ export interface ResolveOptions {
   cwd?: string
 }
 
+export type BUILTIN_PLUGINS = 'eevi-is' | 'eevi-expose' | 'eevi-cost'
+
 export interface WatchOptions {
   /**
    * @default 2000 ms
@@ -104,6 +106,12 @@ export interface UserConfigExport {
    * @default ${outDir}/preload
    */
   preloadOutDir?: string
+
+  /**
+   * builtin plugins
+   * @default ['eevi-is', 'eevi-cost', 'eevi-expose']
+   */
+  builtinPlugins?: BUILTIN_PLUGINS[]
 }
 
 /** @internal */
@@ -183,6 +191,12 @@ export interface UserConfig {
    * @default ${outDir}/preload
    */
   preloadOutDir?: string
+
+  /**
+   * builtin plugins
+   * @default ['eevi-is', 'eevi-cost', 'eevi-expose']
+   */
+  builtinPlugins?: BUILTIN_PLUGINS[]
 }
 
 export interface ResolvedConfig {
@@ -203,4 +217,5 @@ export interface ResolvedConfig {
   mode: 'development' | 'production' | 'debug'
   watch: WatchOptions
   preloadOutDir: string
+  builtinPlugins: BUILTIN_PLUGINS[]
 }

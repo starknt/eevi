@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import type { ChildProcess } from 'child_process'
 import { spawn } from 'child_process'
 import { basename, extname, isAbsolute, join } from 'path'
@@ -20,8 +21,6 @@ const keys = [
   ['q', 'quit'],
   ['h', 'print help'],
 ]
-
-consola.level = Infinity
 
 function rebuildHandler(error: Error | null, result: BuildResult | null, config: ResolvedConfig) {
   if (error) {
@@ -55,17 +54,19 @@ function reload() {
 
 function exit() {
   printRow(1)
-  consola.success(pc.green('exit process'))
+  const code = 0
+  console.log(pc.green(`exit code: ${code}`))
 
-  process.exit(0)
+  process.exit(code)
 }
 
 export function printShortcutsHelp() {
-  // eslint-disable-next-line no-console
+  console.log('')
   console.log(
-    `  ${pc.bold('Watch Usage')}\n${keys.map(i => `     Press ${pc.bold(i[0])}${` to ${i[1]}`}`).join('\n')}
+    `  ${pc.bold('Watch Usage\n')}\n${keys.map(i => `     ${pc.gray(pc.bold('Press'))} ${pc.magenta(pc.bold(i[0]))}${` to ${i[1]}`}`).join('\n')}
   `,
   )
+  console.log('')
 }
 
 async function _keypressHandler(str: string, key: any) {
@@ -152,8 +153,10 @@ export async function handleDevelopment(config: ResolvedConfig, plugins: Plugin[
       stdio: 'inherit',
       env: process.env,
     })
+      .once('spawn', () => {
+        console.clear()
+        setTimeout(() => printShortcutsHelp(), 2000)
+      })
       .once('exit', exit)
   }
-
-  setTimeout(() => printShortcutsHelp())
 }

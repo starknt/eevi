@@ -8,11 +8,11 @@ export const buildCostPlugin: Plugin = {
     let time: number
 
     build.onStart(() => {
-      time = new Date().getTime()
+      time = Date.now()
     })
 
     build.onEnd(() => {
-      consola.success(`Main process build cost: ${pc.yellow(`${new Date().getTime() - time}ms`)}`)
+      consola.success(pc.magenta(pc.bold(`Build cost: ${pc.yellow(`${Date.now() - time}`)} ms`)))
     })
   },
 }

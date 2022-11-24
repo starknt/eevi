@@ -24,16 +24,6 @@
       "types": "./dist/index.d.ts",
       "require": "./dist/index.cjs",
       "import": "./dist/index.mjs"
-    },
-    "./vite": {
-      "types": "./dist/vite.d.ts",
-      "require": "./dist/vite.cjs",
-      "import": "./dist/vite.mjs"
-    },
-    "./esbuild": {
-      "types": "./dist/esbuild.d.ts",
-      "require": "./dist/esbuild.cjs",
-      "import": "./dist/esbuild.mjs"
     }
   },
   "main": "./dist/index.cjs",
@@ -41,9 +31,7 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
-    "vite.d.ts",
-    "eevi-is.d.ts",
-    "esbuild.d.ts"
+    "eevi-is.d.ts"
   ],
   "scripts": {
     "build": "unbuild",

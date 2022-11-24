@@ -1,5 +1,5 @@
 import type { Plugin } from 'esbuild'
-import { EeviIs_Module_Code } from './shared'
+import { EeviIs_Module_Code } from '../../../share'
 
 export const esbuildIsPlugin = (): Plugin => ({
   name: 'esbuild-plugin-eevi-is',
@@ -16,3 +16,4 @@ export const esbuildIsPlugin = (): Plugin => ({
     }))
   },
 })
+

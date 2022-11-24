@@ -2,7 +2,7 @@ import { builtinModules } from 'module'
 import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
-  entries: ['src/index', 'src/vite', 'src/esbuild'],
+  entries: ['src/index'],
   declaration: true,
   clean: true,
   externals: ['vite', 'esbuild', ...builtinModules],
