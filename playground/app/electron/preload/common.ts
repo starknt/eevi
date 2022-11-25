@@ -10,3 +10,5 @@ export function sha256sum(data: BinaryLike) {
 export function sayHello() {
   ipcRenderer.send('say:hello', 'hello')
 }
+
+export * as path from './utils/p'

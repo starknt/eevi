@@ -13,8 +13,7 @@
     "noImplicitAny": false,
     "suppressImplicitAnyIndexErrors": false,
     "skipLibCheck": true,
-    "types": [
-    ],
+    "types": [],
     "baseUrl": ".",
     "paths": {
       "@starter/shared": [
@@ -22,6 +21,12 @@
       ],
       "#preload": [
         "../electron/preload/common.ts"
+      ],
+      "#common": [
+        "../electron/preload/common.ts"
+      ],
+      "#test": [
+        "../electron/preload/test1.ts"
       ]
     }
   },

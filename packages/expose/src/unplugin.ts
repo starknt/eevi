@@ -6,11 +6,14 @@ import type { Plugin as VitePlugin } from 'vite'
 import type { Plugin as EsbuildPlugin } from 'esbuild'
 
 export const elexpose = {
-  preload: (): EsbuildPlugin => {
+  preload: (p: string[]): EsbuildPlugin => {
     return {
       name: 'eevi-elepose-preload-plugin',
       setup(build) {
         build.onLoad({ filter: /\.[t|j]s/ }, async (args) => {
+          if (!p.includes(args.path))
+            return
+
           const code = await fs.readFile(args.path, 'utf-8')
           const ext: 'ts' | 'js' = extname(args.path).replace(/\./, '') as 'ts' | 'js'
           const transformed = new MagicString(code)
@@ -30,6 +33,15 @@ export const elexpose = {
               case 'default':
                 transformed.remove(ex.start, ex.start + ex.code.length)
                 break
+              case 'star':
+                transformed.remove(ex.start, ex.end)
+
+                if (ex.name) {
+                  transformed.appendLeft(0, `import * as ${ex.name} from '${ex.specifier}'\n`)
+                  names.push(ex.name)
+                }
+
+                break
               default:
                 break
             }
@@ -45,45 +57,63 @@ export const elexpose = {
       },
     }
   },
-  renderer: (): VitePlugin => {
+  renderer: (names?: string[]): VitePlugin => {
     return {
       name: 'eevi-elepose-renderer-plugin',
       enforce: 'pre',
-      config() {
-        return {
-          build: {
-            rollupOptions: {
-              external: ['#preload'],
-            },
-          },
+      resolveId(id) {
+        if (id === 'electron')
+          return '@electron'
+      },
+      load(id) {
+        if (id === '@electron') {
+          const code = `
+            const { clipboard, crashReporter, desktopCapturer, ipcRenderer, nativeImage, webFrame, contextBridge } = window.require('electron')
+
+            export {
+              clipboard,
+              crashReporter,
+              desktopCapturer,
+              ipcRenderer,
+              nativeImage,
+              webFrame,
+              contextBridge
+            }
+          `
+
+          return {
+            code,
+          }
         }
       },
       transform(code) {
-        if (code.includes('#preload')) {
-          const transformed = new MagicString(code)
-          let staticImports = findStaticImports(code)
+        for (const name of names!) {
+          if (code.includes(name)) {
+            const transformed = new MagicString(code)
+            let staticImports = findStaticImports(code)
 
-          staticImports = staticImports.filter(i => i.specifier === '#preload')
-          for (const i of staticImports) {
-            transformed.remove(i.start, i.end)
-            const parsed = parseStaticImport(i)
-            if (parsed.namedImports) {
-              const keys = Object.keys(parsed.namedImports)
-              let s = ''
-              for (const key of keys) {
-                if (key !== parsed.namedImports[key])
-                  s += `${key}: ${parsed.namedImports[key]}`
-                else
-                  s += `${key}`
+            staticImports = staticImports.filter(i => i.specifier === name)
+            for (const i of staticImports) {
+              transformed.remove(i.start, i.end)
+              const parsed = parseStaticImport(i)
+              if (parsed.namedImports) {
+                const keys = Object.keys(parsed.namedImports)
+                let s = ''
+                for (const key of keys) {
+                  if (key !== parsed.namedImports[key])
+                    s += `${key}: ${parsed.namedImports[key]}, `
+                  else
+                    s += `${key}, `
+                }
+
+                transformed.appendLeft(i.start, `const { ${s} } = window.__elexpose_api__\n`)
               }
-
-              transformed.appendLeft(i.start, `const { ${s} } = window.__elexpose_api__\n`)
             }
-          }
 
-          return {
-            code: transformed.toString(),
-            map: transformed.generateMap(),
+            return {
+              code: transformed.toString(),
+              map: transformed.generateMap(),
+            }
           }
         }
       },

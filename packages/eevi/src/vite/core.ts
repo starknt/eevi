@@ -6,6 +6,7 @@ import { handler, when } from '@eevi/core'
 import { elexpose } from '@eevi/elexpose'
 import type { Plugin } from 'vite'
 import { EEVI_IS_MODULE_ID, EeviIs_Module_Code } from '../../../share'
+import { getFileName } from '../utils'
 
 export function CorePlugin(userConfig?: UserConfigExport): Plugin[] {
   const internalConfig = {
@@ -16,7 +17,6 @@ export function CorePlugin(userConfig?: UserConfigExport): Plugin[] {
   let resolved = false
 
   return [
-    elexpose.renderer() as Plugin,
     {
       name: 'vite-plugin-eevi',
       enforce: 'pre',
@@ -52,6 +52,20 @@ export function CorePlugin(userConfig?: UserConfigExport): Plugin[] {
         await when(resolved, true)
 
         handler(resolvedConfig)
+      },
+      resolveId(id, importer, options) {
+        return elexpose.renderer().resolveId!.call(this, id, importer, options)
+      },
+      load(id) {
+        return elexpose.renderer().load!.call(this, id)
+      },
+      async transform(code, id) {
+        await when(resolved, true)
+
+        let names = resolvedConfig.preloadEntries.map(entry => `#${getFileName(entry)}`)
+        names = ['#preload', ...names]
+
+        return elexpose.renderer(names).transform!.call(this, code, id)
       },
     },
     {

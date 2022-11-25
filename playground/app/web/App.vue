@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { sayHello } from '#preload'
+import { sayHello } from '#common'
 </script>
 
 <template>

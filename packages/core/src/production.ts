@@ -14,7 +14,7 @@ async function buildPreloadEntries(outdir: string, preloadEntries: string[], opt
   if (preloadEntries.length > 0) {
     await build({
       ...options,
-      plugins: [...options.plugins ?? [], elexpose.preload()],
+      plugins: [...options.plugins ?? [], elexpose.preload(preloadEntries)],
       entryPoints: preloadEntries,
       outdir: isAbsolute(outdir) ? outdir : join(options.outdir!, outdir),
     })
