@@ -31,7 +31,7 @@ describe('transformPreload', () => {
       import sum from \'./utils\'
 
       export const a = sum
-    `))
+    `).exposes)
       .toStrictEqual(['a'])
   })
 })
