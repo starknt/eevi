@@ -3,6 +3,7 @@ import { isAbsolute, resolve } from 'path'
 import { loadConfig, resolveConfig } from '@eevi/config'
 import type { ResolvedConfig, UserConfig, UserConfigExport } from '@eevi/core'
 import { handler, when } from '@eevi/core'
+import type { PRELOAD_SPECIFIER_ID } from '@eevi/elexpose'
 import { renderer } from '@eevi/elexpose'
 import type { Plugin } from 'vite'
 import { EEVI_IS_MODULE_ID, EeviIs_Module_Code } from '../../../share'
@@ -62,7 +63,7 @@ export function CorePlugin(userConfig?: UserConfigExport): Plugin[] {
       async transform(code, id) {
         await when(resolved, true)
 
-        let names = resolvedConfig.preloadEntries.map(entry => `#${getFileName(entry)}`)
+        let names = resolvedConfig.preloadEntries.map<PRELOAD_SPECIFIER_ID>(entry => `#${getFileName(entry)}`)
         names = ['#preload', ...names]
 
         return renderer(names).transform!.call(this, code, id)
