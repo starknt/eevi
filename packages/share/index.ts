@@ -33,7 +33,7 @@ export function generateCode(env: ConfigEnv) {
     _IsX64 = process.arch === 'x64'
     _IsX86 = process.arch === 'ia32'
 
-    _IsDev = '${env.mode}' === 'development' || !!process.env.__DEV__
+    _IsDev = '${env.mode}' === 'development' || !!process.env.__DEV__ || '${process.env.__DEV__}' !== 'undefined'
   }
 
   // In Web Environment
@@ -45,7 +45,7 @@ export function generateCode(env: ConfigEnv) {
     _IsX64 = navigator.userAgent.includes('x64')
     _IsX86 = navigator.userAgent.includes('x86')
 
-    _IsDev = '${env.mode}' === 'development' || !!process.env.__DEV__
+    _IsDev = '${env.mode}' === 'development' || '${process.env.__DEV__}' !== 'undefined'
   }
 
   export const renderer = () => isElectronRenderer && !web()
