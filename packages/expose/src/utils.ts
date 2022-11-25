@@ -5,20 +5,20 @@ import type { PRELOAD_SPECIFIER_ID } from './types'
 export function transformPreload(code: string) {
   const transformed = new MagicString(code)
   const exports = findExports(code)
-  const names: string[] = []
+  const exposes: string[] = []
 
   for (const ex of exports) {
     switch (ex.type) {
       case 'declaration':
         transformed.remove(ex.start, ex.start + 7)
-        names.push(...ex.names)
+        exposes.push(...ex.names)
         break
       case 'named':
         transformed.remove(ex.start, ex.end)
         if (ex.specifier)
           transformed.appendLeft(0, `import { ${ex.names.join(', ')} } from '${ex.specifier}'\n`)
 
-        names.push(...ex.names)
+        exposes.push(...ex.names)
         break
       case 'default':
         transformed.remove(ex.start, ex.start + ex.code.length)
@@ -28,15 +28,18 @@ export function transformPreload(code: string) {
 
         if (ex.name) {
           transformed.appendLeft(0, `import * as ${ex.name} from '${ex.specifier}'\n`)
-          names.push(ex.name)
+          exposes.push(ex.name)
         }
         break
     }
   }
 
-  transformed.append(`\nrequire('electron').contextBridge.exposeInMainWorld('__elexpose_api__', \n{\n${names.join(', \n')}\n})`)
+  transformed.append(`\nrequire('electron').contextBridge.exposeInMainWorld('__elexpose_api__', \n{\n${exposes.join(', \n')}\n})`)
 
-  return transformed
+  return {
+    transformed,
+    exposes,
+  }
 }
 
 export function transformRenderer(specifier: PRELOAD_SPECIFIER_ID, code: string) {

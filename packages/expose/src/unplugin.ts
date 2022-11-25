@@ -16,7 +16,7 @@ export const elexpose = {
 
           const code = await fs.readFile(args.path, 'utf-8')
           const ext: 'ts' | 'js' = extname(args.path).replace(/\./, '') as 'ts' | 'js'
-          const transformed = transformPreload(code)
+          const { transformed } = transformPreload(code)
 
           return {
             loader: ext,
