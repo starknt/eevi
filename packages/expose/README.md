@@ -6,6 +6,7 @@
 
 // good (supported)
 export * as utils from './utils'
+export { join } from './utils'
 export const num = 1
 export function fuc() {}
 export const versions = process.versions
@@ -30,7 +31,8 @@ require('electron').contextBridge.exposeInMainWorld("__elexpose_api__", {
   utils: utils_exports,
   versions,
   num,
-  func
+  func,
+  join
 })
 ```
 
@@ -47,3 +49,7 @@ require('electron').contextBridge.exposeInMainWorld("__elexpose_api__", {
   }
 }
 ```
+
+## Credits
+
+- [unplugin-auto-expose](https://github.com/cawa-93/unplugin-auto-expose)

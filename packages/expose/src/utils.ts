@@ -15,6 +15,9 @@ export function transformPreload(code: string) {
         break
       case 'named':
         transformed.remove(ex.start, ex.end)
+        if (ex.specifier)
+          transformed.appendLeft(0, `import { ${ex.names.join(', ')} } from '${ex.specifier}'\n`)
+
         names.push(...ex.names)
         break
       case 'default':
@@ -27,9 +30,6 @@ export function transformPreload(code: string) {
           transformed.appendLeft(0, `import * as ${ex.name} from '${ex.specifier}'\n`)
           names.push(ex.name)
         }
-
-        break
-      default:
         break
     }
   }
