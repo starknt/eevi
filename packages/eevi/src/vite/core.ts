@@ -3,7 +3,7 @@ import { isAbsolute, resolve } from 'path'
 import { loadConfig, resolveConfig } from '@eevi/config'
 import type { ResolvedConfig, UserConfig, UserConfigExport } from '@eevi/core'
 import { handler, when } from '@eevi/core'
-import { elexpose } from '@eevi/elexpose'
+import { renderer } from '@eevi/elexpose'
 import type { Plugin } from 'vite'
 import { EEVI_IS_MODULE_ID, EeviIs_Module_Code } from '../../../share'
 import { getFileName } from '../utils'
@@ -54,10 +54,10 @@ export function CorePlugin(userConfig?: UserConfigExport): Plugin[] {
         handler(resolvedConfig)
       },
       resolveId(id, importer, options) {
-        return elexpose.renderer().resolveId!.call(this, id, importer, options)
+        return renderer().resolveId!.call(this, id, importer, options)
       },
       load(id) {
-        return elexpose.renderer().load!.call(this, id)
+        return renderer().load!.call(this, id)
       },
       async transform(code, id) {
         await when(resolved, true)
@@ -65,7 +65,7 @@ export function CorePlugin(userConfig?: UserConfigExport): Plugin[] {
         let names = resolvedConfig.preloadEntries.map(entry => `#${getFileName(entry)}`)
         names = ['#preload', ...names]
 
-        return elexpose.renderer(names).transform!.call(this, code, id)
+        return renderer(names).transform!.call(this, code, id)
       },
     },
     {

@@ -1,7 +1,7 @@
 import { isAbsolute, join } from 'path'
 import type { BuildOptions, Platform, Plugin } from 'esbuild'
 import { build } from 'esbuild'
-import { elexpose } from '@eevi/elexpose'
+import { preload } from '@eevi/elexpose'
 import type { ResolvedConfig } from './types'
 
 const platform: Platform = 'node'
@@ -14,7 +14,7 @@ async function buildPreloadEntries(outdir: string, preloadEntries: string[], opt
   if (preloadEntries.length > 0) {
     await build({
       ...options,
-      plugins: [...options.plugins ?? [], elexpose.preload(preloadEntries)],
+      plugins: [...options.plugins ?? [], preload(preloadEntries)],
       entryPoints: preloadEntries,
       outdir: isAbsolute(outdir) ? outdir : join(options.outdir!, outdir),
     })
