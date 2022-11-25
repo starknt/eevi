@@ -6,10 +6,10 @@ import { handler, when } from '@eevi/core'
 import type { PRELOAD_SPECIFIER_ID } from '@eevi/elexpose'
 import { renderer } from '@eevi/elexpose'
 import type { Plugin } from 'vite'
-import { EEVI_IS_MODULE_ID, EeviIs_Module_Code } from '../../../share'
-import { getFileName } from '../utils'
+import { EEVI_IS_MODULE_ID, EeviIs_Module_Code } from '../../share'
+import { getFileName } from './utils'
 
-export function CorePlugin(userConfig?: UserConfigExport): Plugin[] {
+export function eevi(userConfig?: UserConfigExport): Plugin[] {
   const internalConfig = {
     ...(userConfig || {}),
     configFile: userConfig ? userConfig.configFile ? isAbsolute(userConfig.configFile) ? userConfig.configFile : resolve(userConfig.base ?? process.cwd(), userConfig.configFile) : true : resolve(process.cwd(), 'eevi.config.ts'),
