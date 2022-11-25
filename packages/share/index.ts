@@ -33,7 +33,7 @@ export function generateCode(env: ConfigEnv) {
     _IsX64 = process.arch === 'x64'
     _IsX86 = process.arch === 'ia32'
 
-    _IsDev = '${env.mode}' === 'development' || !!process.env.__DEV__ || '${process.env.__DEV__}' !== 'undefined'
+    _IsDev = '${env.mode}' === 'development' || !!process.env.__DEV__
   }
 
   // In Web Environment
