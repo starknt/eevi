@@ -1,6 +1,6 @@
 {
   "name": "@eevi/elexpose",
-  "version": "0.3.4",
+  "version": "0.0.0",
   "description": "",
   "author": "starknt",
   "license": "MIT",
@@ -39,7 +39,6 @@
   },
   "devDependencies": {
     "esbuild": "^0.15.15",
-    "rollup": "^3.4.0",
     "vite": "^3.0.4"
   }
 }
