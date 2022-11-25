@@ -10,7 +10,7 @@ export const elexpose = {
     return {
       name: 'eevi-elepose-preload-plugin',
       setup(build) {
-        build.onLoad({ filter: /\.[t|j]s/ }, async (args) => {
+        build.onLoad({ filter: /\.[c|m]?[t|j]s/ }, async (args) => {
           if (!p.includes(args.path))
             return
 

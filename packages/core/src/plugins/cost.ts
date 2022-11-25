@@ -2,7 +2,7 @@ import type { Plugin } from 'esbuild'
 import consola from 'consola'
 import pc from 'picocolors'
 
-export const buildCostPlugin: Plugin = {
+export const buildCostPlugin: () => Plugin = () => ({
   name: 'esbuild-plugin-build-cost',
   setup(build) {
     let time: number
@@ -15,4 +15,4 @@ export const buildCostPlugin: Plugin = {
       consola.success(pc.magenta(pc.bold(`Build cost: ${pc.yellow(`${Date.now() - time}`)} ms`)))
     })
   },
-}
+})

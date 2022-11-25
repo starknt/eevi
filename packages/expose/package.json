@@ -31,6 +31,7 @@
     "stub": "unbuild --stub"
   },
   "peerDependencies": {
+    "esbuild": "*",
     "vite": ">=3.0.0"
   },
   "dependencies": {

@@ -2,7 +2,22 @@ import { join, resolve } from 'path'
 import fs from 'fs'
 import { BrowserWindow, app, ipcMain, protocol } from 'electron'
 import { add } from '@starter/shared'
-import { production, web } from 'eevi-is'
+import { dev, linux, macOS, main, production, renderer, web, windows } from 'eevi-is'
+
+function assert(v: boolean) {
+  if (!v)
+    // eslint-disable-next-line no-console
+    console.trace(new Error('assert failed'))
+}
+
+assert(main() === true)
+assert(renderer() === false)
+assert(web() === false)
+assert(linux() === true)
+assert(macOS() === false)
+assert(windows() === false)
+assert(dev() === true)
+assert(production() === false)
 
 async function bootstrap() {
   protocol.registerSchemesAsPrivileged([
@@ -33,7 +48,7 @@ async function afterReady() {
   })
 
   // eslint-disable-next-line no-console
-  console.log(add(1, 2), web())
+  console.log(add(1, 2))
 
   const win = new BrowserWindow({
     webPreferences: {

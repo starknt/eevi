@@ -118,7 +118,7 @@ export async function handleDevelopment(config: ResolvedConfig, plugins: Plugin[
   if (config.preloadEntries.length > 0) {
     await build({
       ...options,
-      plugins: [...config.plugins, preload(config.preloadEntries)],
+      plugins: [...plugins, preload(config.preloadEntries)],
       entryPoints: config.preloadEntries,
       outdir: isAbsolute(config.preloadOutDir) ? config.preloadOutDir : join(options.outdir!, config.preloadOutDir),
     })
@@ -156,8 +156,8 @@ export async function handleDevelopment(config: ResolvedConfig, plugins: Plugin[
       env: process.env,
     })
       .once('spawn', () => {
-        console.clear()
-        setTimeout(() => printShortcutsHelp(), 2000)
+        // console.clear()
+        setTimeout(() => printShortcutsHelp(), 3000)
       })
       .once('exit', exit)
   }

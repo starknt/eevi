@@ -1,7 +1,8 @@
 import type { Plugin } from 'esbuild'
-import { EeviIs_Module_Code } from '../../../share'
+import type { ConfigEnv } from 'vite'
+import { generateCode } from '../../../share'
 
-export const esbuildIsPlugin = (): Plugin => ({
+export const esbuildIsPlugin = (env: ConfigEnv): Plugin => ({
   name: 'esbuild-plugin-eevi-is',
   setup(build) {
     build.onResolve({ filter: /^eevi-is$/ }, (args) => {
@@ -12,7 +13,7 @@ export const esbuildIsPlugin = (): Plugin => ({
     })
 
     build.onLoad({ filter: /.*/, namespace: 'eevi-is' }, _ => ({
-      contents: EeviIs_Module_Code,
+      contents: generateCode(env),
     }))
   },
 })
