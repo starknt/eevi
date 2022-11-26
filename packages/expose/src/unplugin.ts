@@ -58,7 +58,7 @@ export const elexpose = {
       transform(code) {
         for (const specifier of specifiers!) {
           if (code.includes(specifier)) {
-            const transformed = transformRenderer(specifier, code)
+            const { transformed } = transformRenderer(specifier, code)
 
             return {
               code: transformed.toString(),

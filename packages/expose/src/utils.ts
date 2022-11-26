@@ -45,7 +45,7 @@ export function transformPreload(code: string) {
 export function transformRenderer(specifier: PRELOAD_SPECIFIER_ID, code: string) {
   const transformed = new MagicString(code)
   let staticImports = findStaticImports(code)
-
+  const imports: string[][] = []
   staticImports = staticImports.filter(i => i.specifier === specifier)
   for (const i of staticImports) {
     transformed.remove(i.start, i.end)
@@ -54,15 +54,22 @@ export function transformRenderer(specifier: PRELOAD_SPECIFIER_ID, code: string)
       const keys = Object.keys(parsed.namedImports)
       let s = ''
       for (const key of keys) {
-        if (key !== parsed.namedImports[key])
+        if (key !== parsed.namedImports[key]) {
+          imports.push([key, parsed.namedImports[key]])
           s += `${key}: ${parsed.namedImports[key]}, `
-        else
+        }
+        else {
+          imports.push([key, parsed.namedImports[key]])
           s += `${key}, `
+        }
       }
 
       transformed.appendLeft(i.start, `const { ${s} } = window.__elexpose_api__\n`)
     }
   }
 
-  return transformed
+  return {
+    transformed,
+    imports,
+  }
 }
