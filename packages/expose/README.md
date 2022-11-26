@@ -7,6 +7,38 @@
 - Do not use like `export * from './utils'` .etc
 - The naming convention for this virtual file is #filename, like `common.ts >> #common`
 
+## Install
+
+```bash
+  npm install --save-dev @eevi/elexpose
+```
+
+## Usage
+
+```typescript
+// preload esbuild
+import { preload } from '@eevi/elexpose'
+import { build } from 'esbuild'
+
+const preloadEntries = ['/path/to/common.ts']
+
+build({
+  entryPoints: preloadEntries,
+  plugins: [preload(preloadEntries /** preload entry file absolute path, ensure `export * as name from ''./utils` working */)],
+})
+
+// renderer vite
+/// vite.config.ts
+import { preload } from '@eevi/elexpose'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [
+    renderer(['#common'] /** `#${filename}`[] */)
+  ]
+})
+```
+
 ## Simple Example
 ```ts
 /// common.ts
