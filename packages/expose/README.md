@@ -1,5 +1,12 @@
 # unplugin-elexpose
 
+## Rules
+
+- Use named exports, like `export const test = 1`, `export * as name from './utils'` .etc
+- The use of default exports should be reduced, like `export default` .etc
+- Do not use like `export * from './utils'` .etc
+- The naming convention for this virtual file is #filename, like `common.ts >> #common`
+
 ## Simple Example
 ```ts
 /// common.ts
@@ -37,6 +44,8 @@ require('electron').contextBridge.exposeInMainWorld("__elexpose_api__", {
 ```
 
 ## Typescript
+
+The naming convention for this file is #filename
 
 ```json
 {
