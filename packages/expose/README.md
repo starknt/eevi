@@ -1,6 +1,6 @@
 # unplugin-elexpose
 
-This plugin allows you to automatically expose preload api to renderer using specific ES Module syntax.
+This plugin allows you to automatically expose preload api to renderer using [specific](#Rules) ES Module syntax.
 
 ## Working
 
