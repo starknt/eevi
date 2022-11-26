@@ -86,7 +86,9 @@ function createInput(userConfig: ResolvedConfig): Record<string, string> {
       fs.writeFileSync(p, ejsRenderedContent)
     }
 
-    if (!isExistPagesDirectory) { tempFile.push(pagesDirectory) }
+    if (!isExistPagesDirectory) {
+      tempFile.push(pagesDirectory)
+    }
     else {
       if (!isExistPage)
         tempFile.push(pageDirectory)
