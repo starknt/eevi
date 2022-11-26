@@ -54,7 +54,7 @@ export default defineConfig({
 export * as utils from './utils'
 export { join } from './utils'
 export const num = 1
-export function fuc() {}
+export function func() {}
 export const versions = process.versions
 
 // bad (now not support)
@@ -63,15 +63,17 @@ const df = 1
 export default df
 
 // transformed
-import * as utils from './utils'
-
 const utils_exports = {}
-__export(p_exports, {
+__export(utils_exports, {
   // fill your utils exports
 });
 
+function join() {
+  // content form utils file
+}
+
 const num = 1
-function fuc() {}
+function func() {}
 const versions = process.versions
 require('electron').contextBridge.exposeInMainWorld("__elexpose_api__", {
   utils: utils_exports,
