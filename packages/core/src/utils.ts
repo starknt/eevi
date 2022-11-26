@@ -1,7 +1,11 @@
-export function when<T>(condition: T, result: T) {
+export function when<T>(condition: T, result?: T) {
   return new Promise<void>((resolve) => {
     const timer = setInterval(() => {
-      if (condition === result) {
+      if (typeof result === 'undefined' && condition) {
+        clearInterval(timer)
+        resolve()
+      }
+      else if (condition === result) {
         clearInterval(timer)
         resolve()
       }

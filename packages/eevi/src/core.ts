@@ -3,10 +3,10 @@ import { isAbsolute, resolve } from 'path'
 import { loadConfig, resolveConfig } from '@eevi/config'
 import type { ResolvedConfig, UserConfig, UserConfigExport } from '@eevi/core'
 import { handler, when } from '@eevi/core'
-import { renderer } from '@eevi/elexpose'
 import type { ConfigEnv, Plugin } from 'vite'
+import { renderer } from '@eevi/elexpose'
 import { EEVI_IS_MODULE_ID, generateCode } from '../../share'
-import { getSpecifiers } from './utils'
+import { getFileName } from './utils'
 
 export function eevi(userConfig?: UserConfigExport): Plugin[] {
   const internalConfig = {
@@ -56,11 +56,11 @@ export function eevi(userConfig?: UserConfigExport): Plugin[] {
         handler(resolvedConfig, viteEnv)
       },
       async transform(code, id) {
-        await when(resolved, true)
-
-        const specifiers = getSpecifiers(resolvedConfig.preloadEntries)
-
-        return renderer(specifiers).transform!.call(this, code, id)
+        const vite = renderer.vite(resolvedConfig.preloadEntries.map(getFileName))
+        if (vite.transform) {
+          // @ts-expect-error transform
+          return vite.transform.call(this, code, id)
+        }
       },
     },
     {
