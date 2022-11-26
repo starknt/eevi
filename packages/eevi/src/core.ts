@@ -3,11 +3,10 @@ import { isAbsolute, resolve } from 'path'
 import { loadConfig, resolveConfig } from '@eevi/config'
 import type { ResolvedConfig, UserConfig, UserConfigExport } from '@eevi/core'
 import { handler, when } from '@eevi/core'
-import type { PRELOAD_SPECIFIER_ID } from '@eevi/elexpose'
 import { renderer } from '@eevi/elexpose'
 import type { ConfigEnv, Plugin } from 'vite'
 import { EEVI_IS_MODULE_ID, generateCode } from '../../share'
-import { getFileName } from './utils'
+import { getSpecifiers } from './utils'
 
 export function eevi(userConfig?: UserConfigExport): Plugin[] {
   const internalConfig = {
@@ -56,38 +55,51 @@ export function eevi(userConfig?: UserConfigExport): Plugin[] {
 
         handler(resolvedConfig, viteEnv)
       },
-      resolveId(id, importer, options) {
+      async transform(code, id) {
+        await when(resolved, true)
+
+        const specifiers = getSpecifiers(resolvedConfig.preloadEntries)
+
+        return renderer(specifiers).transform!.call(this, code, id)
+      },
+    },
+    {
+      name: 'vite-plugin-eevi-is',
+      enforce: 'post',
+      resolveId(id) {
         if (id === EEVI_IS_MODULE_ID)
           return `@${EEVI_IS_MODULE_ID}`
-
-        return renderer().resolveId!.call(this, id, importer, options)
       },
       load(id) {
         if (id === `@${EEVI_IS_MODULE_ID}`)
           return generateCode(viteEnv)
-
-        return renderer().load!.call(this, id)
-      },
-      async transform(code, id) {
-        await when(resolved, true)
-
-        let names = resolvedConfig.preloadEntries.map<PRELOAD_SPECIFIER_ID>(entry => `#${getFileName(entry)}`)
-        names = ['#preload', ...names]
-
-        return renderer(names).transform!.call(this, code, id)
       },
     },
-    // {
-    //   name: 'vite-plugin-eevi-is',
-    //   enforce: 'post',
-    //   resolveId(source) {
-    //     if (source === EEVI_IS_MODULE_ID)
-    //       return EEVI_IS_MODULE_ID
-    //   },
-    //   load(id) {
-    //     if (id === EEVI_IS_MODULE_ID)
-    //       return EeviIs_Module_Code
-    //   },
-    // },
+    {
+      name: 'vite-plugin-transform-electron',
+      resolveId(id) {
+        if (id === 'electron')
+          return '@electron'
+      },
+      load(id) {
+        if (id === '@electron') {
+          const code = `
+            const { clipboard, crashReporter, desktopCapturer, ipcRenderer, nativeImage, webFrame, contextBridge } = window.require('electron')
+
+            export {
+              clipboard,
+              crashReporter,
+              desktopCapturer,
+              ipcRenderer,
+              nativeImage,
+              webFrame,
+              contextBridge
+            }
+          `
+
+          return code
+        }
+      },
+    },
   ]
 }

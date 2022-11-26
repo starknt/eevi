@@ -1,6 +1,6 @@
 import MagicString from 'magic-string'
 import { findExports, findStaticImports, parseStaticImport } from 'mlly'
-import type { PRELOAD_SPECIFIER_ID } from './types'
+import type { PRELOAD_SPECIFIER } from './types'
 
 export function transformPreload(code: string) {
   const transformed = new MagicString(code)
@@ -42,7 +42,7 @@ export function transformPreload(code: string) {
   }
 }
 
-export function transformRenderer(specifier: PRELOAD_SPECIFIER_ID, code: string) {
+export function transformRenderer(specifier: PRELOAD_SPECIFIER, code: string) {
   const transformed = new MagicString(code)
   let staticImports = findStaticImports(code)
   const imports: string[][] = []

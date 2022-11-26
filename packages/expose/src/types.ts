@@ -1,1 +1,1 @@
-export type PRELOAD_SPECIFIER_ID = `#${string}`
+export type PRELOAD_SPECIFIER = `#${string}` | `#preload/${string}`

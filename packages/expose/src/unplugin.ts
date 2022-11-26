@@ -3,12 +3,12 @@ import { extname } from 'node:path'
 import type { Plugin as VitePlugin } from 'vite'
 import type { Plugin as EsbuildPlugin } from 'esbuild'
 import { transformPreload, transformRenderer } from './utils'
-import type { PRELOAD_SPECIFIER_ID } from './types'
+import type { PRELOAD_SPECIFIER } from './types'
 
 export const elexpose = {
   preload: (p: string[]): EsbuildPlugin => {
     return {
-      name: 'eevi-elepose-preload-plugin',
+      name: 'eevi-elexpose-preload-plugin',
       setup(build) {
         build.onLoad({ filter: /\.[c|m]?[t|j]s/ }, async (args) => {
           if (!p.includes(args.path))
@@ -26,35 +26,10 @@ export const elexpose = {
       },
     }
   },
-  renderer: (specifiers?: PRELOAD_SPECIFIER_ID[]): VitePlugin => {
+  renderer: (specifiers: PRELOAD_SPECIFIER[]): VitePlugin => {
     return {
-      name: 'eevi-elepose-renderer-plugin',
+      name: 'eevi-elexpose-renderer-plugin',
       enforce: 'pre',
-      resolveId(id) {
-        if (id === 'electron')
-          return '@electron'
-      },
-      load(id) {
-        if (id === '@electron') {
-          const code = `
-            const { clipboard, crashReporter, desktopCapturer, ipcRenderer, nativeImage, webFrame, contextBridge } = window.require('electron')
-
-            export {
-              clipboard,
-              crashReporter,
-              desktopCapturer,
-              ipcRenderer,
-              nativeImage,
-              webFrame,
-              contextBridge
-            }
-          `
-
-          return {
-            code,
-          }
-        }
-      },
       transform(code) {
         for (const specifier of specifiers!) {
           if (code.includes(specifier)) {
