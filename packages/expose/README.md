@@ -82,6 +82,8 @@ require('electron').contextBridge.exposeInMainWorld("__elexpose_api__", {
 })
 ```
 
+or [click here](/playground) See `playground` example.
+
 ## Typescript
 
 The naming convention for this file is #filename
