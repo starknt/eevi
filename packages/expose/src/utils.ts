@@ -1,6 +1,11 @@
+import { basename, extname } from 'path'
 import MagicString from 'magic-string'
 import { findExports, findStaticImports, parseStaticImport } from 'mlly'
 import type { PRELOAD_SPECIFIER } from './types'
+
+export function transformRegexp(specifier: PRELOAD_SPECIFIER) {
+  return new RegExp(`import\ *{.*}\ *from\ *[\'|\"]${specifier}[\'|\"];?`)
+}
 
 export function transformPreload(code: string) {
   const transformed = new MagicString(code)
@@ -72,4 +77,15 @@ export function transformRenderer(specifier: PRELOAD_SPECIFIER, code: string) {
     transformed,
     imports,
   }
+}
+
+export function getFileName(filePath: string) {
+  const filename = basename(filePath, extname(filePath))
+  return filename
+}
+
+export function getSpecifiers(paths: string[]) {
+  return paths.flatMap<PRELOAD_SPECIFIER>((entry) => {
+    return [`#${getFileName(entry)}`, `#preload/${getFileName(entry)}`]
+  })
 }
