@@ -1,5 +1,11 @@
 # unplugin-elexpose
 
+This plugin allows you to automatically expose preload api to renderer using specific ES6 Module syntax.
+
+## Working
+
+- [ ] [unplugin](https://github.com/unjs/unplugin). now only support `vite`、`esbuild`
+
 ## Rules
 
 - Use named exports, like `export const test = 1`, `export * as name from './utils'` .etc
@@ -40,6 +46,7 @@ export default defineConfig({
 ```
 
 ## Simple Example
+
 ```ts
 /// common.ts
 
