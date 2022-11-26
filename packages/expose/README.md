@@ -4,14 +4,14 @@ This plugin allows you to automatically expose preload api to renderer using spe
 
 ## Working
 
-- [ ] [unplugin](https://github.com/unjs/unplugin). now only support `vite`、`esbuild`
+- [x] support [unplugin](https://github.com/unjs/unplugin)
 
 ## Rules
 
 - Use named exports, like `export const test = 1`, `export * as name from './utils'` .etc
 - The use of default exports should be reduced, like `export default` .etc
 - Do not use like `export * from './utils'` .etc
-- The naming convention for this virtual file is #filename, like `common.ts >> #common`
+- The naming convention for this virtual file is #filename, like `common.ts >> #common` or `common.ts >> #preload/common`
 
 ## Install
 
@@ -30,17 +30,17 @@ const preloadEntries = ['/path/to/common.ts']
 
 build({
   entryPoints: preloadEntries,
-  plugins: [preload(preloadEntries /** preload entry file absolute path, ensure `export * as name from ''./utils` working */)],
+  plugins: [preload.esbuild()],
 })
 
 // renderer vite
 /// vite.config.ts
-import { preload } from '@eevi/elexpose'
+import { renderer } from '@eevi/elexpose'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
-    renderer(['#common'] /** `#${filename}`[] */)
+    renderer.vite(['common'] /** `${filename}`[] */)
   ]
 })
 ```
@@ -93,6 +93,11 @@ The naming convention for this file is #filename
       "#common": [
         "/commom/file/path"
       ]
+      /** or
+      '#preload/common': [
+        "/commom/file/path"
+      ]
+       */
     }
   }
 }
