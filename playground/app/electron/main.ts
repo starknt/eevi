@@ -1,6 +1,6 @@
 import { join, resolve } from 'path'
 import fs from 'fs'
-import { BrowserWindow, app, ipcMain, protocol } from 'electron'
+import { BrowserWindow, app, ipcMain, protocol, session } from 'electron'
 import { add } from '@starter/shared'
 import { dev, linux, macOS, main, production, renderer, web, windows } from 'eevi-is'
 
@@ -49,6 +49,10 @@ async function afterReady() {
 
   // eslint-disable-next-line no-console
   console.log(add(1, 2))
+
+  session.defaultSession.setPreloads([
+    resolve(__dirname, './preload/test1.js'),
+  ])
 
   const win = new BrowserWindow({
     webPreferences: {

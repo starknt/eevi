@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import { createUnplugin } from 'unplugin'
-import { getSpecifiers, transformPreload, transformRegexp, transformRenderer } from './utils'
+import { getFileName, getSpecifiers, transformPreload, transformRegexp, transformRenderer } from './utils'
 
 export const elexpose = {
   preload: createUnplugin(() => {
@@ -19,7 +19,7 @@ export const elexpose = {
       },
       async load(filepath) {
         const code = await fs.readFile(filepath, 'utf-8')
-        const { transformed } = transformPreload(code)
+        const { transformed } = transformPreload(code, getFileName(filepath))
 
         return transformed.toString()
       },

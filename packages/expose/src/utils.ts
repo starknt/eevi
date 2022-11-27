@@ -7,7 +7,7 @@ export function transformRegexp(specifier: PRELOAD_SPECIFIER) {
   return new RegExp(`import\ *{.*}\ *from\ *[\'|\"]${specifier}[\'|\"];?`)
 }
 
-export function transformPreload(code: string) {
+export function transformPreload(code: string, filename = '') {
   const transformed = new MagicString(code)
   const exports = findExports(code)
   const exposes: string[] = []
@@ -39,7 +39,7 @@ export function transformPreload(code: string) {
     }
   }
 
-  transformed.append(`\nrequire('electron').contextBridge.exposeInMainWorld('__elexpose_api__', \n{\n${exposes.join(', \n')}\n})`)
+  transformed.append(`\nrequire('electron').contextBridge.exposeInMainWorld('__elexpose_api__${filename}', \n{\n${exposes.join(', \n')}\n})`)
 
   return {
     transformed,
@@ -48,6 +48,7 @@ export function transformPreload(code: string) {
 }
 
 export function transformRenderer(specifier: PRELOAD_SPECIFIER, code: string) {
+  const filename = specifier2filename(specifier)
   const transformed = new MagicString(code)
   let staticImports = findStaticImports(code)
   const imports: string[][] = []
@@ -69,7 +70,7 @@ export function transformRenderer(specifier: PRELOAD_SPECIFIER, code: string) {
         }
       }
 
-      transformed.appendLeft(i.start, `const { ${s} } = window.__elexpose_api__\n`)
+      transformed.appendLeft(i.start, `const { ${s} } = window.__elexpose_api__${filename}\n`)
     }
   }
 
@@ -88,4 +89,11 @@ export function getSpecifiers(paths: string[]) {
   return paths.flatMap<PRELOAD_SPECIFIER>((entry) => {
     return [`#${getFileName(entry)}`, `#preload/${getFileName(entry)}`]
   })
+}
+
+export function specifier2filename(specifier: PRELOAD_SPECIFIER) {
+  if (specifier.startsWith('#preload'))
+    return specifier.slice('#preload'.length + 2)
+
+  return specifier.slice(1)
 }
