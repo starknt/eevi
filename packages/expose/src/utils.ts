@@ -93,7 +93,7 @@ export function getSpecifiers(paths: string[]) {
 
 export function specifier2filename(specifier: PRELOAD_SPECIFIER) {
   if (specifier.startsWith('#preload'))
-    return specifier.slice('#preload'.length + 2)
+    return specifier.slice('#preload'.length + 1)
 
   return specifier.slice(1)
 }

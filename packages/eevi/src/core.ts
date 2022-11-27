@@ -56,6 +56,8 @@ export function eevi(userConfig?: UserConfigExport): Plugin[] {
         handler(resolvedConfig, viteEnv)
       },
       async transform(code, id) {
+        await when(resolved, true)
+
         const vite = renderer.vite(resolvedConfig.preloadEntries.map(getFileName))
         if (vite.transform) {
           // @ts-expect-error transform
