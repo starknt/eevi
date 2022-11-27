@@ -33,16 +33,19 @@ export const elexpose = {
       name: 'eevi-elexpose-renderer-plugin',
       enforce: 'pre',
       transform(code) {
+        let map: any
         for (const specifier of getSpecifiers(filenames)) {
           const specifierRegexp = transformRegexp(specifier)
           if (specifierRegexp.test(code)) {
             const { transformed } = transformRenderer(specifier, code)
-
-            return {
-              code: transformed.toString(),
-              map: transformed.generateMap(),
-            }
+            code = transformed.toString()
+            map = transformed.generateMap()
           }
+        }
+
+        return {
+          code,
+          map,
         }
       },
     }

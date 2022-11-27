@@ -25,7 +25,7 @@
       "#common": [
         "../electron/preload/common.ts"
       ],
-      "#test": [
+      "#preload/test1": [
         "../electron/preload/test1.ts"
       ]
     }
