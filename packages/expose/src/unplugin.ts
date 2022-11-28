@@ -1,30 +1,29 @@
-import fs from 'node:fs/promises'
 import { createUnplugin } from 'unplugin'
 import { getFileName, getSpecifiers, transformPreload, transformRegexp, transformRenderer } from './utils'
 
 export const elexpose = {
-  preload: createUnplugin(() => {
+  preload: createUnplugin<void>(() => {
     const entries: string[] = []
 
     return {
       name: 'eevi-elexpose-preload-plugin',
+      enforce: 'pre',
       resolveId(id, _, options) {
         if (options.isEntry) {
           entries.push(id)
           return id
         }
       },
-      loadInclude(id) {
+      transformInclude(id) {
         return entries.includes(id)
       },
-      async load(filepath) {
-        const code = await fs.readFile(filepath, 'utf-8')
-        const { transformed } = transformPreload(code, getFileName(filepath))
+      transform(code, id) {
+        const { transformed } = transformPreload(code, getFileName(id))
 
-        return transformed.toString()
-      },
-      esbuild: {
-        onLoadFilter: /\.[c|m]?[t|j]s/,
+        return {
+          code: transformed.toString(),
+          map: transformed.generateMap(),
+        }
       },
     }
   }),

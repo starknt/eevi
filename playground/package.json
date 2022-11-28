@@ -19,6 +19,7 @@
   ],
   "scripts": {
     "dev": "vite -c ./app/web/vite.config.ts",
+    "vite:build:preload": "vite -c ./app/electron/preload/vite.config.mjs build",
     "build": "pnpm clean && vite -c ./app/web/vite.config.ts build",
     "package": "esno scripts/clean-native.ts && pnpm build && electron-builder",
     "lint": "eslint .",

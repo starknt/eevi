@@ -1,22 +1,22 @@
 import { type BinaryLike, createHash } from 'node:crypto'
 import { ipcRenderer } from 'electron'
-import { dev, linux, macOS, main, production, renderer, web, windows } from 'eevi-is'
+// import { dev, linux, macOS, main, production, renderer, web, windows } from 'eevi-is'
 import * as sum from './utils/p3'
 
-function assert(v: boolean) {
-  if (!v)
-    // eslint-disable-next-line no-console
-    console.trace(new Error('assert failed'))
-}
+// function assert(v: boolean) {
+//   if (!v)
+//     // eslint-disable-next-line no-console
+//     console.trace(new Error('assert failed'))
+// }
 
-assert(main() === false)
-assert(renderer() === true)
-assert(web() === false)
-assert(linux() === true)
-assert(macOS() === false)
-assert(windows() === false)
-assert(dev() === true)
-assert(production() === false)
+// assert(main() === false)
+// assert(renderer() === true)
+// assert(web() === false)
+// assert(linux() === true)
+// assert(macOS() === false)
+// assert(windows() === false)
+// assert(dev() === true)
+// assert(production() === false)
 
 export const versions = process.versions
 

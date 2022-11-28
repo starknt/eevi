@@ -70,7 +70,7 @@ export function transformRenderer(specifier: PRELOAD_SPECIFIER, code: string) {
         }
       }
 
-      transformed.appendLeft(i.start, `const { ${s} } = window.__elexpose_api__${filename}\n`)
+      transformed.appendLeft(i.start, `\nconst { ${s} } = window.__elexpose_api__${filename}\n`)
     }
   }
 
