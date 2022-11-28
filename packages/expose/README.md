@@ -75,7 +75,7 @@ function join() {
 const num = 1
 function func() {}
 const versions = process.versions
-require('electron').contextBridge.exposeInMainWorld("__elexpose_api__", {
+require('electron').contextBridge.exposeInMainWorld("__elexpose_api__common", {
   utils: utils_exports,
   versions,
   num,
@@ -94,14 +94,12 @@ The naming convention for this file is #filename
 {
   "compilerOptions": {
     "paths": {
-      "#common": [
+      // "#common": [
+      //   "/commom/file/path"
+      // ]
+      "#preload/common": [
         "/commom/file/path"
       ]
-      /** or
-      '#preload/common': [
-        "/commom/file/path"
-      ]
-       */
     }
   }
 }
