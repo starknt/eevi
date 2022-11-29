@@ -53,7 +53,7 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
   }
 
   resolvedConfig.entryName = config.entryName ?? 'URL'
-  resolvedConfig.preloadOutDir = normalizeConfigPath(config.preloadOutDir ?? 'preload')
+  resolvedConfig.preloadOutDir = config.preloadOutDir ?? 'preload'
   resolvedConfig.builtinPlugins = config.builtinPlugins ?? ['eevi-cost', 'eevi-is', 'eevi-expose']
 
   return resolvedConfig
