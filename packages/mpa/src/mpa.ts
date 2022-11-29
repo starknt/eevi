@@ -110,7 +110,7 @@ export function MpaPlugin(userConfig: UserConfigExport): PluginOption[] {
   let mode: string
 
   const mpaCorePlugin: PluginOption = {
-    name: 'vite-plugin-eevi-mpa',
+    name: 'eevi:mpa',
     enforce: 'pre',
     config(_, env) {
       mode = env.mode
@@ -167,7 +167,7 @@ export function MpaPlugin(userConfig: UserConfigExport): PluginOption[] {
   }
 
   const minifyPlugin: PluginOption = {
-    name: 'vite-plugin-mpa-minify',
+    name: 'eevi:mpa:minify',
     apply: 'build',
     enforce: 'post',
     async generateBundle(_, outBundle) {

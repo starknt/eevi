@@ -19,9 +19,9 @@ export function rollupPaths(base: string, root: string, filename: string | undef
     return ''
 }
 
-export function ensureAbsolutePath(base: string, p: string) {
+export function ensureAbsolutePath(base: string, root: string, p: string) {
   if (!isAbsolute(p))
-    return resolve(base, p)
+    return resolve(root, base, p)
   return p
 }
 

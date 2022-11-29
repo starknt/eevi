@@ -1,5 +1,4 @@
 import { isAbsolute, resolve } from 'node:path'
-import { builtinModules } from 'node:module'
 import fg from 'fast-glob'
 import type { ResolvedConfig, UserConfig, UserConfigExport } from '@eevi/core'
 import { normalizePath } from 'vite'
@@ -8,11 +7,16 @@ import { ensureAbsolutePath, rollupPaths } from './utils'
 export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConfig {
   const resolvedConfig = {} as ResolvedConfig
 
-  resolvedConfig.base = config.base ? config.base === '/' ? process.cwd() : config.base : viteConfig.base === '/' ? process.cwd() : viteConfig.base
-  resolvedConfig.root = config.root ?? viteConfig.root
-  resolvedConfig.entry = isAbsolute(config.entry) ? config.entry : resolve(resolvedConfig.base, config.entry)
+  resolvedConfig.base = config.base ?? './'
+  resolvedConfig.root = config.root ? isAbsolute(config.root) ? config.root : resolve(process.cwd(), config.root) : process.cwd()
+
+  function normalizeConfigPath(p: string) {
+    return ensureAbsolutePath(resolvedConfig.base, resolvedConfig.root, p)
+  }
+
+  resolvedConfig.entry = normalizeConfigPath(config.entry)
   resolvedConfig.preloadEntries = (config.preloadEntries ?? [])
-    .map(ensureAbsolutePath.bind(undefined, resolvedConfig.base))
+    .map(normalizeConfigPath)
     .map(normalizePath)
     .flatMap((entry) => {
       if (fg.isDynamicPattern(entry))
@@ -22,9 +26,9 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
     })
 
   resolvedConfig.minify = config.minify ?? viteConfig.mode === 'production'
-  resolvedConfig.external = ['electron', ...builtinModules, ...(config.external ?? [])]
+  resolvedConfig.external = ['electron', ...(config.external ?? [])]
   resolvedConfig.inject = [...(config.inject ?? [])]
-  resolvedConfig.outdir = isAbsolute(config.outDir) ? config.outDir : resolve(resolvedConfig.base, config.outDir)
+  resolvedConfig.outdir = normalizeConfigPath(config.outDir)
   resolvedConfig.mode = config.mode ?? process.env.NODE_ENV as any
   resolvedConfig.plugins = config.plugin ?? []
   resolvedConfig.sourcemap = config.sourcemap ?? process.env.DEBUG ? true : process.env.NODE_ENV !== 'production'
@@ -49,11 +53,8 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
   }
 
   resolvedConfig.entryName = config.entryName ?? 'URL'
-  resolvedConfig.preloadOutDir = config.preloadOutDir ?? 'preload'
+  resolvedConfig.preloadOutDir = normalizeConfigPath(config.preloadOutDir ?? 'preload')
   resolvedConfig.builtinPlugins = config.builtinPlugins ?? ['eevi-cost', 'eevi-is', 'eevi-expose']
-
-  // plugins
-  resolvedConfig.plugins = [...resolvedConfig.plugins]
 
   return resolvedConfig
 }

@@ -3,7 +3,7 @@ import type { ConfigEnv } from 'vite'
 import { generateCode } from '../../../share'
 
 export const esbuildIsPlugin = (env: ConfigEnv): Plugin => ({
-  name: 'esbuild-plugin-eevi-is',
+  name: 'eevi:is',
   setup(build) {
     build.onResolve({ filter: /^eevi-is$/ }, (args) => {
       return {

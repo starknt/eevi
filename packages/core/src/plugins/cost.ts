@@ -3,7 +3,7 @@ import consola from 'consola'
 import pc from 'picocolors'
 
 export const buildCostPlugin: () => Plugin = () => ({
-  name: 'esbuild-plugin-build-cost',
+  name: 'eevi:cost',
   setup(build) {
     let time: number
 

@@ -6,7 +6,7 @@ export const elexpose = {
     const entries: string[] = []
 
     return {
-      name: 'eevi-elexpose-preload-plugin',
+      name: 'eevi:elexpose:preload',
       enforce: 'pre',
       resolveId(id, _, options) {
         if (options.isEntry) {
@@ -29,7 +29,7 @@ export const elexpose = {
   }),
   renderer: createUnplugin((filenames: string[]) => {
     return {
-      name: 'eevi-elexpose-renderer-plugin',
+      name: 'eevi:elexpose:renderer',
       enforce: 'pre',
       transform(code) {
         let map: any

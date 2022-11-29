@@ -19,7 +19,7 @@ export function eevi(userConfig?: UserConfigExport): Plugin[] {
 
   return [
     {
-      name: 'vite-plugin-eevi',
+      name: 'eevi:core',
       enforce: 'pre',
       async config(_, env) {
         viteEnv = env
@@ -55,18 +55,9 @@ export function eevi(userConfig?: UserConfigExport): Plugin[] {
 
         handler(resolvedConfig, viteEnv)
       },
-      async transform(code, id) {
-        await when(resolved, true)
-
-        const vite = renderer.vite(resolvedConfig.preloadEntries.map(getFileName))
-        if (vite.transform) {
-          // @ts-expect-error transform
-          return vite.transform.call(this, code, id)
-        }
-      },
     },
     {
-      name: 'vite-plugin-eevi-is',
+      name: 'eevi:is',
       enforce: 'post',
       resolveId(id) {
         if (id === EEVI_IS_MODULE_ID)
@@ -78,28 +69,37 @@ export function eevi(userConfig?: UserConfigExport): Plugin[] {
       },
     },
     {
-      name: 'vite-plugin-transform-electron',
-      resolveId(id) {
-        if (id === 'electron')
-          return '@electron'
-      },
-      load(id) {
-        if (id === '@electron') {
-          const code = `
-            const { clipboard, crashReporter, desktopCapturer, ipcRenderer, nativeImage, webFrame, contextBridge } = window.require('electron')
+      name: 'eevi:electron',
+      // resolveId(id) {
+      //   if (id === 'electron')
+      //     return '@electron'
+      // },
+      // load(id) {
+      //   if (id === '@electron') {
+      //     const code = `
+      //       const { clipboard, crashReporter, desktopCapturer, ipcRenderer, nativeImage, webFrame, contextBridge } = window.require('electron')
 
-            export {
-              clipboard,
-              crashReporter,
-              desktopCapturer,
-              ipcRenderer,
-              nativeImage,
-              webFrame,
-              contextBridge
-            }
-          `
+      //       export {
+      //         clipboard,
+      //         crashReporter,
+      //         desktopCapturer,
+      //         ipcRenderer,
+      //         nativeImage,
+      //         webFrame,
+      //         contextBridge
+      //       }
+      //     `
 
-          return code
+      //     return code
+      //   }
+      // },
+      async transform(code, id) {
+        await when(resolved, true)
+
+        const vite = renderer.vite(resolvedConfig.preloadEntries.map(getFileName))
+        if (vite.transform) {
+          // @ts-expect-error transform
+          return vite.transform.call(this, code, id)
         }
       },
     },
