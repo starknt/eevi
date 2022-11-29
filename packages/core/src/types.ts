@@ -20,13 +20,13 @@ export interface WatchOptions {
 
 export interface UserConfigExport {
   /**
-   * Project root path
-   * @default `/`
+   * Project base path
+   * @default `./`
    */
   base?: string
   /**
    * Main process project root path
-   * @default `app/electron`
+   * @default process.cwd()
    */
   root?: string
   /**
@@ -34,9 +34,20 @@ export interface UserConfigExport {
    */
   entry: string
   /**
-   * Preload files entry
+   * Electron preload script files path, relative `${root}/${base}/`.
+   * support glob the syntax, .e.g. *.ts
    */
   preloadEntries?: string[]
+  /**
+   * electron preload script entries directory
+   * @default ${root}/${base}/preload
+   */
+  preloadEntriesDir?: string
+  /**
+   * electron preload script output directory
+   * @default ${outDir}/preload
+   */
+  preloadOutDir?: string
   /**
   * Plugin run mode
   * @default extend `vite` mode or process.env.NODE
@@ -51,7 +62,7 @@ export interface UserConfigExport {
    * esbuild plugin
    * @see https://esbuild.github.io/plugins/
    */
-  plugin?: Plugin[]
+  plugins?: Plugin[]
   /**
    * bundle file out dir
    */
@@ -101,11 +112,6 @@ export interface UserConfigExport {
    * @default true
    */
   watch?: boolean | WatchOptions
-  /**
-   * preload script output dir
-   * @default ${outDir}/preload
-   */
-  preloadOutDir?: string
 
   /**
    * builtin plugins
@@ -118,18 +124,22 @@ export interface UserConfigExport {
 export interface UserConfig {
   /**
    * Project root path
-   * @default `/`
+   * @default `./`
    */
   base?: string
   /**
    * Main process project root path
-   * @default `app/electron/main.ts`
+   * @default process.cwd()
    */
   root?: string
   /**
-   * Main Process Entry
+   * Main Process Entry file path, relative root path
    */
   entry: string
+  /**
+   * Electron preload script files path, relative root path.
+   * support glob the syntax, .e.g. *.ts
+   */
   preloadEntries?: string[]
   /**
   * Plugin run mode
@@ -137,9 +147,9 @@ export interface UserConfig {
   */
   mode?: 'development' | 'production' | 'debug'
   /**
-   * esbuild plugin
+   * esbuild plugins
    */
-  plugin?: Plugin[]
+  plugins?: Plugin[]
   /**
    * esbuild inject
    * @see https://esbuild.github.io/api/#inject
@@ -187,10 +197,16 @@ export interface UserConfig {
    */
   watch?: boolean | WatchOptions
   /**
-   * preload script output dir
+   * electron preload script output directory
    * @default ${outDir}/preload
    */
   preloadOutDir?: string
+
+  /**
+   * electron preload script entries directory
+   * @default ${root}/${base}/preload
+   */
+  preloadEntriesDir?: string
 
   /**
    * builtin plugins
@@ -204,6 +220,7 @@ export interface ResolvedConfig {
   root: string
   sourcemap: boolean
   entry: string
+  preloadEntriesDir: string
   preloadEntries: string[]
   inject: string[]
   define: Record<string, string>

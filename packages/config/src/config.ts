@@ -1,4 +1,4 @@
-import { isAbsolute, resolve } from 'node:path'
+import { isAbsolute, join, resolve } from 'node:path'
 import fg from 'fast-glob'
 import type { ResolvedConfig, UserConfig, UserConfigExport } from '@eevi/core'
 import { normalizePath } from 'vite'
@@ -15,22 +15,23 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
   }
 
   resolvedConfig.entry = normalizeConfigPath(config.entry)
-  resolvedConfig.preloadEntries = (config.preloadEntries ?? [])
-    .map(normalizeConfigPath)
-    .map(normalizePath)
-    .flatMap((entry) => {
-      if (fg.isDynamicPattern(entry))
-        return fg.sync(entry)
-
-      return entry
+  resolvedConfig.outdir = normalizeConfigPath(config.outDir)
+  resolvedConfig.preloadEntriesDir = normalizeConfigPath(config.preloadEntriesDir ?? 'preload')
+  resolvedConfig.preloadOutDir = join(resolvedConfig.outdir, config.preloadOutDir ?? 'preload')
+  resolvedConfig.preloadEntries = fg.sync(
+    (config.preloadEntries ?? [])
+      .map(normalizePath) // fix windows not working
+    , {
+      onlyFiles: true,
+      cwd: resolvedConfig.preloadEntriesDir,
+      absolute: true,
     })
 
   resolvedConfig.minify = config.minify ?? viteConfig.mode === 'production'
   resolvedConfig.external = ['electron', ...(config.external ?? [])]
   resolvedConfig.inject = [...(config.inject ?? [])]
-  resolvedConfig.outdir = normalizeConfigPath(config.outDir)
   resolvedConfig.mode = config.mode ?? process.env.NODE_ENV as any
-  resolvedConfig.plugins = config.plugin ?? []
+  resolvedConfig.plugins = config.plugins ?? []
   resolvedConfig.sourcemap = config.sourcemap ?? process.env.DEBUG ? true : process.env.NODE_ENV !== 'production'
   resolvedConfig.resolve = config.resolve
   resolvedConfig.tsconfig = rollupPaths(resolvedConfig.base, resolvedConfig.root, config.tsconfig, 'tsconfig.json')
@@ -53,7 +54,6 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
   }
 
   resolvedConfig.entryName = config.entryName ?? 'URL'
-  resolvedConfig.preloadOutDir = config.preloadOutDir ?? 'preload'
   resolvedConfig.builtinPlugins = config.builtinPlugins ?? ['eevi-cost', 'eevi-is', 'eevi-expose']
 
   return resolvedConfig

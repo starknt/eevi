@@ -20,15 +20,17 @@ export default defineConfig({
   root: 'app/electron',
   entry: 'main.ts',
   outDir: join(appPath, 'dist'),
+  preloadEntriesDir: 'preloads',
   preloadEntries: [
-    'preload/*.ts',
+    '*.ts',
+    '!vite.config.ts',
   ],
   resolve: {
     alias,
   },
   external: [...Object.keys(dependencies || {})],
   define,
-  plugin: [],
+  plugins: [],
   watch: {
     autoReload: true,
     reloadTime: 2000,
