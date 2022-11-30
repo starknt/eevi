@@ -88,9 +88,9 @@ or [click here](/playground) See `playground` example.
 
 ## Typescript
 
-The naming convention for this file is #filename
+The naming convention for this file is `#filename` or `#preload/filename`
 
-```json
+```json5
 {
   "compilerOptions": {
     "paths": {
