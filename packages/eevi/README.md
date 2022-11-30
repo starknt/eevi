@@ -12,7 +12,10 @@ import { defineConfig } from 'vite'
 export default defineConfig({
     ...
     plugin: [
-        eevi(),
+        eevi({
+          configFile: 'eevi.config.ts' // default
+        }),
+        // If you just need a single page application, remove it
         mpa({
           template: './public/index.html',
           pages: [
@@ -37,7 +40,7 @@ export default defineConfig({
 ```
 
 ```ts
-// eevi.config.ts in your project root path
+// eevi.config.ts usually, in your project root path
 import { defineConfig } from 'eevi'
 import { join, resolve } from 'path'
 import fs from 'fs'
@@ -47,16 +50,29 @@ const appPath = resolve(__dirname, 'release', 'app')
 const packagePath = resolve(appPath, 'package.json')
 const { dependencies } = JSON.parse(fs.readFileSync(packagePath, 'utf-8') || '{}')
 
+/**
+ * .
+ * --app
+ *  -- electron
+ *    -- preloads
+ *      -- common.ts
+ *    -- main.ts
+ */
+
 export default defineConfig({
-  entry: resolve(__dirname, 'app/electron/main.ts'),
-  preloadEntries: [resolve(__dirname, 'app/electron/preload/common.ts')],
+  root: 'app/electron',
+  entry: 'main.ts', // or input main.ts absolute path
+  preloadEntriesDir: 'preloads',  // equivalent to /app/electron/preloads
+  preloadEntries: [
+    '*.ts'  // equivalent to /app/electron/preloads/*.ts
+  ],
   resolve: {
     alias,
   },
   outDir: join(appPath, 'dist'),
   external: Object.keys(dependencies || {}),
   tsconfig: resolve(__dirname, 'app', 'electron', 'tsconfig.json'),
-  plugin: []
+  plugins: []  // external esbuild plugins
 })
 ```
 
