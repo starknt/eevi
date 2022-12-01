@@ -1,18 +1,21 @@
 import type { AddressInfo } from 'net'
-import { isAbsolute, resolve } from 'path'
+import { dirname, isAbsolute, resolve } from 'path'
 import { loadConfig, resolveConfig } from '@eevi/config'
 import type { ResolvedConfig, UserConfig, UserConfigExport } from '@eevi/core'
 import { handler, when } from '@eevi/core'
 import type { ConfigEnv, Plugin } from 'vite'
+import { mergeConfig } from 'vite'
 import { renderer } from '@eevi/elexpose'
 import { EEVI_IS_MODULE_ID, generateCode } from '../../share'
 import { getFileName } from './utils'
 
-export function eevi(userConfig?: UserConfigExport): Plugin[] {
+type UserInputConfig = Partial<UserConfigExport>
+
+export function eevi(userConfig?: UserInputConfig): Plugin[] {
   const internalConfig = {
     ...(userConfig || {}),
-    configFile: userConfig ? userConfig.configFile ? isAbsolute(userConfig.configFile) ? userConfig.configFile : resolve(userConfig.base ?? process.cwd(), userConfig.configFile) : true : resolve(process.cwd(), 'eevi.config.ts'),
   } as UserConfig
+
   let resolvedConfig: ResolvedConfig
   let resolved = false
   let viteEnv: ConfigEnv
@@ -25,13 +28,27 @@ export function eevi(userConfig?: UserConfigExport): Plugin[] {
         viteEnv = env
         process.env.NODE_ENV = env.mode
       },
-      async configResolved(config) {
+      async configResolved(viteConfig) {
         process.env.MODE = process.env.MODE ?? 'spa'
-        if (Object.keys(config.build.rollupOptions.input ?? {}).length > 1)
+        if (Object.keys(viteConfig.build.rollupOptions.input ?? {}).length > 1)
           process.env.MODE = 'mpa'
 
-        const loadedConfigResult = await loadConfig(resolve(internalConfig.base ?? config.base!), internalConfig)
-        resolvedConfig = resolveConfig(loadedConfigResult.config, config)
+        if (userConfig && 'configFile' in userConfig && userConfig.configFile) {
+          internalConfig.configFile
+              = isAbsolute(userConfig.configFile)
+              ? userConfig.configFile
+              : resolve(process.cwd(), viteConfig.root, userConfig.configFile)
+          internalConfig.root = dirname(resolve(process.cwd(), viteConfig.root, userConfig.configFile))
+        }
+
+        const loadedConfigResult = await loadConfig(
+          internalConfig.root
+            ? isAbsolute(internalConfig.root)
+              ? internalConfig.root
+              : resolve(process.cwd(), viteConfig.root, internalConfig.root)
+            : process.cwd()
+          , internalConfig.configFile ? internalConfig.configFile : internalConfig)
+        resolvedConfig = resolveConfig(mergeConfig(internalConfig, loadedConfigResult.config) as UserConfig, viteConfig)
         resolved = true
       },
       configureServer(server) {

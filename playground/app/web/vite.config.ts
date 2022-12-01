@@ -35,7 +35,9 @@ export default defineConfig({
         './components',
       ],
     }),
-    eevi(),
+    eevi({
+      configFile: '../electron/eevi.config.ts',
+    }),
     // SPA remove it and pages dir, MPA require it
     mpa({
       template: './public/index.html',
