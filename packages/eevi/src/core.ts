@@ -26,7 +26,8 @@ export function eevi(userConfig?: UserInputConfig): Plugin[] {
       enforce: 'pre',
       async config(_, env) {
         viteEnv = env
-        process.env.NODE_ENV = env.mode
+        if (!process.env.NODE_ENV)
+          process.env.NODE_ENV = env.mode
       },
       async configResolved(viteConfig) {
         process.env.MODE = process.env.MODE ?? 'spa'
@@ -35,7 +36,7 @@ export function eevi(userConfig?: UserInputConfig): Plugin[] {
 
         if (userConfig && 'configFile' in userConfig && userConfig.configFile) {
           internalConfig.configFile
-              = isAbsolute(userConfig.configFile)
+            = isAbsolute(userConfig.configFile)
               ? userConfig.configFile
               : resolve(process.cwd(), viteConfig.root, userConfig.configFile)
           internalConfig.root = dirname(resolve(process.cwd(), viteConfig.root, userConfig.configFile))
