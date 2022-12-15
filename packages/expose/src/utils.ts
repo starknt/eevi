@@ -39,7 +39,8 @@ export function transformPreload(code: string, filename = '') {
     }
   }
 
-  transformed.append(`\nrequire('electron').contextBridge.exposeInMainWorld('__elexpose_api__${filename}', \n{\n${exposes.join(', \n')}\n})`)
+  if (exports.length > 0)
+    transformed.append(`\nrequire('electron').contextBridge.exposeInMainWorld('__elexpose_api__${filename}', \n{\n${exposes.join(', \n')}\n})`)
 
   return {
     transformed,
