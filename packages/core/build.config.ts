@@ -8,4 +8,5 @@ export default defineBuildConfig({
     emitCJS: true,
   },
   externals: ['electron'],
+  failOnWarn: false,
 })
