@@ -5,7 +5,7 @@ export interface ResolveOptions {
   cwd?: string
 }
 
-export type BUILTIN_PLUGINS = 'eevi-is' | 'eevi-expose' | 'eevi-cost'
+export type BUILTIN_PLUGINS = 'eevi-is'
 
 export interface WatchOptions {
   /**
@@ -48,6 +48,10 @@ export interface UserConfigExport {
    * @default ${outDir}/preload
    */
   preloadOutDir?: string
+  /**
+   * preload script plugins
+   */
+  preloadPlugins?: Plugin[]
   /**
   * Plugin run mode
   * @default extend `vite` mode or process.env.NODE
@@ -142,6 +146,10 @@ export interface UserConfig {
    */
   preloadEntries?: string[]
   /**
+   * preload script plugins
+   */
+  preloadPlugins?: Plugin[]
+  /**
   * Plugin run mode
   * @default extend `vite` mode or process.env.NODE
   */
@@ -222,6 +230,7 @@ export interface ResolvedConfig {
   entry: string
   preloadEntriesDir: string
   preloadEntries: string[]
+  preloadPlugins: Plugin[]
   inject: string[]
   define: Record<string, string>
   outdir: string

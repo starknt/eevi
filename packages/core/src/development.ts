@@ -5,10 +5,8 @@ import { basename, extname, isAbsolute, join } from 'path'
 import readline from 'readline'
 import type { BuildOptions, BuildResult, Platform, Plugin, WatchMode } from 'esbuild'
 import { build } from 'esbuild'
-import consola from 'consola'
 import pc from 'picocolors'
 import electron from 'electron'
-import { preload } from '@eevi/elexpose'
 import type { ResolvedConfig } from './types'
 import { debounce, printRow } from './utils'
 
@@ -25,7 +23,7 @@ const keys = [
 
 function rebuildHandler(error: Error | null, result: BuildResult | null, config: ResolvedConfig) {
   if (error) {
-    consola.error(error, result)
+    console.error(error, result)
     _error = error
     return
   }
@@ -118,7 +116,7 @@ export async function handleDevelopment(config: ResolvedConfig, plugins: Plugin[
   if (config.preloadEntries.length > 0) {
     await build({
       ...options,
-      plugins: [...plugins, preload.esbuild()],
+      plugins: [...plugins, ...config.preloadPlugins],
       sourcemap: options.sourcemap ? process.env.NODE_ENV === 'development' ? 'inline' : true : false,
       entryPoints: config.preloadEntries,
       outdir: isAbsolute(config.preloadOutDir) ? config.preloadOutDir : join(options.outdir!, config.preloadOutDir),
