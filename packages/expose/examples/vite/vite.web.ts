@@ -1,6 +1,6 @@
 import path from 'path'
 import { defineConfig } from 'vite'
-import { ViteElectronRendererPlugin } from '../../vite'
+import { ElectronRendererPlugin } from '../../vite'
 
 export default defineConfig({
   build: {
@@ -20,6 +20,6 @@ export default defineConfig({
     },
   },
   plugins: [
-    ViteElectronRendererPlugin(['preload']),
+    ElectronRendererPlugin(['preload']),
   ],
 })

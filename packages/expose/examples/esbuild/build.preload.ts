@@ -1,6 +1,6 @@
 import path from 'path'
 import { build } from 'esbuild'
-import { EsbuildElectronPreloadPlugin } from '../../esbuild'
+import { ElectronPreloadPlugin } from '../../esbuild'
 
 build({
   platform: 'node',
@@ -10,5 +10,5 @@ build({
   outdir: './dist',
   bundle: true,
   external: ['electron'],
-  plugins: [EsbuildElectronPreloadPlugin()],
+  plugins: [ElectronPreloadPlugin()],
 })
