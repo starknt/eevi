@@ -6,7 +6,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import AutoImportComponent from 'unplugin-vue-components/vite'
 import ViteElectronPlugin from 'eevi'
 import ViteMpaPlugin from '@eevi/vite-plugin-mpa'
-import { ViteElectronRendererPlugin } from '@eevi/elexpose/vite'
+import { ElectronRendererPlugin } from '@eevi/elexpose/vite'
 import inspect from 'vite-plugin-inspect'
 import { alias } from '../../alias'
 
@@ -60,7 +60,7 @@ export default defineConfig({
         },
       ],
     }),
-    ViteElectronRendererPlugin([
+    ElectronRendererPlugin([
       'common',
       'test1',
     ]),

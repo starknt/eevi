@@ -1,7 +1,7 @@
 import { join, resolve } from 'path'
 import fs from 'fs'
 import { defineConfig } from 'eevi'
-import { EsbuildElectronPreloadPlugin } from '@eevi/elexpose/esbuild'
+import { ElectronPreloadPlugin } from '@eevi/elexpose/esbuild'
 import { alias } from '../../alias'
 
 const appPath = resolve(process.cwd(), 'release', 'app')
@@ -26,7 +26,7 @@ export default defineConfig({
     '!vite.config.ts',
   ],
   preloadPlugins: [
-    EsbuildElectronPreloadPlugin(),
+    ElectronPreloadPlugin(),
   ],
   resolve: {
     alias,
