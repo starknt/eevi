@@ -36,9 +36,9 @@
   "dependencies": {
     "@eevi/core": "workspace:*",
     "fast-glob": "^3.2.12",
-    "unconfig": "^0.3.5"
+    "unconfig": "^0.3.7"
   },
   "devDependencies": {
-    "vite": "^3.0.4"
+    "vite": "^4.0.1"
   }
 }

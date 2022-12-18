@@ -14,15 +14,27 @@
   "keywords": [],
   "sideEffects": false,
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs"
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "require": "./dist/vite.cjs",
+      "import": "./dist/vite.mjs"
+    },
+    "./rollup": {
+      "types": "./dist/rollup.d.ts",
+      "require": "./dist/rollup.cjs",
+      "import": "./dist/rollup.mjs"
+    },
+    "./webpack": {
+      "types": "./dist/webpack.d.ts",
+      "require": "./dist/webpack.cjs",
+      "import": "./dist/webpack.mjs"
+    },
+    "./esbuild": {
+      "types": "./dist/esbuild.d.ts",
+      "require": "./dist/esbuild.cjs",
+      "import": "./dist/esbuild.mjs"
     }
   },
-  "main": "./dist/index.mjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
@@ -35,12 +47,12 @@
     "vite": ">=3.0.0"
   },
   "dependencies": {
-    "magic-string": "^0.26.7",
+    "magic-string": "^0.27.0",
     "mlly": "^1.0.0",
-    "unplugin": "^1.0.0"
+    "unplugin": "^1.0.1"
   },
   "devDependencies": {
-    "esbuild": "^0.15.15",
-    "vite": "^3.0.4"
+    "esbuild": "^0.16.9",
+    "vite": "^4.0.1"
   }
 }

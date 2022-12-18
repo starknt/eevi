@@ -38,13 +38,11 @@
     "stub": "unbuild --stub"
   },
   "peerDependencies": {
-    "vite": "~3.0.1"
+    "vite": ">=3.0.0"
   },
   "dependencies": {
     "@eevi/config": "workspace:*",
-    "@eevi/core": "workspace:*",
-    "@eevi/elexpose": "workspace:*",
-    "@eevi/vite-plugin-mpa": "workspace:*"
+    "@eevi/core": "workspace:*"
   },
   "devDependencies": {
     "esbuild": "^0.14.53",

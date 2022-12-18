@@ -36,14 +36,12 @@
   },
   "dependencies": {
     "@anatine/esbuild-decorators": "^0.2.19",
-    "@eevi/elexpose": "workspace:*",
-    "consola": "^2.15.3",
-    "esbuild": "^0.14.53",
-    "esbuild-plugin-alias-path": "^1.1.1",
+    "esbuild": "^0.16.9",
+    "esbuild-plugin-alias-path": "^2.0.2",
     "picocolors": "^1.0.0"
   },
   "devDependencies": {
-    "electron": "^20.0.1",
-    "vite": "^3.2.4"
+    "electron": "^22.0.0",
+    "vite": "^4.0.1"
   }
 }
