@@ -26,6 +26,7 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
       cwd: resolvedConfig.preloadEntriesDir,
       absolute: true,
     })
+  resolvedConfig.preloadPlugins = config.preloadPlugins ?? []
 
   resolvedConfig.minify = config.minify ?? viteConfig.mode === 'production'
   resolvedConfig.external = ['electron', ...(config.external ?? [])]
@@ -54,7 +55,7 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
   }
 
   resolvedConfig.entryName = config.entryName ?? 'URL'
-  resolvedConfig.builtinPlugins = config.builtinPlugins ?? ['eevi-cost', 'eevi-is', 'eevi-expose']
+  resolvedConfig.builtinPlugins = config.builtinPlugins ?? ['eevi-is']
 
   return resolvedConfig
 }
