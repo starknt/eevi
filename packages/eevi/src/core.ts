@@ -3,15 +3,13 @@ import { dirname, isAbsolute, resolve } from 'path'
 import { loadConfig, resolveConfig } from '@eevi/config'
 import type { ResolvedConfig, UserConfig, UserConfigExport } from '@eevi/core'
 import { handler, when } from '@eevi/core'
-import type { ConfigEnv, Plugin } from 'vite'
+import type { ConfigEnv, PluginOption } from 'vite'
 import { mergeConfig } from 'vite'
-import { renderer } from '@eevi/elexpose'
 import { EEVI_IS_MODULE_ID, generateCode } from '../../share'
-import { getFileName } from './utils'
 
 type UserInputConfig = Partial<UserConfigExport>
 
-export function eevi(userConfig?: UserInputConfig): Plugin[] {
+export function eevi(userConfig?: UserInputConfig): PluginOption {
   const internalConfig = {
     ...(userConfig || {}),
   } as UserConfig
@@ -84,41 +82,6 @@ export function eevi(userConfig?: UserInputConfig): Plugin[] {
       load(id) {
         if (id === `@${EEVI_IS_MODULE_ID}`)
           return generateCode(viteEnv)
-      },
-    },
-    {
-      name: 'eevi:electron',
-      // resolveId(id) {
-      //   if (id === 'electron')
-      //     return '@electron'
-      // },
-      // load(id) {
-      //   if (id === '@electron') {
-      //     const code = `
-      //       const { clipboard, crashReporter, desktopCapturer, ipcRenderer, nativeImage, webFrame, contextBridge } = window.require('electron')
-
-      //       export {
-      //         clipboard,
-      //         crashReporter,
-      //         desktopCapturer,
-      //         ipcRenderer,
-      //         nativeImage,
-      //         webFrame,
-      //         contextBridge
-      //       }
-      //     `
-
-      //     return code
-      //   }
-      // },
-      async transform(code, id) {
-        await when(resolved, true)
-
-        const vite = renderer.vite(resolvedConfig.preloadEntries.map(getFileName))
-        if (vite.transform) {
-          // @ts-expect-error transform
-          return vite.transform.call(this, code, id)
-        }
       },
     },
   ]
