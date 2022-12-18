@@ -1,6 +1,6 @@
 import { isAbsolute, join } from 'path'
 import { esbuildDecorators as DecoratorsPlugin } from '@anatine/esbuild-decorators'
-import AliasPathPlugin from 'esbuild-plugin-alias-path'
+import { esbuildPluginAliasPath as AliasPathPlugin } from 'esbuild-plugin-alias-path'
 import type { ConfigEnv } from 'vite'
 import type { Plugin } from 'esbuild'
 import type { ResolvedConfig } from './types'

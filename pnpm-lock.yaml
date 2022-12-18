@@ -52,13 +52,13 @@ importers:
       '@anatine/esbuild-decorators': ^0.2.19
       electron: ^22.0.0
       esbuild: ^0.16.9
-      esbuild-plugin-alias-path: ^2.0.2
+      esbuild-plugin-alias-path: ^1.1.1
       picocolors: ^1.0.0
       vite: ^4.0.1
     dependencies:
       '@anatine/esbuild-decorators': 0.2.19_esbuild@0.16.9
       esbuild: 0.16.9
-      esbuild-plugin-alias-path: 2.0.2_esbuild@0.16.9
+      esbuild-plugin-alias-path: 1.1.1_esbuild@0.16.9
       picocolors: 1.0.0
     devDependencies:
       electron: 22.0.0
@@ -3416,14 +3416,13 @@ packages:
     dev: true
     optional: true
 
-  /esbuild-plugin-alias-path/2.0.2_esbuild@0.16.9:
-    resolution: {integrity: sha512-YK8H9bzx6/CG6YBV11XjoNLjRhNZP0Ta4xZ3ATHhPn7pN8ljQGg+zne4d47DpIzF8/sX2qM+xQWev0CvaD2rSQ==}
+  /esbuild-plugin-alias-path/1.1.1_esbuild@0.16.9:
+    resolution: {integrity: sha512-krtTyCaooZsbG7gJffyrJ+PKvsJc7ZE2iQvZ2a44zk+ml632w9ZDa/lLGuks+gagdlG+KPrcgv4rRipdaap0DQ==}
     peerDependencies:
-      esbuild: '>= 0.14.0'
+      esbuild: ^0.14.0
     dependencies:
       esbuild: 0.16.9
       find-up: 5.0.0
-      fs-extra: 10.1.0
       jsonfile: 6.1.0
     dev: false
 
@@ -4172,6 +4171,7 @@ packages:
       graceful-fs: 4.2.10
       jsonfile: 6.1.0
       universalify: 2.0.0
+    dev: true
 
   /fs-extra/11.1.0:
     resolution: {integrity: sha512-0rcTq621PD5jM/e0a3EJoGC/1TC5ZBCERW82LQuwfGnCa1V8w7dpYH1yNu+SLb6E5dkeCBzKEyLGlFrnr+dUyw==}
