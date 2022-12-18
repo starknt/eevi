@@ -1,4 +1,4 @@
 import { elexpose } from './src/core'
 
-export const WebpackElectronPreloadPlugin = elexpose.preload.webpack
-export const WebpackElectronRendererPlugin = elexpose.renderer.webpack
+export const ElectronPreloadPlugin = elexpose.preload.webpack
+export const ElectronRendererPlugin = elexpose.renderer.webpack

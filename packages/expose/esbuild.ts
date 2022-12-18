@@ -1,4 +1,4 @@
 import { elexpose } from './src/core'
 
-export const EsbuildElectronPreloadPlugin = elexpose.preload.esbuild
-export const EsbuildElectronRendererPlugin = elexpose.renderer.esbuild
+export const ElectronPreloadPlugin = elexpose.preload.esbuild
+export const ElectronRendererPlugin = elexpose.renderer.esbuild

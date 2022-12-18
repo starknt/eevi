@@ -1,4 +1,4 @@
 import { elexpose } from './src/core'
 
-export const RollupElectronPreloadPlugin = elexpose.preload.rollup
-export const RollupElectronRendererPlugin = elexpose.renderer.rollup
+export const ElectronPreloadPlugin = elexpose.preload.rollup
+export const ElectronRendererPlugin = elexpose.renderer.rollup
