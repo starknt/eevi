@@ -1,6 +1,6 @@
 import path from 'path'
 import { build } from 'esbuild'
-import { renderer } from '../../src'
+import { EsbuildElectronRendererPlugin } from '../../esbuild'
 
 build({
   platform: 'browser',
@@ -10,5 +10,5 @@ build({
   outdir: './dist',
   bundle: true,
   external: ['electron'],
-  plugins: [renderer.esbuild(['preload'])],
+  plugins: [EsbuildElectronRendererPlugin(['preload'])],
 })

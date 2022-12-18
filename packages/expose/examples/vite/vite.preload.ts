@@ -1,6 +1,6 @@
 import path from 'path'
 import { defineConfig } from 'vite'
-import { preload } from '../../src'
+import { ViteElectronPreloadPlugin } from '../../vite'
 
 export default defineConfig({
   build: {
@@ -21,6 +21,6 @@ export default defineConfig({
     },
   },
   plugins: [
-    preload.vite() as any,
+    ViteElectronPreloadPlugin(),
   ],
 })
