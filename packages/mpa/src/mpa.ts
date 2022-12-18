@@ -26,7 +26,7 @@ function resolveConfig(userConfig: UserConfigExport, viteUserConfig: ViteResolve
   const config = {} as ResolvedConfig
 
   config.base = viteUserConfig.base
-  config.root = viteUserConfig.root
+  config.root = isAbsolute(viteUserConfig.root) ? viteUserConfig.root : resolve(viteUserConfig.root)
   config.minify = userConfig.minify ?? true
   config.template = userConfig.template
   config.devUrl = userConfig.devUrl ?? 'pages'
