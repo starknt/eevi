@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { transformPreload } from '@eevi/elexpose'
+import { transformPreload } from '../packages/expose/src/utils'
 
 describe('transformPreload', () => {
   it('transform `export const`', () => {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { transformRenderer } from '@eevi/elexpose'
+import { transformRenderer } from '../packages/expose/src/utils'
 
 describe('transformRenderer #filename', () => {
   it('import { name } from \'#common\'', () => {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { transformRegexp } from '@eevi/elexpose'
+import { transformRegexp } from '../packages/expose/src/utils'
 
 describe('transform regexp', () => {
   it('import {} from \'#common\'', () => {
