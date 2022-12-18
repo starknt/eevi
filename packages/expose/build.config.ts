@@ -1,7 +1,7 @@
 import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
-  entries: ['src/index'],
+  entries: ['./esbuild', './vite', './rollup', './webpack'],
   declaration: true,
   clean: true,
   rollup: {
