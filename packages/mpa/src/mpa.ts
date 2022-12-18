@@ -52,7 +52,7 @@ function resolveConfig(userConfig: UserConfigExport, viteUserConfig: ViteResolve
 
 function createInput(userConfig: ResolvedConfig): Record<string, string> {
   const r: Record<string, string> = {}
-  const projectRoot = resolve(userConfig.base, userConfig.root)
+  const projectRoot = resolve(userConfig.root)
   let html = fs.readFileSync(isAbsolute(userConfig.template) ? userConfig.template : join(projectRoot, userConfig.template), 'utf-8')
   html = removeModuleScript(html)
 
@@ -132,12 +132,13 @@ export function MpaPlugin(userConfig: UserConfigExport): PluginOption[] {
       enforce: 'pre',
       transform(_, ctx) {
         let html = _
+
         if (resolvedConfig) {
           for (const page of resolvedConfig.pages) {
             const urlRegexp = new RegExp(`^\/${resolvedConfig.devUrl}\/${page.name}\/?$`, 'ig')
 
             if (ctx.originalUrl?.match(urlRegexp) || ctx.originalUrl === `/${resolvedConfig.devUrl}/${page.name}.html`) {
-              html = fs.readFileSync(resolve(resolvedConfig.base, resolvedConfig.root, resolvedConfig.template), 'utf-8')
+              html = fs.readFileSync(resolve(resolvedConfig.root, resolvedConfig.template), 'utf-8')
               html = removeModuleScript(html)
               html = injectEntryModule(html, page.entry)
 
