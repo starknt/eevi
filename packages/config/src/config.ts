@@ -2,7 +2,7 @@ import { isAbsolute, join, resolve } from 'node:path'
 import fg from 'fast-glob'
 import type { ResolvedConfig, UserConfig, UserConfigExport } from '@eevi/core'
 import { normalizePath } from 'vite'
-import { ensureAbsolutePath, rollupPaths } from './utils'
+import { ensureAbsolutePath, normalizeSourcemap, rollupPaths } from './utils'
 
 export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConfig {
   const resolvedConfig = {} as ResolvedConfig
@@ -33,7 +33,7 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
   resolvedConfig.inject = [...(config.inject ?? [])]
   resolvedConfig.mode = config.mode ?? process.env.NODE_ENV as any
   resolvedConfig.plugins = config.plugins ?? []
-  resolvedConfig.sourcemap = config.sourcemap ?? process.env.DEBUG ? true : process.env.NODE_ENV !== 'production'
+  resolvedConfig.sourcemap = normalizeSourcemap(config.sourcemap)
   resolvedConfig.resolve = config.resolve
   resolvedConfig.tsconfig = rollupPaths(resolvedConfig.base, resolvedConfig.root, config.tsconfig, 'tsconfig.json')
 

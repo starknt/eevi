@@ -90,7 +90,7 @@ export interface UserConfigExport {
    * `NODE_ENV` production `true`, development `false`, debug `false`
    * @default @default NODE_ENV === 'production'
    */
-  sourcemap?: boolean
+  sourcemap?: boolean | 'inline' | 'linked' | 'external' | 'both'
   /**
    * external module name, default include `electron` and node `builtinModules`
    * @default ["electron", ...builtinModules]
@@ -191,7 +191,7 @@ export interface UserConfig {
    * `NODE_ENV` production `true`, development `false`, debug `false`
    * @default @default NODE_ENV === 'production'
    */
-  sourcemap?: boolean
+  sourcemap?: boolean | 'inline' | 'linked' | 'external' | 'both'
   /**
    * external module name, default include `electron` and node `builtinModules`
    * @default ["electron", ...builtinModules]
@@ -226,7 +226,7 @@ export interface UserConfig {
 export interface ResolvedConfig {
   base: string
   root: string
-  sourcemap: boolean
+  sourcemap: boolean | 'inline' | 'linked' | 'external' | 'both'
   entry: string
   preloadEntriesDir: string
   preloadEntries: string[]

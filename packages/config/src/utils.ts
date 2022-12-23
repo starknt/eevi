@@ -65,3 +65,10 @@ export async function loadConfig<U extends UserConfig>(cwd = process.cwd(), conf
 
   return result
 }
+
+export function normalizeSourcemap(sourcemap?: boolean | 'inline' | 'linked' | 'external' | 'both') {
+  if (typeof sourcemap === 'undefined')
+    return process.env.NODE_ENV === 'development' || !!process.env.DEBUG
+
+  return process.env.NODE_ENV === 'development' || !!process.env.DEBUG ? sourcemap : false
+}

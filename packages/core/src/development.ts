@@ -117,7 +117,6 @@ export async function handleDevelopment(config: ResolvedConfig, plugins: Plugin[
     await build({
       ...options,
       plugins: [...plugins, ...config.preloadPlugins],
-      sourcemap: options.sourcemap ? process.env.NODE_ENV === 'development' ? 'inline' : true : false,
       entryPoints: config.preloadEntries,
       outdir: isAbsolute(config.preloadOutDir) ? config.preloadOutDir : join(options.outdir!, config.preloadOutDir),
     })
