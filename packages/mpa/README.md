@@ -3,7 +3,7 @@
 ## Install
 
 ```bash
-  npm install @eevi/mpa
+  npm install @eevi/vite-plugin-mpa
 ```
 
 ## Usage
