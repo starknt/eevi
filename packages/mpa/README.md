@@ -3,14 +3,14 @@
 ## Install
 
 ```bash
-  npm install @eevi/mpa
+  npm install @eevi/vite-plugin-mpa
 ```
 
 ## Usage
 
 ```typescript
 // vite.config.ts
-import { MPAPlugin } from '@eevi/mpa'
+import MpaPlugin from '@eevi/vite-plugin-mpa'
 
 export default defineConfig({
   plugins: [

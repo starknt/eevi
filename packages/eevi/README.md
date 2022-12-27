@@ -6,36 +6,14 @@
 
 ```ts
  // vite.config.ts
-import { eevi, mpa } from 'eevi'
+import ElectronVitePlugin from 'eevi'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
     ...
     plugin: [
-        eevi({
-          configFile: 'eevi.config.ts' // default
-        }),
-        // If you just need a single page application, remove it
-        mpa({
-          template: './public/index.html',
-          pages: [
-            {
-              name: 'main',
-              entry: './pages/main.ts',
-              data: {
-                title: 'Main Page',
-              },
-            },
-            {
-              name: 'other',
-              entry: './pages/other.ts',
-              data: {
-                title: 'Other Page',
-              },
-            },
-          ],
-        })
-    ]
+        ElectronVitePlugin(),
+    ],
 })
 ```
 

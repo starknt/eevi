@@ -2,10 +2,6 @@
 
 This plugin allows you to automatically expose preload api to renderer using [specific](#Rules) ES Module syntax.
 
-## Working
-
-- [x] support [unplugin](https://github.com/unjs/unplugin)
-
 ## Rules
 
 - Use named exports, like `export const test = 1`, `export * as name from './utils'` .etc
