@@ -1,4 +1,4 @@
-import type { Plugin } from 'esbuild'
+import type { BuildOptions, Plugin } from 'esbuild'
 
 export interface ResolveOptions {
   alias?: Record<string, string>
@@ -17,6 +17,8 @@ export interface WatchOptions {
    */
   autoReload: boolean
 }
+
+export type AdvancedOptions = Omit<BuildOptions, 'entryPoints' | 'outdir'>
 
 export interface UserConfigExport {
   /**
@@ -122,6 +124,11 @@ export interface UserConfigExport {
    * @default ['eevi-is', 'eevi-cost', 'eevi-expose']
    */
   builtinPlugins?: BUILTIN_PLUGINS[]
+
+  /**
+   * advanced options
+   */
+  advancedOptions?: AdvancedOptions
 }
 
 /** @internal */
@@ -221,6 +228,11 @@ export interface UserConfig {
    * @default ['eevi-is', 'eevi-cost', 'eevi-expose']
    */
   builtinPlugins?: BUILTIN_PLUGINS[]
+
+  /**
+   * advanced options
+   */
+  advancedOptions?: AdvancedOptions
 }
 
 export interface ResolvedConfig {
@@ -244,4 +256,5 @@ export interface ResolvedConfig {
   watch: WatchOptions
   preloadOutDir: string
   builtinPlugins: BUILTIN_PLUGINS[]
+  advancedOptions?: AdvancedOptions
 }

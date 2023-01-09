@@ -7,6 +7,7 @@ import type { BuildOptions, BuildResult, Platform, Plugin, WatchMode } from 'esb
 import { build } from 'esbuild'
 import pc from 'picocolors'
 import electron from 'electron'
+import { mergeConfig } from 'vite'
 import type { ResolvedConfig } from './types'
 import { debounce, printRow } from './utils'
 
@@ -54,9 +55,14 @@ function reload() {
 function exit() {
   printRow(1)
   const code = 0
-  console.log(pc.green(`exit code: ${code}`))
 
-  process.exit(code)
+  cp?.kill()
+
+  // After 1 second will exit process
+  setTimeout(() => {
+    console.log(pc.green(`exit code: ${code}`))
+    process.exit(code)
+  }, 1000)
 }
 
 export function printShortcutsHelp() {
@@ -99,7 +105,7 @@ export async function handleDevelopment(config: ResolvedConfig, plugins: Plugin[
     },
   }
 
-  const options: BuildOptions = {
+  const options: BuildOptions = mergeConfig({
     platform,
     bundle,
     plugins,
@@ -111,7 +117,7 @@ export async function handleDevelopment(config: ResolvedConfig, plugins: Plugin[
     inject: [...config.inject],
     tsconfig: config.tsconfig ? config.tsconfig : undefined,
     watch: watchOptions,
-  }
+  }, config.advancedOptions ?? {})
 
   if (config.preloadEntries.length > 0) {
     await build({

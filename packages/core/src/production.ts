@@ -1,6 +1,7 @@
 import { isAbsolute, join } from 'path'
 import type { BuildOptions, Platform, Plugin } from 'esbuild'
 import { build } from 'esbuild'
+import { mergeConfig } from 'vite'
 import type { ResolvedConfig } from './types'
 
 const platform: Platform = 'node'
@@ -21,7 +22,7 @@ async function buildPreloadEntries(outdir: string, preloadEntries: string[], pre
 }
 
 export async function handleProduction(config: ResolvedConfig, plugins: Plugin[], external: string[]) {
-  const options: BuildOptions = {
+  const options: BuildOptions = mergeConfig({
     platform,
     bundle,
     plugins,
@@ -37,7 +38,7 @@ export async function handleProduction(config: ResolvedConfig, plugins: Plugin[]
     logLevel: 'info',
     tsconfig: config.tsconfig ? config.tsconfig : undefined,
     inject: [...config.inject],
-  }
+  }, config.advancedOptions ?? {})
 
   await buildPreloadEntries(config.preloadOutDir, config.preloadEntries, config.preloadPlugins, options)
 

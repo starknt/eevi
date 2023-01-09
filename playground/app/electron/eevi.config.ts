@@ -38,4 +38,7 @@ export default defineConfig({
     autoReload: true,
     reloadTime: 2000,
   },
+  advancedOptions: {
+    target: 'node18',
+  },
 })

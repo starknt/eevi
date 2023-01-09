@@ -56,6 +56,7 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
 
   resolvedConfig.entryName = config.entryName ?? 'URL'
   resolvedConfig.builtinPlugins = config.builtinPlugins ?? ['eevi-is']
+  resolvedConfig.advancedOptions = config.advancedOptions
 
   return resolvedConfig
 }
