@@ -9,13 +9,13 @@ const bundle = true
 const define: Record<string, string> = {
 }
 
-async function buildPreloadEntries(outdir: string, preloadEntries: string[], preloadPlugins: Plugin[], options: BuildOptions) {
+async function buildPreloadEntries(outdir: string, files: string[], preloadPlugins: Plugin[], options: BuildOptions) {
   // build preload entry
-  if (preloadEntries.length > 0) {
+  if (files.length > 0) {
     await build({
       ...options,
       plugins: [...options.plugins ?? [], ...preloadPlugins],
-      entryPoints: preloadEntries,
+      entryPoints: files,
       outdir: isAbsolute(outdir) ? outdir : join(options.outdir!, outdir),
     })
   }
@@ -40,7 +40,7 @@ export async function handleProduction(config: ResolvedConfig, plugins: Plugin[]
     inject: [...config.inject],
   }, config.advancedOptions ?? {})
 
-  await buildPreloadEntries(config.preloadOutDir, config.preloadEntries, config.preloadPlugins, options)
+  await buildPreloadEntries(config.preloadOutDir, config.files, config.preloadPlugins, options)
 
   await build({
     ...options,

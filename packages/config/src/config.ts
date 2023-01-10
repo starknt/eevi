@@ -16,14 +16,13 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
 
   resolvedConfig.entry = normalizeConfigPath(config.entry)
   resolvedConfig.outdir = normalizeConfigPath(config.outDir)
-  resolvedConfig.preloadEntriesDir = normalizeConfigPath(config.preloadEntriesDir ?? 'preload')
   resolvedConfig.preloadOutDir = join(resolvedConfig.outdir, config.preloadOutDir ?? 'preload')
-  resolvedConfig.preloadEntries = fg.sync(
+  resolvedConfig.files = fg.sync(
     (config.preloadEntries ?? [])
       .map(normalizePath) // fix windows not working
     , {
       onlyFiles: true,
-      cwd: resolvedConfig.preloadEntriesDir,
+      cwd: resolvedConfig.root,
       absolute: true,
     })
   resolvedConfig.preloadPlugins = config.preloadPlugins ?? []
@@ -55,7 +54,6 @@ export function resolveConfig(config: UserConfig, viteConfig: any): ResolvedConf
   }
 
   resolvedConfig.entryName = config.entryName ?? 'URL'
-  resolvedConfig.builtinPlugins = config.builtinPlugins ?? ['eevi-is']
   resolvedConfig.advancedOptions = config.advancedOptions
 
   return resolvedConfig

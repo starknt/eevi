@@ -1,3 +1,3 @@
-export type { ResolveOptions, UserConfigExport, UserConfig, ResolvedConfig } from './types'
+export type { ResolveOptions, UserConfigExport, ResolvedConfig, UserConfig } from './types'
 export * from './utils'
 export { handler } from './eevi'

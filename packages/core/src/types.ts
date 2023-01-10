@@ -41,11 +41,6 @@ export interface UserConfigExport {
    */
   preloadEntries?: string[]
   /**
-   * electron preload script entries directory
-   * @default ${root}/${base}/preload
-   */
-  preloadEntriesDir?: string
-  /**
    * electron preload script output directory
    * @default ${outDir}/preload
    */
@@ -120,12 +115,6 @@ export interface UserConfigExport {
   watch?: boolean | WatchOptions
 
   /**
-   * builtin plugins
-   * @default ['eevi-is', 'eevi-cost', 'eevi-expose']
-   */
-  builtinPlugins?: BUILTIN_PLUGINS[]
-
-  /**
    * advanced options
    */
   advancedOptions?: AdvancedOptions
@@ -152,6 +141,11 @@ export interface UserConfig {
    * support glob the syntax, .e.g. *.ts
    */
   preloadEntries?: string[]
+  /**
+   * electron preload script output directory
+   * @default ${outDir}/preload
+   */
+  preloadOutDir?: string
   /**
    * preload script plugins
    */
@@ -211,23 +205,6 @@ export interface UserConfig {
    * @default true
    */
   watch?: boolean | WatchOptions
-  /**
-   * electron preload script output directory
-   * @default ${outDir}/preload
-   */
-  preloadOutDir?: string
-
-  /**
-   * electron preload script entries directory
-   * @default ${root}/${base}/preload
-   */
-  preloadEntriesDir?: string
-
-  /**
-   * builtin plugins
-   * @default ['eevi-is', 'eevi-cost', 'eevi-expose']
-   */
-  builtinPlugins?: BUILTIN_PLUGINS[]
 
   /**
    * advanced options
@@ -240,9 +217,9 @@ export interface ResolvedConfig {
   root: string
   sourcemap: boolean | 'inline' | 'linked' | 'external' | 'both'
   entry: string
-  preloadEntriesDir: string
-  preloadEntries: string[]
+  files: string[]
   preloadPlugins: Plugin[]
+  preloadOutDir: string
   inject: string[]
   define: Record<string, string>
   outdir: string
@@ -254,7 +231,5 @@ export interface ResolvedConfig {
   resolve?: ResolveOptions
   mode: 'development' | 'production' | 'debug'
   watch: WatchOptions
-  preloadOutDir: string
-  builtinPlugins: BUILTIN_PLUGINS[]
   advancedOptions?: AdvancedOptions
 }

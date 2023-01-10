@@ -1,8 +1,8 @@
+import { UserConfigExport } from 'eevi'
 import fs from 'node:fs'
 import { dirname, isAbsolute, resolve } from 'node:path'
 import type { LoadConfigResult } from 'unconfig'
 import { createConfigLoader } from 'unconfig'
-import type { UserConfig } from '@eevi/core'
 
 export function rollupPaths(base: string, root: string, filename: string | undefined, fallbackFilename: string) {
   if (filename && isAbsolute(filename))
@@ -25,7 +25,7 @@ export function ensureAbsolutePath(base: string, root: string, p: string) {
   return p
 }
 
-export async function loadConfig<U extends UserConfig>(cwd = process.cwd(), configOrPath: string | U = cwd): Promise<LoadConfigResult<U>> {
+export async function loadConfig<U extends UserConfigExport>(cwd = process.cwd(), configOrPath: string | U = cwd): Promise<LoadConfigResult<U>> {
   let inlineConfig = {} as U
   if (typeof configOrPath !== 'string') {
     inlineConfig = configOrPath

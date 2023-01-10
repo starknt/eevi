@@ -92,11 +92,11 @@ export async function handleDevelopment(config: ResolvedConfig, plugins: Plugin[
     watch: watchOptions,
   }, config.advancedOptions ?? {})
 
-  if (config.preloadEntries.length > 0) {
+  if (config.files.length > 0) {
     await build({
       ...options,
       plugins: [...plugins, ...config.preloadPlugins],
-      entryPoints: config.preloadEntries,
+      entryPoints: config.files,
       outdir: isAbsolute(config.preloadOutDir) ? config.preloadOutDir : join(options.outdir!, config.preloadOutDir),
     })
   }

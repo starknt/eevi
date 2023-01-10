@@ -20,10 +20,8 @@ export default defineConfig({
   // root: 'app/electron',
   entry: 'main.ts',
   outDir: join(appPath, 'dist'),
-  preloadEntriesDir: 'preloads',
   preloadEntries: [
-    '*.ts',
-    '!vite.config.ts',
+    'preloads/*.ts',
   ],
   preloadPlugins: [
     ElectronPreloadPlugin(),
