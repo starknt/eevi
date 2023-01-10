@@ -1,6 +1,6 @@
-import { UserConfigExport } from 'eevi'
 import fs from 'node:fs'
 import { dirname, isAbsolute, resolve } from 'node:path'
+import type { UserConfig } from '@eevi/core'
 import type { LoadConfigResult } from 'unconfig'
 import { createConfigLoader } from 'unconfig'
 
@@ -25,7 +25,7 @@ export function ensureAbsolutePath(base: string, root: string, p: string) {
   return p
 }
 
-export async function loadConfig<U extends UserConfigExport>(cwd = process.cwd(), configOrPath: string | U = cwd): Promise<LoadConfigResult<U>> {
+export async function loadConfig<U extends UserConfig>(cwd = process.cwd(), configOrPath: string | U = cwd): Promise<LoadConfigResult<U>> {
   let inlineConfig = {} as U
   if (typeof configOrPath !== 'string') {
     inlineConfig = configOrPath
