@@ -9,18 +9,13 @@ import pc from 'picocolors'
 import electron from 'electron'
 import { mergeConfig } from 'vite'
 import type { ResolvedConfig } from './types'
-import { debounce, printRow } from './utils'
+import { debounce } from './utils'
 
 const platform: Platform = 'node'
 const bundle = true
 let cp: ChildProcess
 let entry: string
 let _error: Error | null = null
-const keys = [
-  ['r', 'reload'],
-  ['q', 'quit'],
-  ['h', 'print help'],
-]
 
 function rebuildHandler(error: Error | null, result: BuildResult | null, config: ResolvedConfig) {
   if (error) {
@@ -28,6 +23,9 @@ function rebuildHandler(error: Error | null, result: BuildResult | null, config:
     _error = error
     return
   }
+
+  // print complete rebuild message
+  console.log(`${pc.bold(pc.green('[EEVI] rebuild main process files complete.'))}`)
 
   _error = null
   if (config.watch.autoReload)
@@ -48,30 +46,10 @@ function reload() {
     stdio: 'inherit',
     env: process.env,
   })
-
-  printShortcutsHelp()
 }
 
 function exit() {
-  printRow(1)
-  const code = 0
-
   cp?.kill()
-
-  // After 1 second will exit process
-  setTimeout(() => {
-    console.log(pc.green(`exit code: ${code}`))
-    process.exit(code)
-  }, 1000)
-}
-
-export function printShortcutsHelp() {
-  console.log('')
-  console.log(
-    `  ${pc.bold('Watch Usage\n')}\n${keys.map(i => `     ${pc.gray(pc.bold('Press'))} ${pc.magenta(pc.bold(i[0]))}${` to ${i[1]}`}`).join('\n')}
-  `,
-  )
-  console.log('')
 }
 
 async function _keypressHandler(str: string, key: any) {
@@ -81,11 +59,6 @@ async function _keypressHandler(str: string, key: any) {
 
   const name = key?.name
 
-  if (name === 'h')
-    return printShortcutsHelp()
-  // change fileNamePattern
-  if (name === 'r')
-    return reload()
   // quit
   if (name === 'q')
     return exit()
@@ -159,10 +132,6 @@ export async function handleDevelopment(config: ResolvedConfig, plugins: Plugin[
       stdio: 'inherit',
       env: process.env,
     })
-      .once('spawn', () => {
-        // console.clear()
-        setTimeout(() => printShortcutsHelp(), 3000)
-      })
       .once('exit', exit)
   }
 }
