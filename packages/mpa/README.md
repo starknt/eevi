@@ -21,13 +21,3 @@ export default defineConfig({
   ]
 })
 ```
-
-## Configuration
-
-```typescript
-
-```
-
-## License
-
-`MIT`

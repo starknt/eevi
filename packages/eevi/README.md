@@ -6,13 +6,12 @@
 
 ```ts
  // vite.config.ts
-import ElectronVitePlugin from 'eevi'
+import ViteElectronPlugin from 'eevi'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-    ...
-    plugin: [
-        ElectronVitePlugin(),
+    plugins: [
+        ViteElectronPlugin(),
     ],
 })
 ```
@@ -40,10 +39,11 @@ const { dependencies } = JSON.parse(fs.readFileSync(packagePath, 'utf-8') || '{}
 export default defineConfig({
   root: 'app/electron',
   entry: 'main.ts', // or input main.ts absolute path
-  preloadEntriesDir: 'preloads',  // equivalent to /app/electron/preloads
+  // preloadEntriesDir: 'preloads',  // v0.7.0 delete it
   preloadEntries: [
-    '*.ts'  // equivalent to /app/electron/preloads/*.ts
+    'preloads/*.ts'  // equivalent to /app/electron/preloads/*.ts
   ],
+  preloadPlugins: [], // preload files only plugins
   resolve: {
     alias,
   },
