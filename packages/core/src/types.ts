@@ -84,8 +84,7 @@ export interface UserConfigExport {
    */
   minify?: boolean
   /**
-   * `NODE_ENV` production `true`, development `false`, debug `false`
-   * @default @default NODE_ENV === 'production'
+   * @default NODE_ENV === 'production'
    */
   sourcemap?: boolean | 'inline' | 'linked' | 'external' | 'both'
   /**
@@ -189,7 +188,6 @@ export interface UserConfig {
    */
   entryName?: string
   /**
-   * `NODE_ENV` production `true`, development `false`, debug `false`
    * @default @default NODE_ENV === 'production'
    */
   sourcemap?: boolean | 'inline' | 'linked' | 'external' | 'both'

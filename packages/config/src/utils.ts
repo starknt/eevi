@@ -70,5 +70,5 @@ export function normalizeSourcemap(sourcemap?: boolean | 'inline' | 'linked' | '
   if (typeof sourcemap === 'undefined')
     return process.env.NODE_ENV === 'development' || !!process.env.DEBUG
 
-  return process.env.NODE_ENV === 'development' || !!process.env.DEBUG ? sourcemap : false
+  return sourcemap
 }
