@@ -49,11 +49,13 @@ function reload() {
 }
 
 function onCPExit(code = 0) {
-  cp?.kill()
-
   console.log()
   console.log(`\x1B[93m\x1B[1mElectron process exit code: ${code}`)
   console.log()
+}
+
+function onKeyHandlerExit() {
+  cp?.kill()
 }
 
 async function _keypressHandler(str: string, key: any) {
@@ -65,7 +67,7 @@ async function _keypressHandler(str: string, key: any) {
 
   // quit
   if (name === 'q')
-    return onCPExit()
+    return onKeyHandlerExit()
 }
 
 async function keypressHandler(str: string, key: any) {
