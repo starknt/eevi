@@ -37,7 +37,7 @@ function reload() {
     return
 
   if (cp) {
-    cp.off('exit', exit)
+    cp.off('exit', onCPExit)
 
     cp.kill()
   }
@@ -48,20 +48,22 @@ function reload() {
   })
 }
 
-function exit() {
+function onCPExit(code = 0) {
   cp?.kill()
+
+  console.log(`\x1B[93m\x1B[1mElectron process exit code: ${code}`)
 }
 
 async function _keypressHandler(str: string, key: any) {
   // ctrl-c or esc
   if (str === '\x03' || str === '\x1B' || (key && key.ctrl && key.name === 'c'))
-    return exit()
+    return onCPExit()
 
   const name = key?.name
 
   // quit
   if (name === 'q')
-    return exit()
+    return onCPExit()
 }
 
 async function keypressHandler(str: string, key: any) {
@@ -132,6 +134,6 @@ export async function handleDevelopment(config: ResolvedConfig, plugins: Plugin[
       stdio: 'inherit',
       env: process.env,
     })
-      .once('exit', exit)
+      .once('exit', onCPExit)
   }
 }
